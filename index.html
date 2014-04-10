@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MathML Cloud Authoring Playground</title>
+		<style type="text/css">
+			body {
+				font-family: Tahoma, sans-serif;
+			}
+
+			textarea {
+				width: 40em;
+			}
+
+			div.output {
+				border: 1px solid black;
+				margin-top: 0.25em;
+				margin-bottom: 0.25em;
+			}
+
+			input#go {
+				border: 1px solid black;
+				background-color: #FF9933;
+				font-weight: bold;
+			}
+		</style>
+		<script type="text/x-mathjax-config">
+			MathJax.Hub.Config({
+			  jax: ["input/TeX","input/MathML","input/AsciiMath","output/HTML-CSS","output/NativeMML","output/SVG"],
+			  extensions: ["tex2jax.js","mml2jax.js","asciimath2jax.js","MathMenu.js","MathZoom.js","toMathML.js"],
+			  TeX: {
+			    extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+			  }
+			});
+		</script>
+		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>		
+		<script type="text/javascript">
+			$('body').ready( function() {
+				window.mmlEdit = {
+					input: $('#mml-input'),
+					output: {
+						visual: $('#output-visual'),
+						mml: $('#output-mathml'),
+						svg: $('#output-svg'),
+						text: $('#output-text')
+					},
+					render: function(s) {
+						var self = this;
+						this.output.visual.text("`" + s + "`");
+						MathJax.Callback.Queue(
+							["Typeset", MathJax.Hub, this.output.visual[0]],
+							[function() { self.jax.visual = MathJax.Hub.getAllJax(self.output.visual[0])[0]; }],
+							[function() { self.output.mml.html(sanitizeMathML(self.jax.visual.root.toMathML()));}]);
+					},
+					jax: {}
+				};
+
+				// wire up event handler
+		        window.mmlEdit.input.keyup(
+		        	function(evt) {
+		        		window.mmlEdit.render(evt.target.value);
+			        }
+		        );
+
+				window.sanitizeMathML = function(s) {
+					return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+				}
+			});
+		</script>
+	</head>
+	<body>
+		<h3>Enter ASCII Math below</h3>
+		<form id="mml-editor">
+			<textarea id="mml-input"></textarea>
+			<br/>
+			<input type="button" id="go" value="go"/>
+		</form>
+		<h3>Visual output</h3>
+		<div class="output" id="output-visual"></div>
+		<h3>MathML Markup</h3>
+		<div class="output"><pre><code id="output-mathml"></code></pre></div>
+		<h3>SVG markup</h3>
+		<div class="output" id="output-svg"></div>
+		<h3>Text Description</h3>
+		<div class="output" id="output-text"></div>
+	</body>
+</html>
