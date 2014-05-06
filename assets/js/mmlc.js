@@ -50,6 +50,7 @@ $('body').ready( function() {
 		$("#output-svg").append($(data.svg));
 		$("#output-svg-markup").html(sanitizeMathML(data.svg));
 		$("#output-text").html(data.altText);
+		$("#output-url").html(data.cloudUrl);
 	}
 	
 	
