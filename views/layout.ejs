@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MathML The Cloud Demonstration</title>
+		<!-- Viewport mobile tag for sensible mobile support -->
+    	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+		<link rel="stylesheet" type="text/css" href="/styles/mmlc.css" media="screen" />
+    	<script type="text/x-mathjax-config">
+			MathJax.Hub.Config({
+			  jax: ["input/TeX","input/MathML","input/AsciiMath","output/HTML-CSS","output/NativeMML","output/SVG"],
+			  extensions: ["tex2jax.js","mml2jax.js","asciimath2jax.js","MathMenu.js","MathZoom.js","toMathML.js"],
+			  TeX: {
+			    extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+			  }
+			});
+		</script>
+		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript" src="/js/mmlc.js"></script>
+  </head>
+  <body>
+    <!-- Include the view file for the current controller/route -->
+    <%- body %>
+  </body>
+</html>
