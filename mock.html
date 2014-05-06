@@ -33,11 +33,11 @@
 			});
 		</script>
 		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>		
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>	
 		<script type="text/javascript">
 			$('body').ready( function() {
 				window.mmlEdit = {
-					input: $('#mml-input'),
+					input: $('#mml-editor'),
 					output: {
 						visual: $('#output-visual'),
 						mml: $('#output-mathml'),
@@ -50,21 +50,40 @@
 						MathJax.Callback.Queue(
 							["Typeset", MathJax.Hub, this.output.visual[0]],
 							[function() { self.jax.visual = MathJax.Hub.getAllJax(self.output.visual[0])[0]; }],
-							[function() { self.output.mml.html(sanitizeMathML(self.jax.visual.root.toMathML()));}]);
+							[function() { self.output.mml.html(sanitizeMathML(self.jax.visual.root.toMathML()));}],
+							[function() { convertToSVG(self.jax.visual.root.toMathML()); }]);
 					},
 					jax: {}
 				};
 
 				// wire up event handler
-		        window.mmlEdit.input.keyup(
+		        window.mmlEdit.input.submit(
 		        	function(evt) {
-		        		window.mmlEdit.render(evt.target.value);
+						evt.preventDefault();
+		        		window.mmlEdit.render($("#mml-input").val());
 			        }
 		        );
 
 				window.sanitizeMathML = function(s) {
 					return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 				}
+				
+				window.convertToSVG = function(mathML) {
+					$.ajax({
+						type: "GET",
+						crossDomain: true,
+						url: "http://localhost:16000/?q=" + encodeURIComponent(mathML) + "&format=jsonp&type=mml",
+						dataType: 'jsonp'
+					});
+				};
+				
+				window.onMathoidCallback = function(data) {
+					$("#output-svg").find("svg").remove();
+					$("#output-svg").append($(data.svg));
+					$("#output-svg-markup").html(sanitizeMathML(data.svg));
+				}
+				
+				
 			});
 		</script>
 	</head>
@@ -73,15 +92,18 @@
 		<form id="mml-editor">
 			<textarea id="mml-input"></textarea>
 			<br/>
-			<input type="button" id="go" value="go"/>
+			<input type="submit" id="go" value="go"/>
 		</form>
 		<h3>Visual output</h3>
 		<div class="output" id="output-visual"></div>
 		<h3>MathML Markup</h3>
 		<div class="output"><pre><code id="output-mathml"></code></pre></div>
-		<h3>SVG markup</h3>
-		<div class="output" id="output-svg"></div>
+		<h3 class="svgOutput">SVG Output</h3>
+		<div class="output svgOutput" id="output-svg"></div>
+		<h3 class="svgOutput">SVG Markup</h3>
+		<div class="output svgOutput" id="output-svg-markup"></div>
 		<h3>Text Description</h3>
 		<div class="output" id="output-text"></div>
+		
 	</body>
 </html>
