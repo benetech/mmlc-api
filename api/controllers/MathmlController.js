@@ -17,6 +17,8 @@
 // Comment controller with generated actions.
 var MathmlController = {
 	
+	cloud_url: "http://localhost:1337/mathml/",
+	
 	/** 
 	* Convert to svg and get text description.
 	* @param req expected param: mathml
@@ -34,7 +36,7 @@ var MathmlController = {
 			    return console.log(err);
 			  } else {
 				mathoidJson.mathML = mathML.mathML;
-				mathoidJson.cloudUrl = sails.config.cloud_url + mathML.id;
+				mathoidJson.cloudUrl = MathmlController.cloud_url + mathML.id;
 				res.send(mathoidJson);
 			  }
 			});
@@ -53,7 +55,7 @@ var MathmlController = {
 				MathoidService.callMathoid({mathml:dbMathML.mathML}, function(mathoidJson) {
 					mathoidJson.mathML = dbMathML.mathML;
 					mathoidJson.asciiMath = dbMathML.asciiMath;
-					mathoidJson.cloudUrl = sails.config.cloud_url + dbMathML.id;
+					mathoidJson.cloudUrl = MathmlController.cloud_url + dbMathML.id;
 					console.log(mathoidJson);
 					return res.send(mathoidJson);
 				});

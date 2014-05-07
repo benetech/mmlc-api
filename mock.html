@@ -50,8 +50,12 @@
 						MathJax.Callback.Queue(
 							["Typeset", MathJax.Hub, this.output.visual[0]],
 							[function() { self.jax.visual = MathJax.Hub.getAllJax(self.output.visual[0])[0]; }],
-							[function() { self.output.mml.html(sanitizeMathML(self.jax.visual.root.toMathML()));}],
-							[function() { convertToSVG(self.jax.visual.root.toMathML()); }]);
+							[function() { 
+								self.output.mml.html(sanitizeMathML(self.jax.visual.root.toMathML()));
+								$("#mathML").append($(self.jax.visual.root.toMathML()));
+							}],
+							[function() { convertToSVG(self.jax.visual.root.toMathML()); }],
+							[function() { updateAltText(); }]);
 					},
 					jax: {}
 				};
@@ -86,6 +90,39 @@
 				
 			});
 		</script>
+		
+		<script type="text/javascript" src="https://dl.dropboxusercontent.com/u/4422951/androidVoxDev_new.js">
+		</script>
+		<script type="text/javascript">
+			accessibility=function(){
+				return 1;
+			}
+			var accumulatedText = '';
+			accessibility.speak = function(a) {
+				var mathTxt = String(a);
+				if (mathTxt != 'math') {
+					if (mathTxt == '-') {
+						mathTxt = 'minus';
+					}
+					accumulatedText = accumulatedText + ' ' + mathTxt;
+					return true;
+				}
+				if (mathTxt == 'math') {
+					$('#altText').html(accumulatedText);
+				}
+			}
+			accessibility.isSpeaking=function(){return 0;}
+			accessibility.stop=function(){return 1;}
+
+			updateAltText = function() {
+				//Clean up from any old calls.
+				$("altText").html("");
+				accumulatedText = '';
+				cvox.Api.Math.defineRule('semantics', 'default.default', '[n] ./*[1]', 'self::mathml:semantics');
+				cvox.Api.syncToNode(document.getElementsByTagName('math')[0], true);
+			}
+
+		</script>
 	</head>
 	<body>
 		<h3>Enter ASCII Math below</h3>
@@ -94,6 +131,8 @@
 			<br/>
 			<input type="submit" id="go" value="go"/>
 		</form>
+		<h3>Text Description</h3>
+		<div class="output" id="altText"></div>
 		<h3>Visual output</h3>
 		<div class="output" id="output-visual"></div>
 		<h3>MathML Markup</h3>
@@ -102,8 +141,7 @@
 		<div class="output svgOutput" id="output-svg"></div>
 		<h3 class="svgOutput">SVG Markup</h3>
 		<div class="output svgOutput" id="output-svg-markup"></div>
-		<h3>Text Description</h3>
-		<div class="output" id="output-text"></div>
+		<div id="mathML" style="visibility: hidden"></div>
 		
 	</body>
 </html>
