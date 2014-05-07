@@ -16,9 +16,26 @@ Installation
 git clone https://github.com/benetech/mmlc-experiments.git yourProjectName
 cd yourProjectName
 vagrant up
+```
+
+Install Sails and dependencies
+------------------------------
+
+After you've installed your VM, you'll have to install Sails.js and its dependencies.
+
+```
+vagrant ssh 
+cd /vagrant
+npm install
+```
+
+Start App
+----------
+```
 vagrant ssh 
 cd /vagrant
 sails lift
 ```
+
 
 Then the app should be running at http://localhost:1337.
