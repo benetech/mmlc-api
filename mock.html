@@ -42,7 +42,8 @@
 						visual: $('#output-visual'),
 						mml: $('#output-mathml'),
 						svg: $('#output-svg'),
-						text: $('#output-text')
+						text: $('#output-text'),
+						mathML: $('#mathML')
 					},
 					render: function(s) {
 						var self = this;
@@ -58,7 +59,9 @@
 							}],
 							[function() { updateAltText(); }],
 							["setRenderer", MathJax.Hub, "SVG"],
-							["Typeset", MathJax.Hub, $("mathML")[0]]);
+							["Typeset", MathJax.Hub, this.output.mathML[0]],
+							[function() { self.jax.svg = MathJax.Hub.getAllJax(self.output.mathML[0])[0]; }],
+							[function() { self.output.svg.html(sanitizeMathML(getSVGMarkup())); }]);
 							
 					},
 					jax: {}
@@ -74,6 +77,10 @@
 
 				window.sanitizeMathML = function(s) {
 					return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+				}
+				
+				window.getSVGMarkup = function() {
+					return $('<div>').append($('svg').clone()).html(); 
 				}
 				
 				
@@ -129,7 +136,8 @@
 		<div id="mathML" class="output"></div>
 		<h3>MathML Markup</h3>
 		<div class="output"><pre><code id="output-mathml"></code></pre></div>
-		
+		<h3>SVG Markup</h3>
+		<div class="output"><code id="output-svg"></code></div>
 		
 	</body>
 </html>
