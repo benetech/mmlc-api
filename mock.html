@@ -48,10 +48,11 @@
 						var self = this;
 						this.output.visual.text("`" + s + "`");
 						MathJax.Callback.Queue(
+							["setRenderer", MathJax.Hub, "HTML-CSS"],
 							["Typeset", MathJax.Hub, this.output.visual[0]],
 							[function() { self.jax.visual = MathJax.Hub.getAllJax(self.output.visual[0])[0]; }],
 							[function() { 
-								$("math").remove();
+								$("#mathML").empty();
 								self.output.mml.html(sanitizeMathML(self.jax.visual.root.toMathML()));
 								$("#mathML").append($(self.jax.visual.root.toMathML()));
 							}],
@@ -97,6 +98,7 @@
 				}
 				if (mathTxt == 'math') {
 					$('#altText').html(accumulatedText);
+					cvox.Api.syncToNode(document.getElementsByTagName('body')[0], true);
 				}
 			}
 			accessibility.isSpeaking=function(){return 0;}
