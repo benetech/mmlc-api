@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MathML Cloud Authoring Playground</title>
+		<style type="text/css">
+			body {
+				font-family: Tahoma, sans-serif;
+			}
+
+			textarea {
+				width: 40em;
+			}
+
+			div.output {
+				border: 1px solid black;
+				margin-top: 0.25em;
+				margin-bottom: 0.25em;
+			}
+
+			input#go {
+				border: 1px solid black;
+				background-color: #FF9933;
+				font-weight: bold;
+			}
+		</style>
+		<script type="text/x-mathjax-config">
+			MathJax.Hub.Config({
+			  jax: ["input/TeX","input/MathML","input/AsciiMath","output/HTML-CSS","output/NativeMML", "output/SVG"],
+			  extensions: ["tex2jax.js","mml2jax.js","asciimath2jax.js","MathMenu.js","MathZoom.js","toMathML.js"],
+			  TeX: {
+			    extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+			  }
+			});
+		</script>
+		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>	
+		<script type="text/javascript">
+			$('body').ready( function() {
+				window.mmlEdit = {
+					input: $('#mml-editor'),
+					output: {
+						visual: $('#output-visual'),
+						mml: $('#output-mathml'),
+						svg: $('#output-svg'),
+						text: $('#output-text'),
+						mathML: $('#mathML')
+					},
+					render: function(s) {
+						var self = this;
+						this.output.visual.text("`" + s + "`");
+						MathJax.Callback.Queue(
+							["setRenderer", MathJax.Hub, "HTML-CSS"],
+							["Typeset", MathJax.Hub, this.output.visual[0]],
+							[function() { self.jax.visual = MathJax.Hub.getAllJax(self.output.visual[0])[0]; }],
+							[function() { 
+								$("#mathML").empty();
+								self.output.mml.html(sanitizeMathML(self.jax.visual.root.toMathML()));
+								$("#mathML").append($(self.jax.visual.root.toMathML()));
+							}],
+							[function() { updateAltText(); }],
+							["setRenderer", MathJax.Hub, "SVG"],
+							["Typeset", MathJax.Hub, this.output.mathML[0]],
+							[function() { self.jax.svg = MathJax.Hub.getAllJax(self.output.mathML[0])[0]; }],
+							[function() { self.output.svg.html(sanitizeMathML(getSVGMarkup())); }]);
+							
+					},
+					jax: {}
+				};
+
+				// wire up event handler
+		        window.mmlEdit.input.submit(
+		        	function(evt) {
+						evt.preventDefault();
+		        		window.mmlEdit.render($("#mml-input").val());
+			        }
+		        );
+
+				window.sanitizeMathML = function(s) {
+					return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+				}
+				
+				window.getSVGMarkup = function() {
+					return $('<div>').append($('svg').clone()).html(); 
+				}
+				
+				
+			});
+		</script>
+		
+		<script type="text/javascript" src="https://dl.dropboxusercontent.com/u/4422951/androidVoxDev_new.js">
+		</script>
+		<script type="text/javascript">
+			accessibility=function(){
+				return 1;
+			}
+			var accumulatedText = '';
+			accessibility.speak = function(a) {
+				var mathTxt = String(a);
+				if (mathTxt != 'math') {
+					if (mathTxt == '-') {
+						mathTxt = 'minus';
+					}
+					accumulatedText = accumulatedText + ' ' + mathTxt;
+					return true;
+				}
+				if (mathTxt == 'math') {
+					$('#altText').html(accumulatedText);
+					cvox.Api.syncToNode(document.getElementsByTagName('body')[0], true);
+				}
+			}
+			accessibility.isSpeaking=function(){return 0;}
+			accessibility.stop=function(){return 1;}
+
+			updateAltText = function() {
+				//Clean up from any old calls.
+				$("#altText").html("");
+				accumulatedText = '';
+				cvox.Api.Math.defineRule('semantics', 'default.default', '[n] ./*[1]', 'self::mathml:semantics');
+				cvox.Api.syncToNode(document.getElementsByTagName('math')[0], true);
+			}
+
+		</script>
+	</head>
+	<body>
+		<h3>Enter ASCII Math below</h3>
+		<form id="mml-editor">
+			<textarea id="mml-input"></textarea>
+			<br/>
+			<input type="submit" id="go" value="go"/>
+		</form>
+		<h3>Text Description</h3>
+		<div class="output" id="altText"></div>
+		<h3>Visual output</h3>
+		<div class="output" id="output-visual"></div>
+		<h3 class="svgOutput">SVG Output</h3>
+		<div id="mathML" class="output"></div>
+		<h3>MathML Markup</h3>
+		<div class="output"><pre><code id="output-mathml"></code></pre></div>
+		<h3>SVG Markup</h3>
+		<div class="output"><code id="output-svg"></code></div>
+		
+	</body>
+</html>
