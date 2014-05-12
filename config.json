@@ -1,0 +1,5 @@
+{
+    "STORAGE_NAME": "<nameofdatabase>",
+    "STORAGE_KEY": "<yourstoragekey>",
+    "PARTITION_KEY": "<yourpartitionkey>"
+}
