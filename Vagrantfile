@@ -25,7 +25,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Share the home directory for access to host source code
   # and use NFS for 10-100x speedup:
   # NOTE: you must have a network configured above, such as config.vm.network
-  # config.vm.synced_folder "~/", "/host", nfs: true
+  config.vm.synced_folder ".", "/vagrant"
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
