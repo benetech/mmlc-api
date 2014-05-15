@@ -51,6 +51,11 @@ $('body').ready( function() {
 		$("#output-svg-markup").html(sanitizeMathML(data.svg));
 		$("#output-text").html(data.altText);
 		$("#output-url").html(data.cloudUrl);
+		var oCanvas=document.getElementById('output-svgImage');
+		var ctx = oCanvas.getContext('2d');
+		ctx.drawSvg(data.svg, 50 , 50 , 50, 50);
+		var DataURI=oCanvas.toDataURL('image/png');
+		document.getElementById("output-pngImage").src=DataURI;
 	}
 	
 	
