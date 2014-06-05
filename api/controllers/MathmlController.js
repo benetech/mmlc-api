@@ -28,6 +28,7 @@ var MathmlController = {
 		MathoidService.callMathoid({mathml:req.param('mathml')}, function(mathoidJson) {
 			//Create record for callback.
 			Mathml.create({
+			  altText: mathoidJson['altText'],
 			  asciiMath: req.param('asciiMath'),
 			  mathML: req.param('mathml')
 			}).done(function(err, mathML) {
@@ -45,6 +46,7 @@ var MathmlController = {
 
 	find: function(req, res) {
 		var mathMLId = req.param('id');
+		var wantsjson = req.param('json');
 		Mathml.find({ _id: mathMLId }).done(function (err, mathML) {
 			console.log(mathML[0]);
 			// XXX Error handling
@@ -57,7 +59,10 @@ var MathmlController = {
 					mathoidJson.asciiMath = dbMathML.asciiMath;
 					mathoidJson.cloudUrl = MathmlController.cloud_url + dbMathML.id;
 					console.log(mathoidJson);
-					return res.send(mathoidJson);
+					if (wantsjson !== undefined)
+						return res.send(mathoidJson)
+					else
+						return res.view({jsonurl: mathoidJson.cloudUrl + '?json', mathml: dbMathML.mathML, alttext: dbMathML.altText}); //mathoidJson);
 				});
 			}
 		});
