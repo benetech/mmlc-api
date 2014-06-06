@@ -12,3 +12,4 @@ boxes/*
 
 # Mathoid (needs to be pulled in separately)
 mathoid/
+node_modules/
