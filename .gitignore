@@ -11,4 +11,4 @@ boxes/*
 /vagrant-spec.config.rb
 
 # Mathoid (needs to be pulled in separately)
-mathoid/*
+mathoid/
