@@ -26,6 +26,8 @@ After you've installed your VM, you'll have to install Sails.js and its dependen
 ```
 vagrant ssh 
 cd /vagrant
+npm install sails-mongo@0.9.x
+sudo apt-get install libfreetype6 libfontconfig
 npm install
 ```
 
