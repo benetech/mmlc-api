@@ -12,6 +12,7 @@ module.exports = {
   //XXX This is in no way complete
   attributes: {
 	asciiMath: 'STRING',
+	altText: 'STRING',
 	mathML: 'STRING',
 	equationName: 'STRING',
 	equationType: 'STRING',
