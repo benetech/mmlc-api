@@ -37,7 +37,11 @@ $('body').ready( function() {
 		$("#output-text").html('');
 		$.ajax({
 			type: "GET",
-			url: "http://localhost:1337/mathml/convert?mathml=" + encodeURIComponent(mathML) + "&asciiMath=" 
+			// For MathML input
+//			url: "http://23.251.135.48:8888/mathml/convert?mathml=" 
+//				+ encodeURIComponent(mathML),
+			// For Latex input
+			url: "http://23.251.135.48:8888/mathml/convert?latex=" 
 				+ encodeURIComponent($("#mml-input").val()),
 			dataType: 'json'
 		}).done(function(data) {
@@ -51,7 +55,15 @@ $('body').ready( function() {
 		$("#output-svg-markup").html(sanitizeMathML(data.svg));
 		$("#output-text").html(data.altText);
 		$("#output-url").html(data.cloudUrl);
+		var oCanvas=document.getElementById('output-svgImage');
+		var ctx = oCanvas.getContext('2d');
+		ctx.drawSvg(data.svg, 50 , 50 , 50, 50);
+		var DataURI=oCanvas.toDataURL('image/png');
+		document.getElementById("output-pngImage").src=DataURI; 
+		$.ajax({
+			type: "GET",
+			url: "http:/23.251.135.48:8888/mathml/getpngImage?dataURI=" + encodeURIComponent(DataURI),
+			dataType: 'json'
+		});
 	}
-	
-	
 });

@@ -17,31 +17,71 @@
 // Comment controller with generated actions.
 var MathmlController = {
 	
-	cloud_url: "http://localhost:1337/mathml/",
+	cloud_url: "http://23.251.135.48:8888/mathml/",
+	dataURI: "",
+	globalMathoidJson: "",
 	
 	/** 
 	* Convert to svg and get text description.
 	* @param req expected param: mathml
 	* @param res returns json
 	*/
-    convert: function(req, res) {
+	
+	convert: function(req, res) {
+		if(req.param('latex')){
+			console.log("PARAM : latex");
+
+		MathoidServiceLatex.callMathoid({mathml:req.param('latex')}, function(mathoidJson) {
+			//Create record for callback.
+			console.log(mathoidJson);
+			Mathml.create({
+			  asciiMath: req.param('latex'),
+			  mathML: mathoidJson.mml,
+			}).done(function(err, mathML) {
+			  // Error handling
+			  if (err) {
+			    return console.log(err);
+			  } else {
+			  	mathoidJson.mathML = mathML.mathML;
+				mathoidJson.cloudUrl = MathmlController.cloud_url + mathML.id;
+				globalMathoidJson = mathoidJson;
+				console.log("[DEBUGi Latex] --> "+globalMathoidJson.cloudUrl);
+				res.send(mathoidJson);
+			  }
+			});
+		});
+		
+		}
+
+		if(req.param('mathml')){
+			console.log("PARAM : mathml");
+
 		MathoidService.callMathoid({mathml:req.param('mathml')}, function(mathoidJson) {
 			//Create record for callback.
 			Mathml.create({
-			  asciiMath: req.param('asciiMath'),
 			  mathML: req.param('mathml')
 			}).done(function(err, mathML) {
 			  // Error handling
 			  if (err) {
 			    return console.log(err);
 			  } else {
-				mathoidJson.mathML = mathML.mathML;
+			  	mathoidJson.mathML = mathML.mathML;
 				mathoidJson.cloudUrl = MathmlController.cloud_url + mathML.id;
+				globalMathoidJson = mathoidJson;
+				console.log("[DEBUG Mathml] --> "+globalMathoidJson.cloudUrl);
 				res.send(mathoidJson);
 			  }
 			});
 		});
-    },
+
+		}
+
+	},
+
+	// Get DataURI of the PNG Image
+	getpngImage: function(req, res) {
+		      MathmlController.dataURI=req.param('dataURI');
+	},
 
 	find: function(req, res) {
 		var mathMLId = req.param('id');
@@ -56,6 +96,7 @@ var MathmlController = {
 					mathoidJson.mathML = dbMathML.mathML;
 					mathoidJson.asciiMath = dbMathML.asciiMath;
 					mathoidJson.cloudUrl = MathmlController.cloud_url + dbMathML.id;
+					mathoidJson.dataURI = MathmlController.dataURI;
 					console.log(mathoidJson);
 					return res.send(mathoidJson);
 				});
