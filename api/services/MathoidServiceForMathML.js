@@ -52,13 +52,9 @@ exports.callMathoid = function(mathoid, cb) {
  	});
 	  
   	mathoidResponse.on('end', function() {
-		  //console.log("[ mydataURI ] "+mydataURI);
  		  var Jsonobj= JSON.parse(jsonResponse);
-		  // console.log("[SVG] "+Jsonobj.svg);
-
   		  svgToPngDataUri(Jsonobj.svg, function(dataUri) {
   				ImageDataURI=dataUri;
-  				//console.log('<img src="' + dataUri + '">');
   	 	  });
 	  
 	 	 setTimeout(function(){

@@ -52,20 +52,15 @@ exports.callMathoid = function(mathoid, cb) {
  	});
 	  
   	mathoidResponse.on('end', function() {
-		  //console.log("[ mydataURI ] "+mydataURI);
  		  var Jsonobj= JSON.parse(jsonResponse);
-		  // console.log("[SVG] "+Jsonobj.svg);
-
   		  svgToPngDataUri(Jsonobj.svg, function(dataUri) {
   				ImageDataURI=dataUri;
-  				//console.log('<img src="' + dataUri + '">');
   	 	  });
 	  
 	 	 setTimeout(function(){
 	  		 Jsonobj.dataUri = ImageDataURI;
   		 	 console.log("[ INSIDE SERVICE ] " + Jsonobj.dataUri);
   	 	 	 cb(Jsonobj);
-  	 	 	 //cb(JSON.parse(jsonResponse));
   	 	 	 console.log('end call to mathoid');
 		  },3000);
 
