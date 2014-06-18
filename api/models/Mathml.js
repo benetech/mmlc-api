@@ -13,6 +13,7 @@ module.exports = {
   attributes: {
 	asciiMath: 'STRING',
 	mathML: 'STRING',
+	altText: 'STRING',
 	equationName: 'STRING',
 	equationType: 'STRING',
     qualityScore: 'INTEGER',

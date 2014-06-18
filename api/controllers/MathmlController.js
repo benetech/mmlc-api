@@ -21,43 +21,78 @@ var MathmlController = {
 	
 	/** 
 	* Convert to svg and get text description.
-	* @param req expected param: mathml
+	* @param req expected param: mathml/tex
 	* @param res returns json
 	*/
-    convert: function(req, res) {
-		MathoidService.callMathoid({mathml:req.param('mathml')}, function(mathoidJson) {
+	
+	convert: function(req, res) {
+		// User has provided the Math Equation in Latex format.
+		if(req.param('latex')){
+			console.log("PARAM : latex");
+
+		MathoidServiceForLatex.callMathoid({mathml:req.param('latex')}, function(mathoidJson) {
 			//Create record for callback.
 			Mathml.create({
-			  asciiMath: req.param('asciiMath'),
-			  mathML: req.param('mathml')
+			  altText: mathoidJson['altText'],
+			  asciiMath: req.param('latex'),
+			  mathML: mathoidJson.mml,
 			}).done(function(err, mathML) {
 			  // Error handling
 			  if (err) {
 			    return console.log(err);
 			  } else {
-				mathoidJson.mathML = mathML.mathML;
+			  	mathoidJson.mathML = mathML.mathML;
 				mathoidJson.cloudUrl = MathmlController.cloud_url + mathML.id;
 				res.send(mathoidJson);
 			  }
 			});
 		});
-    },
+
+		}
+
+		// User has provided the Math Equation in MathML format.
+		if(req.param('mathml')){
+			console.log("PARAM : mathml");
+
+		MathoidServiceForMathML.callMathoid({mathml:req.param('mathml')}, function(mathoidJson) {
+			//Create record for callback.
+			Mathml.create({
+			  altText: mathoidJson['altText'],
+			  mathML: req.param('mathml'),
+			}).done(function(err, mathML) {
+			  // Error handling
+			  if (err) {
+			    return console.log(err);
+			  } else {
+			  	mathoidJson.mathML = mathML.mathML;
+				mathoidJson.cloudUrl = MathmlController.cloud_url + mathML.id;
+				res.send(mathoidJson);
+			  }
+			});
+		});
+
+		}
+
+	},
 
 	find: function(req, res) {
 		var mathMLId = req.param('id');
+		var wantsjson = req.param('json');
 		Mathml.find({ _id: mathMLId }).done(function (err, mathML) {
-			console.log(mathML[0]);
 			// XXX Error handling
 			if (err) {
 				return console.log(err);
 			} else {
 				var dbMathML = mathML[0];
-				MathoidService.callMathoid({mathml:dbMathML.mathML}, function(mathoidJson) {
+				MathoidServiceForMathML.callMathoid({mathml:dbMathML.mathML}, function(mathoidJson) {
 					mathoidJson.mathML = dbMathML.mathML;
 					mathoidJson.asciiMath = dbMathML.asciiMath;
 					mathoidJson.cloudUrl = MathmlController.cloud_url + dbMathML.id;
 					console.log(mathoidJson);
-					return res.send(mathoidJson);
+					if (wantsjson !== undefined)
+  						return res.send(mathoidJson)
+ 					else
+ 						return res.view({jsonurl: mathoidJson.cloudUrl + '?json', mathml: dbMathML.mathML, alttext: dbMathML.altText}); //mathoidJson);
 				});
 			}
 		});

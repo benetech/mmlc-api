@@ -37,8 +37,12 @@ $('body').ready( function() {
 		$("#output-text").html('');
 		$.ajax({
 			type: "GET",
-			url: "http://localhost:1337/mathml/convert?mathml=" + encodeURIComponent(mathML) + "&asciiMath=" 
-				+ encodeURIComponent($("#mml-input").val()),
+			// For MathML input
+//			url: "http://localhost:1337/mathml/convert?mathml=" 
+//				+ encodeURIComponent(mathML),
+			// For Latex input
+			url: "http://localhost:1337/mathml/convert?latex=" 
+			+ encodeURIComponent($("#mml-input").val()),
 			dataType: 'json'
 		}).done(function(data) {
 			onMathoidCallback(data);
@@ -55,8 +59,6 @@ $('body').ready( function() {
 		var ctx = oCanvas.getContext('2d');
 		ctx.drawSvg(data.svg, 50 , 50 , 50, 50);
 		var DataURI=oCanvas.toDataURL('image/png');
-		document.getElementById("output-pngImage").src=DataURI;
+		document.getElementById("output-pngImage").src=DataURI; 
 	}
-	
-	
 });
