@@ -93,6 +93,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   config.vm.provision :chef_solo do |chef|
     chef.add_recipe "nodejs"
+    chef.add_recipe "phantomjs"
     chef.add_recipe "mongodb-debs"
 	chef.json =	{
 		"nodejs" => {
