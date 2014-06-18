@@ -21,6 +21,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 1337, host: 1337
+  config.vm.network "forwarded_port", guest: 16000, host: 16000
   
   # Share the home directory for access to host source code
   # and use NFS for 10-100x speedup:
