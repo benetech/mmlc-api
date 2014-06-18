@@ -12,9 +12,10 @@ Dependencies:
 Installation
 --------------
 
-```sh
+```
 git clone https://github.com/benetech/mmlc-experiments.git yourProjectName
 cd yourProjectName
+git clone https://github.com/benetech/mediawiki-services-mathoid.git mathoid
 vagrant up
 ```
 
@@ -27,14 +28,16 @@ After you've installed your VM, you'll have to install Sails.js and its dependen
 vagrant ssh 
 cd /vagrant
 npm install
+sudo apt-get install libfreetype6 libfontconfig
 ```
 
 Start App
 ----------
 ```
-vagrant ssh 
-cd /vagrant
-sails lift
+cd mathoid
+phantomjs main.js >/dev/null &
+cd ..
+sails lift >/dev/null &
 ```
 
 
