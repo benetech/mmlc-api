@@ -29,6 +29,7 @@ vagrant ssh
 cd /vagrant
 npm install
 sudo apt-get install libfreetype6 libfontconfig
+sudo apt-get install imagemagick
 ```
 
 Start App
