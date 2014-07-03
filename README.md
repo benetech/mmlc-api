@@ -19,27 +19,11 @@ git clone https://github.com/benetech/mediawiki-services-mathoid.git mathoid
 vagrant up
 ```
 
-Install Sails and dependencies
-------------------------------
-
-After you've installed your VM, you'll have to install Sails.js and its dependencies.
-
-```
-vagrant ssh 
-cd /vagrant
-npm install
-sudo apt-get install libfreetype6 libfontconfig
-sudo apt-get install imagemagick
-```
-
 Start App
 ----------
-```
-cd mathoid
-phantomjs main.js >/dev/null &
-cd ..
-sails lift >/dev/null &
-```
 
+```
+/vagrant/run.sh
+```
 
 Then the app should be running at http://localhost:1337.
