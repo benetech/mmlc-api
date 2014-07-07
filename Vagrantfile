@@ -93,6 +93,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # some recipes and/or roles.
   #
   config.vm.provision :chef_solo do |chef|
+    chef.add_recipe "apt"
     chef.add_recipe "nodejs"
     chef.add_recipe "phantomjs"
     chef.add_recipe "mongodb-debs"
@@ -126,8 +127,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   #   chef.validation_client_name = "ORGNAME-validator"
 
-  # Get sails and azure for node.
-  config.vm.provision "shell", inline: "sudo npm -g -y install sails"
-  config.vm.provision "shell", inline: "sudo npm -g -y install sails-mongo --save"
+  # Install ImageMagick and related libraries.
+  config.vm.provision "shell", inline: "sudo apt-get -y install imagemagick libfreetype6 libfontconfig"
+
+  # Install Node.JS packages.
+  config.vm.provision "shell", inline: "(cd /vagrant; npm -y install)"
 
 end
