@@ -17,3 +17,7 @@ input#go {
 	background-color: #FF9933;
 	font-weight: bold;
 }
+
+#output-pngImage {
+	width: 10%;
+}

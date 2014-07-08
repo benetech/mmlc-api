@@ -127,6 +127,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   #   chef.validation_client_name = "ORGNAME-validator"
 
+  # Get sails and azure for node.
+  config.vm.provision "shell", inline: "sudo npm -g -y install sails"
+  config.vm.provision "shell", inline: "sudo npm -g -y install sails-mongo --save"
+
   # Install ImageMagick and related libraries.
   config.vm.provision "shell", inline: "sudo apt-get -y install imagemagick libfreetype6 libfontconfig"
 
