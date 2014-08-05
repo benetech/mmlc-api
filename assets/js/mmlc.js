@@ -6,17 +6,21 @@ $('body').ready( function() {
 			mml: $('#output-mathml'),
 			svg: $('#output-svg'),
 			text: $('#output-text'),
-			renderedMML: $("#renderedMathMl")
 		},
 		render: function(s) {
 			var self = this;
 			this.output.visual.text("`" + s + "`");
-			MathJax.Callback.Queue(
-				["Typeset", MathJax.Hub, this.output.visual[0]],
-				[function() { self.jax.visual = MathJax.Hub.getAllJax(self.output.visual[0])[0]; }],
-				[function() { self.output.mml.html(sanitizeMathML(self.jax.visual.root.toMathML()));}],
-				[function() { self.output.renderedMML.html(self.jax.visual.root.toMathML());}],
-				[function() { callMathoid(self.jax.visual.root.toMathML()); }]);
+		        if ($("#mml-type").val()=='latex') {
+			  MathJax.Callback.Queue(
+			    ["Typeset", MathJax.Hub, this.output.visual[0]],
+	        	    [function() { self.jax.visual = MathJax.Hub.getAllJax(self.output.visual[0])[0]; }],
+			    [function() { self.output.mml.html(sanitizeMathML(self.jax.visual.root.toMathML()));}],
+		            [function() { callMathoid('latex'); }]);
+			} else {
+			  MathJax.Callback.Queue(
+			    [function() { self.output.mml.html(sanitizeMathML($("#mml-input").val()));}],
+			    [function() { callMathoid('mathml'); }]);
+			}
 		},
 		jax: {}
 	};
@@ -33,15 +37,15 @@ $('body').ready( function() {
 		return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	}
 	
-	window.callMathoid = function(mathML) {
+	window.callMathoid = function(type) {
 		$("#output-text").html('');
 		$.ajax({
-			type: "GET",
-			url: "http://localhost:1337/mathml/convert?mathml=" + encodeURIComponent(mathML) + "&asciiMath=" 
-				+ encodeURIComponent($("#mml-input").val()),
-			dataType: 'json'
-		}).done(function(data) {
-			onMathoidCallback(data);
+		  	  type: "GET",
+			  url: "http://localhost:1337/mathml/convert?"+type+"=" 
+			  + encodeURIComponent($("#mml-input").val()),
+			  dataType: 'json'
+		  }).done(function(data) {
+			  onMathoidCallback(data);
 		});
 	};
 	
@@ -51,12 +55,8 @@ $('body').ready( function() {
 		$("#output-svg-markup").html(sanitizeMathML(data.svg));
 		$("#output-text").html(data.altText);
 		$("#output-url").html(data.cloudUrl);
-		var oCanvas=document.getElementById('output-svgImage');
-		var ctx = oCanvas.getContext('2d');
-		ctx.drawSvg(data.svg, 50 , 50 , 50, 50);
-		var DataURI=oCanvas.toDataURL('image/png');
-		document.getElementById("output-pngImage").src=DataURI;
+		$("#output-pngImage").attr("src", data.dataUri);
+		//var DataURI=oCanvas.toDataURL('image/png');
+		//document.getElementById("output-pngImage").src=DataURI; 
 	}
-	
-	
 });
