@@ -35,7 +35,7 @@ var MathmlController = {
 			Mathml.create({
 			  altText: mathoidJson['altText'],
 			  asciiMath: req.param('latex'),
-			  mathML: mathoidJson.mml,
+			  mathML: mathoidJson.mml
 			}).done(function(err, mathML) {
 			  // Error handling
 			  if (err) {
@@ -90,9 +90,9 @@ var MathmlController = {
 					mathoidJson.cloudUrl = MathmlController.cloud_url + dbMathML.id;
 					console.log(mathoidJson);
 					if (wantsjson !== undefined)
-  						return res.send(mathoidJson)
- 					else
- 						return res.view({jsonurl: mathoidJson.cloudUrl + '?json', mathml: dbMathML.mathML, alttext: dbMathML.altText}); //mathoidJson);
+						return res.send(mathoidJson)
+					else
+						return res.view({jsonurl: mathoidJson.cloudUrl + '?json', mathml: dbMathML.mathML, alttext: dbMathML.altText}); //mathoidJson);
 				});
 			}
 		});
