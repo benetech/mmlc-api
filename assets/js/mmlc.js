@@ -56,7 +56,5 @@ $('body').ready( function() {
 		$("#output-text").html(data.altText);
 		$("#output-url").html(data.cloudUrl);
 		$("#output-pngImage").attr("src", data.dataUri);
-		//var DataURI=oCanvas.toDataURL('image/png');
-		//document.getElementById("output-pngImage").src=DataURI; 
 	}
 });
