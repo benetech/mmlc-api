@@ -2,7 +2,7 @@
   "name": "MathMLCloud",
   "private": true,
   "version": "0.0.0",
-  "description": "a Sails application",
+  "description": "a Sails application to generate math in multiple formats.",
   "dependencies": {
     "async": "^0.8.0",
     "azure": "^0.9.7",
