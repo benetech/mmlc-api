@@ -1,6 +1,10 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# Read settings from YAML file.
+require 'yaml'
+secrets = YAML.load_file 'secrets.yaml'
+
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
@@ -61,6 +65,28 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   # View the documentation for the provider you're using for more
   # information on available options.
+
+  # Add Azure provider.
+  # You must have run the following commands before you can actually provision to azure.
+  # vagrant plugin install vagrant-azure
+  # vagrant box add azure https://github.com/msopentech/vagrant-azure/raw/master/dummy.box
+  config.vm.provider :azure do |azure, override|
+    override.vm.box = 'azure' # Run command: vagrant box add azure https://github.com/msopentech/vagrant-azure/raw/master/dummy.box.
+    azure.subscription_id       = secrets['subscription_id']
+    azure.mgmt_certificate      = secrets['mgmt_certificate']
+    azure.mgmt_endpoint         = 'https://management.core.windows.net'
+    azure.vm_image              = 'b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-12_04_4-LTS-amd64-server-20140428-en-us-30GB'
+    azure.vm_size               = 'Extra Small'
+    azure.vm_name               = 'mathml-cloud' # MUST BE LOWERCASE, max 15 characters, can contain letters/numbers/hyphens (must start with a letter, cannot end with a hyphen).
+    azure.vm_location           = 'West US'
+    azure.vm_user               = secrets['username'] # defaults to 'vagrant' if not provided
+    azure.vm_password           = secrets['password'] # Min 8 characters. should contain a lowercase letter, an uppercase letter, a number and a special character.
+    override.ssh.username = secrets['username']
+    override.ssh.password = secrets['password']
+    azure.ssh_private_key_file  = secrets['ssh_private_key_file']
+    azure.ssh_certificate_file  = secrets['ssh_certificate_file']
+    azure.ssh_port = 22
+  end
 
   # Enable provisioning with CFEngine. CFEngine Community packages are
   # automatically installed. For example, configure the host as a
