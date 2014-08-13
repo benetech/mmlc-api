@@ -155,6 +155,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Get sails and azure for node.
   config.vm.provision "shell", inline: "sudo npm -g -y install sails --save"
   config.vm.provision "shell", inline: "sudo npm -g -y install sails-mongo --save"
+  config.vm.provision "shell", inline: "sudo npm -g -y install azure-cli --save"
 
   # Install Node.JS packages.
   config.vm.provision "shell", inline: "(cd /vagrant; npm -y install)"
@@ -162,5 +163,4 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Install java for batik.
   config.vm.provision :shell, inline: 'wget --no-check-certificate https://github.com/aglover/ubuntu-equip/raw/master/equip_java7_64.sh && bash equip_java7_64.sh'
 
-  
 end
