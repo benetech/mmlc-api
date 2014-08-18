@@ -11,7 +11,7 @@ Vagrant.configure('2') do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "hashicorp/precise64"
+  config.vm.box = "ubuntu/trusty64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -73,7 +73,7 @@ Vagrant.configure('2') do |config|
     azure.mgmt_endpoint = 'https://management.core.windows.net'
     azure.cloud_service_name = 'mathml-cloud'
     azure.storage_acct_name = 'mmlcstorage'
-    azure.vm_image = 'b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-12_04_4-LTS-amd64-server-20140428-en-us-30GB'
+    azure.vm_image = 'b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-14_04-LTS-amd64-server-20140416.1-en-us-30GB'
     azure.vm_size = 'ExtraSmall'
     azure.vm_name = 'mathml-cloud' # MUST BE LOWERCASE, max 15 characters, can contain letters/numbers/hyphens (must start with a letter, cannot end with a hyphen).
     azure.vm_location = 'West US'
