@@ -1,16 +1,17 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
-VAGRANTFILE_API_VERSION = "2"
+# Read settings from YAML file.
+require 'yaml'
+secrets = YAML.load_file 'secrets.yaml'
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+Vagrant.configure('2') do |config|
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "hashicorp/precise64"
+  config.vm.box = "ubuntu/trusty64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -21,7 +22,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 1337, host: 1337
-  config.vm.network "forwarded_port", guest: 16000, host: 16000
   
   # Share the home directory for access to host source code
   # and use NFS for 10-100x speedup:
@@ -62,6 +62,34 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # View the documentation for the provider you're using for more
   # information on available options.
 
+  # Add Azure provider.
+  # You must have run the following commands before you can actually provision to azure.
+  # vagrant plugin install vagrant-azure
+  # vagrant box add azure https://github.com/msopentech/vagrant-azure/raw/master/dummy.box
+  config.vm.provider :azure do |azure, override|
+    override.vm.box = 'azure' # Run command: vagrant box add azure https://github.com/msopentech/vagrant-azure/raw/master/dummy.box.
+    azure.subscription_id = secrets['subscription_id']
+    azure.mgmt_certificate = secrets['mgmt_certificate']
+    azure.mgmt_endpoint = 'https://management.core.windows.net'
+    azure.cloud_service_name = 'mathml-cloud'
+    azure.storage_acct_name = 'mmlcstorage'
+    azure.vm_image = 'b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-14_04-LTS-amd64-server-20140416.1-en-us-30GB'
+    azure.vm_size = 'ExtraSmall'
+    azure.vm_name = 'mathml-cloud' # MUST BE LOWERCASE, max 15 characters, can contain letters/numbers/hyphens (must start with a letter, cannot end with a hyphen).
+    azure.vm_location = 'West US'
+    azure.vm_user = secrets['username'] # defaults to 'vagrant' if not provided
+    azure.vm_password = secrets['password'] # Min 8 characters. should contain a lowercase letter, an uppercase letter, a number and a special character.
+    override.ssh.username = secrets['username']
+    override.ssh.password = secrets['password']
+    override.ssh.private_key_path = secrets['ssh_private_key_file']
+    azure.ssh_private_key_file = secrets['ssh_private_key_file']
+    azure.ssh_certificate_file = secrets['ssh_certificate_file']
+    azure.ssh_port = 22
+
+    # We don't want the synced folder in Azure.
+    override.vm.synced_folder ".", "/vagrant", disabled: true
+  end
+
   # Enable provisioning with CFEngine. CFEngine Community packages are
   # automatically installed. For example, configure the host as a
   # policy server and optionally a policy file to run:
@@ -91,17 +119,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
-  #
-  config.vm.provision :chef_solo do |chef|
-    chef.add_recipe "apt"
-    chef.add_recipe "nodejs"
-    chef.add_recipe "mongodb-debs"
-	  chef.json =	{
-		  "nodejs" => {
-		  "version" => "0.10.25"
-	  }
-	}
-  end
 
   # Enable provisioning with chef server, specifying the chef server URL,
   # and the path to the validation key (relative to this Vagrantfile).
@@ -126,15 +143,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   #   chef.validation_client_name = "ORGNAME-validator"
 
-  # Get sails and azure for node.
-  config.vm.provision "shell", inline: "sudo npm -g -y install sails --save"
-  config.vm.provision "shell", inline: "sudo npm -g -y install sails-mongo --save"
+  # Run bootstrap script to perform additional setup.
+  config.vm.provision :shell, path: "bootstrap.sh"
 
-  # Install Node.JS packages.
-  config.vm.provision "shell", inline: "(cd /vagrant; npm -y install)"
-
-  # Install java for batik.
-  config.vm.provision :shell, inline: 'wget --no-check-certificate https://github.com/aglover/ubuntu-equip/raw/master/equip_java7_64.sh && bash equip_java7_64.sh'
-
-  
 end
