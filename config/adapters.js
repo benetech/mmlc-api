@@ -23,14 +23,13 @@ module.exports.adapters = {
   disk: {
     module: 'sails-disk'
   },
-
   	
   mongo: {
   	module: 'sails-mongo',
-	host: 'localhost',
-	port: 27017,
+	  host: 'localhost',
+	  port: 27017,
     //user: 'username',
     //password: 'password',
-	database: 'mathmlcloud'
+	  database: 'mathmlcloud'
   }
 };

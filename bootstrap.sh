@@ -20,7 +20,7 @@ fi
 
 # Install Node.JS packages.
 sudo npm -g -y install sails sails-mongo azure-cli --save
-npm -y install
+sudo npm -y install
 cd MathJax-node
-npm -y install
+ sudo npm -y install
 cd ..
