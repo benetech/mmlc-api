@@ -42,12 +42,12 @@ $('body').ready( function() {
 	}
 	
 	window.convert = function(mathML) {
-		console.log("http://localhost:1337/mathml/convert?math=" 
+		console.log("/mathml/convert?math=" 
 			+ encodeURIComponent(mathML) + "&mathType=" + $("#mathType").val());
 		$("#output-text").html('');
 		$.ajax({
 			type: "GET",
-			url: "http://localhost:1337/mathml/convert?math=" 
+			url: "/mathml/convert?math=" 
 			+ encodeURIComponent($("#mml-input").val()) + "&mathType=" + $("#mathType").val(),
 			dataType: 'json'
 		}).done(function(data) {

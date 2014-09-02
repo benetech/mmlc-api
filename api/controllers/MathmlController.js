@@ -17,7 +17,6 @@
 // Comment controller with generated actions.
 var MathmlController = {
 	
-	cloud_url: "http://localhost:1337/mathml/",
 	mathjaxNode: require("../../MathJax-node/lib/mj-single.js"),
 	mathJaxNodeOptions: {svg:true, img:false, mml:true, png:true},
 	
@@ -42,7 +41,7 @@ var MathmlController = {
 			  if (err) {
 			    return console.log(err);
 			  } else {
-				data.cloudUrl = MathmlController.cloud_url + mathML.id;
+				data.cloudUrl = req.baseUrl + "/mathml/" + mathML.id;
 				res.send(data);
 			  }
 			});
