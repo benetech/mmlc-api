@@ -17,7 +17,7 @@
 // Comment controller with generated actions.
 var MathmlController = {
 	
-	mathjaxNode: require("../../MathJax-node/lib/mj-single.js"),
+	mathjaxNode: require("../../node_modules/MathJax-node/lib/mj-single.js"),
 	mathJaxNodeOptions: {svg:true, img:false, mml:true, png:true},
 	
 	/** 
@@ -30,6 +30,7 @@ var MathmlController = {
 		options.math = req.param('math');
 		options.format = req.param('mathType');
 		MathmlController.mathjaxNode.typeset(options, function (data) {
+			console.log(data.errors);
 			//Create record for callback.
 			Mathml.create({
 			  altText: "Placeholder until we get chromevox work",

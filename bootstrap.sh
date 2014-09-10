@@ -18,9 +18,14 @@ else
   cd ~mmlc/mathml-cloud
 fi
 
-# Install Node.JS packages.
+# Install Node.JS packages, mathjax-node, and mathjax.
 sudo npm -g -y install sails sails-mongo azure-cli --save
+sudo npm -g -y install https://github.com/benetech/MathJax-node/tarball/master --save
 sudo npm -y install
-cd MathJax-node
- sudo npm -y install
+
+# Install mathjax dependency.
+cd node_modules/MathJax-node
+sudo git clone https://github.com/dpvc/MathJax.git mathjax
+cd mathjax
+sudo git checkout develop
 cd ..
