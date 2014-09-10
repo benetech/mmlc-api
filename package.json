@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "description": "a Sails application to generate math in multiple formats.",
   "dependencies": {
+    "MathJax-node": "https://github.com/benetech/MathJax-node/tarball/master",
     "async": "^0.8.0",
     "azure": "^0.9.7",
     "ejs": "0.8.4",
