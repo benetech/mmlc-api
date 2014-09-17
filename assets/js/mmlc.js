@@ -45,6 +45,7 @@ $('body').ready( function() {
 		console.log("/mathml/convert?math=" 
 			+ encodeURIComponent(mathML) + "&mathType=" + $("#mathType").val());
 		$("#output-text").html('');
+		$("#processing").show();
 		$.ajax({
 			type: "GET",
 			url: "/mathml/convert?math=" 
@@ -52,6 +53,7 @@ $('body').ready( function() {
 			dataType: 'json'
 		}).done(function(data) {
 			$("#results").show();
+			$("#processing").hide();
 			onConvertCallback(data);
 		});
 	};
