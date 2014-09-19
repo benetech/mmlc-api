@@ -30,22 +30,28 @@ var MathmlController = {
 		options.math = req.param('math');
 		options.format = req.param('mathType');
 		MathmlController.mathjaxNode.typeset(options, function (data) {
-			console.log(data.errors);
-			//Create record for callback.
-			Mathml.create({
-			  altText: "Placeholder until we get chromevox work",
-			  asciiMath: req.param("mathType") == "AsciiMath" ? req.param("math") : null,
-			  tex: req.param("mathType") === "inline-TeX" ? req.param("math") : null,
-			  mathML: data.mml
-			}).done(function(err, mathML) {
-			  // Error handling
-			  if (err) {
-			    return console.log(err);
-			  } else {
-				data.cloudUrl = req.baseUrl + "/mathml/" + mathML.id;
-				res.send(data);
-			  }
-			});
+			if (data.errors !== "undefined") {
+				//Create record for callback.
+				Mathml.create({
+				  //altText: "Placeholder until we get chromevox work",
+				  asciiMath: req.param("mathType") == "AsciiMath" ? req.param("math") : null,
+				  tex: req.param("mathType") === "inline-TeX" ? req.param("math") : null,
+				  mathML: data.mml
+				}).done(function(err, mathML) {
+				  // Error handling
+				  if (err) {
+				  	console.log(err);
+				  	res.send({errors: err});
+				  } else {
+					data.cloudUrl = "http://" + req.headers.host + "/mathml/" + mathML.id;
+					res.send(data);
+				  }
+				});
+			} else {
+				console.log(data.errors);
+				res.send(data.errors);
+			}
+			
 		});
 	},
 
@@ -64,8 +70,7 @@ var MathmlController = {
 				MathmlController.mathjaxNode.typeset(options, function (data) {
 					data.mathML = dbMathML.mathML;
 					data.asciiMath = dbMathML.asciiMath;
-					data.cloudUrl = MathmlController.cloud_url + dbMathML.id;
-					console.log(data);
+					data.cloudUrl = "http://" + req.headers.host + "/mathml/" + dbMathML.id;
 					if (wantsjson !== undefined)
 						return res.send(data)
 					else

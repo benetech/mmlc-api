@@ -4,3 +4,8 @@ div.output {
 	margin-top: 0.25em;
 	margin-bottom: 0.25em;
 }
+
+#processing {
+	text-align: center;
+	display: none;
+}

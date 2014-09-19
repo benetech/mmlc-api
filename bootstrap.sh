@@ -19,7 +19,7 @@ else
 fi
 
 # Install Node.JS packages, mathjax-node, and mathjax.
-sudo npm -g -y install sails sails-mongo azure-cli forever --save
+sudo npm -g -y install sails sails-mongo azure-cli forever passport passport-http-bearer sails-generate-auth --save
 sudo npm -g -y install https://github.com/benetech/MathJax-node/tarball/master --save
 sudo npm -y install
 
@@ -29,7 +29,3 @@ sudo git clone https://github.com/dpvc/MathJax.git mathjax
 cd mathjax
 sudo git checkout develop
 cd ..
-
-# Start the app.
-cd ~mmlc/mathml-cloud
-sudo forever -w start app.js
