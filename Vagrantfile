@@ -85,7 +85,7 @@ Vagrant.configure('2') do |config|
     azure.ssh_private_key_file = secrets['ssh_private_key_file']
     azure.ssh_certificate_file = secrets['ssh_certificate_file']
     azure.ssh_port = 22
-    azure.tcp_endpoints = '80,1337'
+    azure.tcp_endpoints = '1337:80'
 
     # We don't want the synced folder in Azure.
     override.vm.synced_folder ".", "/vagrant", disabled: true
