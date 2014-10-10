@@ -38,7 +38,10 @@
 
   <body>
     <div class="container">
+<<<<<<< HEAD
 <h1 class="title">MathML Cloud</h1>
+=======
+>>>>>>> Upgrading to Sails 0.10.
       <%- body %>
     </div>
 
@@ -93,9 +96,26 @@
 
     -->
 
+<<<<<<< HEAD
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
+=======
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        jax: ["input/TeX","input/MathML","input/AsciiMath","output/HTML-CSS","output/NativeMML","output/SVG"],
+        extensions: ["tex2jax.js","mml2jax.js","asciimath2jax.js","MathMenu.js","MathZoom.js","toMathML.js"],
+        TeX: {
+          extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+        }
+      });
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <!--SCRIPTS-->
+    <script src="/js/dependencies/sails.io.js"></script>
+    <script src="/js/mathjax-config.js"></script>
+>>>>>>> Upgrading to Sails 0.10.
     <script src="/js/mmlc.js"></script>
     <!--SCRIPTS END-->
   </body>
