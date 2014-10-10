@@ -1,22 +1,12 @@
 /**
- * MathmlController
+ * MathMLController
  *
- * @module      :: Controller
- * @description	:: A set of functions called `actions`.
- *
- *                 Actions contain code telling Sails how to respond to a certain type of request.
- *                 (i.e. do stuff, then send some JSON, show an HTML page, or redirect to another URL)
- *
- *                 You can configure the blueprint URLs which trigger these actions (`config/controllers.js`)
- *                 and/or override them with custom routes (`config/routes.js`)
- *
- *                 NOTE: The code you write here supports both HTTP and Socket.io automatically.
- *
- * @docs        :: http://sailsjs.org/#!documentation/controllers
+ * @description :: Server-side logic for managing MathML
+ * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-// Comment controller with generated actions.
+
 var MathmlController = {
-	
+
 	mathjaxNode: require("../../node_modules/MathJax-node/lib/mj-single.js"),
 	mathJaxNodeOptions: {svg:true, img:false, mml:true, png:true, timeout: 10 * 1000},
 	
@@ -37,7 +27,7 @@ var MathmlController = {
 				  asciiMath: req.param("mathType") == "AsciiMath" ? req.param("math") : null,
 				  tex: req.param("mathType") === "inline-TeX" ? req.param("math") : null,
 				  mathML: data.mml
-				}).done(function(err, mathML) {
+				}).exec(function(err, mathML) {
 				  // Error handling
 				  if (err) {
 				  	console.log(err);
@@ -58,7 +48,7 @@ var MathmlController = {
 	find: function(req, res) {
 		var mathMLId = req.param('id');
 		var wantsjson = req.param('json');
-		Mathml.find({ _id: mathMLId }).done(function (err, mathML) {
+		Mathml.find({ _id: mathMLId }).exec(function (err, mathML) {
 			// XXX Error handling
 			if (err) {
 				return console.log(err);
