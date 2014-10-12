@@ -29,6 +29,7 @@
     -->
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <!--STYLES-->
     <link rel="stylesheet" href="/styles/importer.css">
     <link rel="stylesheet" href="/styles/mmlc.css">
@@ -37,6 +38,7 @@
 
   <body>
     <div class="container">
+<h1 class="title">MathML Cloud</h1>
       <%- body %>
     </div>
 
@@ -91,20 +93,9 @@
 
     -->
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        jax: ["input/TeX","input/MathML","input/AsciiMath","output/HTML-CSS","output/NativeMML","output/SVG"],
-        extensions: ["tex2jax.js","mml2jax.js","asciimath2jax.js","MathMenu.js","MathZoom.js","toMathML.js"],
-        TeX: {
-          extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
-        }
-      });
-    </script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
-    <script src="/js/mathjax-config.js"></script>
     <script src="/js/mmlc.js"></script>
     <!--SCRIPTS END-->
   </body>

@@ -14,7 +14,6 @@ module.exports = {
 	asciiMath: 'STRING',
 	altText: 'STRING',
 	mathML: 'STRING',
-	altText: 'STRING',
 	equationName: 'STRING',
 	equationType: 'STRING',
     qualityScore: 'INTEGER',
