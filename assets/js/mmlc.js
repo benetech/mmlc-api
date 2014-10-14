@@ -16,7 +16,6 @@ $('body').ready( function() {
 	window.convert = function() {
 		var url = "/mathml/convert?math=" + encodeURIComponent($("#mml-input").val()) + "&mathType=" + $("#mathType").val();
 		console.log(url);
-		$("#output-text").html('');
 		$("#processing").show();
 		$.ajax({
 			type: "GET",
@@ -33,7 +32,7 @@ $('body').ready( function() {
 		$("#output-svg").empty();
 		$("#output-svg").append($(data.svg));
 		$("#output-svg-markup").html(sanitizeMathML(data.svg));
-		$("#output-text").html(data.altText);
+		$("#output-text").html(data.description);
 		$("#output-url").html(data.cloudUrl);
 		$("#output-pngImage").attr("src", data.png);
 		$("#output-mathml").empty();
