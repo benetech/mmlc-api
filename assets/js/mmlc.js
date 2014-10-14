@@ -44,7 +44,6 @@ $('body').ready( function() {
 	window.convert = function(mathML) {
 		console.log("/mathml/convert?math=" 
 			+ encodeURIComponent(mathML) + "&mathType=" + $("#mathType").val());
-		$("#output-text").html('');
 		$("#processing").show();
 		$.ajax({
 			type: "GET",
@@ -62,7 +61,7 @@ $('body').ready( function() {
 		$("#output-svg").find("svg").remove();
 		$("#output-svg").append($(data.svg));
 		$("#output-svg-markup").html(sanitizeMathML(data.svg));
-		$("#output-text").html(data.altText);
+		$("#output-text").html(data.description);
 		$("#output-url").html(data.cloudUrl);
 		$("#output-pngImage").attr("src", data.png);
 	}
