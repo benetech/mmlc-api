@@ -18,7 +18,7 @@
 var MathmlController = {
 	
 	mathjaxNode: require("../../node_modules/MathJax-node/lib/mj-single.js"),
-	mathJaxNodeOptions: {svg:true, img:false, mml:true, png:true, timeout: 10 * 1000},
+	mathJaxNodeOptions: {svg:true, img:false, mml:true, png:true, speakText:true, timeout: 10 * 1000},
 	
 	/** 
 	* Convert to svg and get text description.
