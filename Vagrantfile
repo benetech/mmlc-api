@@ -1,10 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Read settings from YAML file.
-require 'yaml'
-secrets = YAML.load_file 'secrets.yaml'
-
 Vagrant.configure('2') do |config|
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
@@ -67,6 +63,9 @@ Vagrant.configure('2') do |config|
   # vagrant plugin install vagrant-azure
   # vagrant box add azure https://github.com/msopentech/vagrant-azure/raw/master/dummy.box
   config.vm.provider :azure do |azure, override|
+    # Read settings from YAML file.
+    require 'yaml'
+    secrets = YAML.load_file 'secrets.yaml'
     override.vm.box = 'azure' # Run command: vagrant box add azure https://github.com/msopentech/vagrant-azure/raw/master/dummy.box.
     azure.subscription_id = secrets['subscription_id']
     azure.mgmt_certificate = secrets['mgmt_certificate']
