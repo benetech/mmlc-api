@@ -1,9 +1,7 @@
 MathMLCloud
 =========
 
-MathMLCloud is a sails app (see http://sailsjs.org) that converts ascii math to MathML, SVGs and PNGs.
-
-Coming soon: alt text.
+MathMLCloud is a sails app (see http://sailsjs.org) that converts ascii math to MathML, text descriptions, SVGs and PNGs.
 
 Dependencies:
 
