@@ -19,9 +19,8 @@ else
   cd ~mmlc/mathml-cloud
 fi
 
-# Install Node.JS packages, mathjax-node, and mathjax.
-npm -g -y install sails sails-mongo azure-cli forever passport passport-http-bearer sails-generate-auth --save
-npm -g -y install https://github.com/benetech/MathJax-node/tarball/master --save
+# Install Node.JS packages.
+npm -g -y install sails azure-cli forever
 npm -y install --no-bin-links
 
 # Install mathjax dependency.
