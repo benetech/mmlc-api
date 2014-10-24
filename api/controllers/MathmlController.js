@@ -8,6 +8,7 @@
 var MathmlController = {
 
 	mathjaxNode: require("../../node_modules/MathJax-node/lib/mj-single.js"),
+	mathjaxNodePage: require("../../node_modules/MathJax-node/lib/mj-page.js"),
 	mathJaxNodeOptions: {svg:true, img:false, mml:true, png:true, speakText:true, timeout: 10 * 1000},
 	
 	/** 
@@ -44,6 +45,25 @@ var MathmlController = {
 			
 		});
 	},
+
+	/**
+	* Upload HTML5 and convert all equations to mathml.
+	*/
+	upload: function  (req, res) {
+		var options = MathmlController.mathJaxNodeOptions;
+		req.file('html5').upload(function (err, files) {
+	    	if (err)
+	        	return res.serverError(err);
+	        var html5 = files[0];
+
+	        var fs = require("fs");
+	        options.html = fs.readFileSync(html5.fd);
+	        MathmlController.mathjaxNodePage.typeset(options, function (data) {
+        	  res.attachment(html5.filename);
+              res.end(data.html, 'UTF-8');
+	        });
+	    });
+  	},
 
 	find: function(req, res) {
 		var mathMLId = req.param('id');

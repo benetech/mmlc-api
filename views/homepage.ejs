@@ -1,14 +1,17 @@
 <div>
 <form id="mml-editor" class="form-horizontal">
 	<div class="form-group">
-		<label for="mml-input" class="col-sm-2 control-label">Math</label>
-		<div class="col-sm-10">
-			<textarea id="mml-input" class="form-control"></textarea>
-		</div>
+		<fieldset>
+			<legend>Convert a single equation</legend>
+			<label for="mml-input" class="col-sm-3 control-label">Ascii Math, TeX or MathML</label>
+			<div class="col-sm-9">
+				<textarea id="mml-input" class="form-control"></textarea>
+			</div>
+		</fieldset>
 	</div>
 	<div class="form-group">
-		<label for="mathType" class="col-sm-2 control-label">Math Type</label>
-		<div class="col-sm-10">
+		<label for="mathType" class="col-sm-3 control-label">Math Type</label>
+		<div class="col-sm-9">
 			<select id="mathType" name="mathType" class="form-control">
 				<option value="AsciiMath">Ascii Math</option>
 				<option value="MathML">MathML</option>
@@ -17,13 +20,24 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<input type="submit" id="go" value="go" class="btn btn-primary pull-right"/>
+		<input type="submit" id="go" value="Convert Equation" class="btn btn-primary pull-right"/>
 	</div>
 </form>
-</div>
-<div class="panel panel-default">
-	<div class="panel-heading"><h2>Visual output</h2></div>
-	<div class="panel-body" id="output-visual">Enter some ascii math, TeX or MathML above.</div>
+<form id="html5-editor" class="form-horizontal" action="/mathml/upload" enctype="multipart/form-data" method="post">
+	<div class="form-group">
+		<fieldset>
+			<legend>Convert multiple equations in a single HTML5 file</legend>
+			<label for="html5" class="col-sm-2 control-label">HTML5 File</label>
+			<div class="col-sm-10">
+				<input type="file" id="html5" name="html5" />
+			</div>
+		</fieldset>
+	</div>
+	<div class="form-group">
+		<input type="submit" id="go" value="Upload File" class="btn btn-primary pull-right"/>
+	</div>
+</form>
+
 </div>
 <div id="processing">
 	<img src="/images/load.gif" alt="Please wait" />
