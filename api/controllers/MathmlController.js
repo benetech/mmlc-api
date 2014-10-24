@@ -51,8 +51,35 @@ var MathmlController = {
 	},
 
 	svg: function(req, res) {
-
-
+		var options = {};
+		options.math = req.param('math');
+		options.format = req.param('mathType');
+		options.svg = true;
+		options.speakText = true;
+		MathmlController.mathjaxNode.typeset(options, function (data) {
+			if (data.errors !== "undefined") {
+				//Create record for callback.
+				Mathml.create({
+				  //altText: "Placeholder until we get chromevox work",
+				  asciiMath: req.param("mathType") == "AsciiMath" ? req.param("math") : null,
+				  tex: req.param("mathType") === "inline-TeX" ? req.param("math") : null,
+				  mathML: data.mml
+				}).exec(function(err, mathML) {
+				  // Error handling
+				  if (err) {
+				  	console.log(err);
+				  	res.send({errors: err});
+				  } else {
+					res.attachment("math.svg");
+              		res.end(data.svg, 'UTF-8');
+				  }
+				});
+			} else {
+				console.log(data.errors);
+				res.send(data.errors);
+			}
+			
+		});
 	},
 
 	/**
