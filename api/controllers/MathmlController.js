@@ -9,7 +9,7 @@ var MathmlController = {
 
 	mathjaxNode: require("../../node_modules/MathJax-node/lib/mj-single.js"),
 	mathjaxNodePage: require("../../node_modules/MathJax-node/lib/mj-page.js"),
-	mathJaxNodeOptions: {svg:true, img:false, mml:true, png:true, speakText:true, timeout: 10 * 1000},
+	mathJaxNodeOptions: {img:false, mml:true, timeout: 10 * 1000},
 	
 	/** 
 	* Convert to svg and get text description.
@@ -20,6 +20,10 @@ var MathmlController = {
 		var options = MathmlController.mathJaxNodeOptions;
 		options.math = req.param('math');
 		options.format = req.param('mathType');
+		options.svg = req.param('svg');
+		options.png = req.param('png');
+		options.speakText = req.param('description');
+		
 		MathmlController.mathjaxNode.typeset(options, function (data) {
 			if (data.errors !== "undefined") {
 				//Create record for callback.
@@ -44,6 +48,11 @@ var MathmlController = {
 			}
 			
 		});
+	},
+
+	svg: function(req, res) {
+
+
 	},
 
 	/**

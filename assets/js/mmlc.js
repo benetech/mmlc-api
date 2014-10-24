@@ -13,7 +13,8 @@ $('body').ready( function() {
 		return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	}
 	window.convert = function() {
-		var url = "/mathml/convert?math=" + encodeURIComponent($("#mml-input").val()) + "&mathType=" + $("#mathType").val();
+		console.log($('#mml-editor').serialize());
+		var url = "/mathml/convert?" + $('#mml-editor').serialize(); //encodeURIComponent($("#mml-input").val()) + "&mathType=" + $("#mathType").val();
 		$("#processing").show();
 		$.ajax({
 			type: "GET",
@@ -27,12 +28,28 @@ $('body').ready( function() {
 	};
 	
 	window.onConvertCallback = function(data) {
-		$("#output-svg").empty();
-		$("#output-svg").append($(data.svg));
-		$("#output-svg-markup").html(sanitizeMathML(data.svg));
-		$("#output-text").html(data.description);
+		if ($("#svg").prop("checked") == true) {
+			$("#output-svg").empty();
+			$("#output-svg").append($(data.svg));
+			$("#output-svg-markup").html(sanitizeMathML(data.svg));
+			$(".svg").show();
+		} else {
+			$(".svg").hide();
+		}
+		if ($("#description").prop("checked") == true) {
+			$("#output-text").html(data.description);
+			$(".description").show();
+		} else {
+			$(".description").hide();
+		}
 		$("#output-url").html(data.cloudUrl);
-		$("#output-pngImage").attr("src", data.png);
+		if ($("#png").prop("checked") == true) {
+			$("#output-pngImage").attr("src", data.png);
+			$("#output-pngImage").attr("alt", data.description);
+			$(".png").show();
+		} else {
+			$(".png").hide();
+		}
 		$("#output-mathml").empty();
 		$("#output-mathml").append($(data.mml));
 		$("#output-mathml-markup").html(sanitizeMathML(data.mml));

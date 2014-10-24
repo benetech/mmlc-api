@@ -1,11 +1,11 @@
-<div>
+<div class="jumbotron">
 <form id="mml-editor" class="form-horizontal">
 	<div class="form-group">
 		<fieldset>
 			<legend>Convert a single equation</legend>
 			<label for="mml-input" class="col-sm-3 control-label">Ascii Math, TeX or MathML</label>
 			<div class="col-sm-9">
-				<textarea id="mml-input" class="form-control"></textarea>
+				<textarea id="mml-input" name="math" class="form-control"></textarea>
 			</div>
 		</fieldset>
 	</div>
@@ -17,6 +17,23 @@
 				<option value="MathML">MathML</option>
 				<option value="TeX">LaTeX</option>
 			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<span class="col-sm-3 control-label"><strong>Output Formats</strong></span>
+		<div class="col-sm-9">
+			<label class="checkbox-inline">
+			  <input type="checkbox" id="svg" name="svg" value="true" checked>SVG
+			</label>
+			<label class="checkbox-inline">
+			  <input type="checkbox" id="mml" name="mml" value="mathml" checked>MathML
+			</label>
+			<label class="checkbox-inline">
+			  <input type="checkbox" id="png" name="png" value="true" checked>PNG Image
+			</label>
+			<label class="checkbox-inline">
+			  <input type="checkbox" id="description" name="description" value="true" checked>Text Description
+			</label>
 		</div>
 	</div>
 	<div class="form-group">
@@ -44,7 +61,7 @@
 </div>
 <div id="results">
 	<h2>Formats</h2>
-	<div class="panel panel-default">
+	<div class="panel panel-default description">
 		<div class="panel-heading"><h3>Text Description</h3></div>
 		<div class="panel-body" id="output-text"></div>
 	</div>
@@ -52,25 +69,25 @@
 		<div class="panel-heading"><h3>MathML in the Cloud URL</h3></div>
 		<div class="panel-body" id="output-url"></div>
 	</div>
-	<div class="panel panel-default">
+	<div class="panel panel-default png">
 		<div class="panel-heading"><h3>Png Image </h3></div>
 		<div class="panel-body">
-			<img id="output-pngImage" name="empty" />
+			<img id="output-pngImage" name="empty" alt="png image" />
 		</div>
 	</div>
-	<div class="panel panel-default">
+	<div class="panel panel-default mml">
 		<div class="panel-heading"><h3>MathML Output</h3></div>
 		<div class="panel-body" id="output-mathml"></div>
 	</div>
-	<div class="panel panel-default">
+	<div class="panel panel-default mml">
 		<div class="panel-heading"><h3>MathML Markup</h3></div>
 		<div class="panel-body"><pre><code id="output-mathml-markup"></code></pre></div>
 	</div>
-	<div class="panel panel-default">
+	<div class="panel panel-default svg">
 		<div class="panel-heading"><h3>SVG Output</h3></div>
 		<div class="panel-body" id="output-svg"></div>
 	</div>
-	<div class="panel panel-default">
+	<div class="panel panel-default svg">
 		<div class="panel-heading"><h3>SVG Markup</h3></div>
 		<div class="panel-body" id="output-svg-markup"></div>
 	</div>
