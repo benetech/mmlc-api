@@ -1,54 +1,32 @@
 $('body').ready( function() {
 	$("#results").hide();
-	window.mmlEdit = {
-		input: $('#mml-editor'),
-		output: {
-			visual: $('#output-visual'),
-			mml: $('#output-mathml'),
-			svg: $('#output-svg'),
-			text: $('#output-text'),
-			renderedMML: $("#renderedMathMl")
-		},
-		render: function(s) {
-			var self = this;
-			if ($("#mathType").val() == "MathML") {
-				this.output.visual.empty();
-				this.output.visual.append($(s));
-			} else {
-				var delim = $("#mathType").val() == "Tex" ? "$$" : "`";
-				this.output.visual.text(delim + s + delim);
-			}
-			MathJax.Callback.Queue(
-				["Typeset", MathJax.Hub, this.output.visual[0]],
-				[function() { self.jax.visual = MathJax.Hub.getAllJax(self.output.visual[0])[0]; }],
-				[function() { self.output.mml.html(sanitizeMathML(self.jax.visual.root.toMathML()));}],
-				[function() { self.output.renderedMML.html(self.jax.visual.root.toMathML());}],
-				[function() { convert(self.jax.visual.root.toMathML()); }]);
-		},
-		jax: {}
-	};
 
-	// wire up event handler
-    window.mmlEdit.input.submit(
-    	function(evt) {
-    		$("#results").hide();
-    		evt.preventDefault();
-    		window.mmlEdit.render($("#mml-input").val());
-        }
-    );
+    $('#mml-editor').on("submit", function(evt) {
+    	if ($("#json").prop("checked") == true) {
+	    	$("#results").hide();
+			evt.preventDefault();
+			convert();
+		}
+    });
+
+    $("#svgFile").on("click", function() {
+    	$("#outputOptions").hide();
+    });
+
+    $("#json").on("click", function() {
+    	$("#outputOptions").show();
+    });
 
 	window.sanitizeMathML = function(s) {
 		return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	}
-	
-	window.convert = function(mathML) {
-		console.log("/mathml/convert?math=" 
-			+ encodeURIComponent(mathML) + "&mathType=" + $("#mathType").val());
+	window.convert = function() {
+		console.log($('#mml-editor').serialize());
+		var url = "/mathml/convert?" + $('#mml-editor').serialize(); //encodeURIComponent($("#mml-input").val()) + "&mathType=" + $("#mathType").val();
 		$("#processing").show();
 		$.ajax({
 			type: "GET",
-			url: "/mathml/convert?math=" 
-			+ encodeURIComponent($("#mml-input").val()) + "&mathType=" + $("#mathType").val(),
+			url: url,
 			dataType: 'json'
 		}).done(function(data) {
 			$("#results").show();
@@ -58,11 +36,30 @@ $('body').ready( function() {
 	};
 	
 	window.onConvertCallback = function(data) {
-		$("#output-svg").find("svg").remove();
-		$("#output-svg").append($(data.svg));
-		$("#output-svg-markup").html(sanitizeMathML(data.svg));
-		$("#output-text").html(data.description);
+		if ($("#svg").prop("checked") == true) {
+			$("#output-svg").empty();
+			$("#output-svg").append($(data.svg));
+			$("#output-svg-markup").html(sanitizeMathML(data.svg));
+			$(".svg").show();
+		} else {
+			$(".svg").hide();
+		}
+		if ($("#description").prop("checked") == true) {
+			$("#output-text").html(data.description);
+			$(".description").show();
+		} else {
+			$(".description").hide();
+		}
 		$("#output-url").html(data.cloudUrl);
-		$("#output-pngImage").attr("src", data.png);
+		if ($("#png").prop("checked") == true) {
+			$("#output-pngImage").attr("src", data.png);
+			$("#output-pngImage").attr("alt", data.description);
+			$(".png").show();
+		} else {
+			$(".png").hide();
+		}
+		$("#output-mathml").empty();
+		$("#output-mathml").append($(data.mml));
+		$("#output-mathml-markup").html(sanitizeMathML(data.mml));
 	}
 });
