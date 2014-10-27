@@ -1,5 +1,5 @@
 <div class="jumbotron">
-<form id="mml-editor" class="form-horizontal">
+<form id="mml-editor" class="form-horizontal" method="post" action="/mathml/svg">
 	<div class="form-group">
 		<fieldset>
 			<legend>Convert a single equation</legend>
@@ -20,6 +20,17 @@
 		</div>
 	</div>
 	<div class="form-group">
+		<div class="col-sm-3"></div>
+		<div class="col-sm-9">
+			<label class="radio-inline">
+			  <input type="radio" id="svgFile" name="downloadOption" value="true">Download as SVG
+			</label>
+			<label class="radio-inline">
+			  <input type="radio" id="json" name="downloadOption" value="true" checked>Output multiple formats
+			</label>
+		</div>
+	</div>
+	<div class="form-group" id="outputOptions">
 		<span class="col-sm-3 control-label"><strong>Output Formats</strong></span>
 		<div class="col-sm-9">
 			<label class="checkbox-inline">

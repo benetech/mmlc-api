@@ -1,13 +1,21 @@
 $('body').ready( function() {
 	$("#results").hide();
 
-    $('#mml-editor').submit(
-    	function(evt) {
-    		$("#results").hide();
-    		evt.preventDefault();
-    		convert();
-        }
-    );
+    $('#mml-editor').on("submit", function(evt) {
+    	if ($("#json").prop("checked") == true) {
+	    	$("#results").hide();
+			evt.preventDefault();
+			convert();
+		}
+    });
+
+    $("#svgFile").on("click", function() {
+    	$("#outputOptions").hide();
+    });
+
+    $("#json").on("click", function() {
+    	$("#outputOptions").show();
+    });
 
 	window.sanitizeMathML = function(s) {
 		return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
