@@ -94,6 +94,7 @@ var MathmlController = {
 
 	        var fs = require("fs");
 	        options.html = fs.readFileSync(html5.fd);
+	        options.speakText = true;
 	        MathmlController.mathjaxNodePage.typeset(options, function (data) {
         	  res.attachment(html5.filename);
               res.end(data.html, 'UTF-8');
