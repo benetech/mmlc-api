@@ -7,5 +7,14 @@
 
 module.exports = {
 	
+	users: function(req, res) {
+		User.find().exec(function (err, users) {
+			if (err) {
+				console.log(err)
+				return res.send(err);
+			}
+			return res.send(users);
+		});
+	}
 };
 

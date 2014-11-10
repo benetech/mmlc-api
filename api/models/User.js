@@ -5,6 +5,7 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 var bcrypt = require('bcrypt');
+var Enum = require('enum');
 
 module.exports = {
 
@@ -15,6 +16,10 @@ module.exports = {
       unique: true
     },
     password: {
+      type: 'string',
+      required: true
+    },
+    role: {
       type: 'string',
       required: true
     },
