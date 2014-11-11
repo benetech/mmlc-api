@@ -5,7 +5,6 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 var bcrypt = require('bcrypt');
-var Enum = require('enum');
 
 module.exports = {
 
@@ -21,7 +20,12 @@ module.exports = {
     },
     role: {
       type: 'string',
-      required: true
+      required: true,
+      enum: ['admin', 'user']
+    },
+    equations: {
+      collection: 'equation',
+      via: 'submittedBy'
     },
     toJSON: function() {
       var obj = this.toObject();

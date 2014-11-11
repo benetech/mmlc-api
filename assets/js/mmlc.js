@@ -22,7 +22,7 @@ $('body').ready( function() {
 	}
 	window.convert = function() {
 		console.log($('#mml-editor').serialize());
-		var url = "/mathml/convert?" + $('#mml-editor').serialize(); //encodeURIComponent($("#mml-input").val()) + "&mathType=" + $("#mathType").val();
+		var url = "/equation/convert?" + $('#mml-editor').serialize(); //encodeURIComponent($("#mml-input").val()) + "&mathType=" + $("#mathType").val();
 		$("#processing").show();
 		$.ajax({
 			type: "GET",
