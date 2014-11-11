@@ -18,14 +18,15 @@ module.exports = {
 		options.format = req.param('mathType');
 		options.svg = req.param('svg');
 		options.png = req.param('png');
+		options.mml = req.param('mml');
 		options.speakText = req.param('description');
 		
 		ConversionService.convert(options, function(data) {
 			if (data.errors !== "undefined") {
 				//Create record for callback.
 				Equation.create({
-				  math: req.param("math"),
-				  mathType: req.param("mathType")
+				  math: options.math,
+				  mathType: options.format
 				}).exec(function(err, equation) {
 					// Error handling
 				  	if (err) {
@@ -40,7 +41,6 @@ module.exports = {
 						data.cloudUrl = "http://" + req.headers.host + "/equation/" + equation.id;
 						res.send(data);
 					}
-				  
 				});
 			} else {
 				console.log(data.errors);
@@ -56,20 +56,20 @@ module.exports = {
 		options.format = req.param('mathType');
 		options.svg = true;
 		options.speakText = true;
-		MathmlController.mathjaxNode.typeset(options, function (data) {
+		ConversionService.convert(options, function(data) {
 			if (data.errors !== "undefined") {
 				//Create record for callback.
-				Mathml.create({
-				  //altText: "Placeholder until we get chromevox work",
-				  asciiMath: req.param("mathType") == "AsciiMath" ? req.param("math") : null,
-				  tex: req.param("mathType") === "inline-TeX" ? req.param("math") : null,
-				  mathML: data.mml
-				}).exec(function(err, mathML) {
+				Equation.create({
+				  math: options.math,
+				  mathType: options.format
+				}).exec(function(err, equation) {
 				  // Error handling
 				  if (err) {
 				  	console.log(err);
 				  	res.send({errors: err});
 				  } else {
+				  	//Create component.
+				  	EquationService.createComponent("svg", data.svg, equation.id);
 					res.attachment("math.svg");
               		res.end(data.svg, 'UTF-8');
 				  }
@@ -86,17 +86,16 @@ module.exports = {
 	* Upload HTML5 and convert all equations to mathml.
 	*/
 	upload: function  (req, res) {
-		var options = MathmlController.mathJaxNodeOptions;
+		var options = {};
 		req.file('html5').upload(function (err, files) {
 	    	if (err)
 	        	return res.serverError(err);
 	        var html5 = files[0];
-
 	        var fs = require("fs");
 	        options.html = fs.readFileSync(html5.fd);
 	        options.speakText = true;
 	        options.timeout = 10 * 5000;
-	        MathmlController.mathjaxNodePage.typeset(options, function (data) {
+	        ConversionService.convertHTML5(options, function (data) {
 	          if (data.errors !== "undefined") {
         	  	res.attachment(html5.filename);
               	res.end(data.html, 'UTF-8');

@@ -8,7 +8,14 @@
 module.exports = {
 
   attributes: {
-
+  	equation: {
+  		model: 'equation',
+  		required: true
+  	},
+  	component: {
+  		model: 'component'
+  	},
+  	comments: 'string'
   }
 };
 

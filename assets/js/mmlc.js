@@ -58,8 +58,12 @@ $('body').ready( function() {
 		} else {
 			$(".png").hide();
 		}
-		$("#output-mathml").empty();
-		$("#output-mathml").append($(data.mml));
-		$("#output-mathml-markup").html(sanitizeMathML(data.mml));
+		if ($("#mml").prop("checked") == true) {
+			$("#output-mathml").empty();
+			$("#output-mathml").append($(data.mml));
+			$("#output-mathml-markup").html(sanitizeMathML(data.mml));
+		} else {
+			$(".mml").hide();
+		}
 	}
 });
