@@ -20,33 +20,34 @@ module.exports = {
 		options.png = req.param('png');
 		options.mml = req.param('mml');
 		options.speakText = req.param('description');
-		
-		ConversionService.convert(options, function(data) {
-			if (data.errors !== "undefined") {
-				//Create record for callback.
-				Equation.create({
-				  math: options.math,
-				  mathType: options.format
-				}).exec(function(err, equation) {
-					// Error handling
-				  	if (err) {
-				  		console.log(err);
-					  	res.send({errors: err});
-				    } else {
-						//Save all components.
-						if (options.mml) EquationService.createComponent("mml", data.mml, equation.id);
-						if (options.svg) EquationService.createComponent("svg", data.svg, equation.id);
-						if (options.png) EquationService.createComponent("png", data.png, equation.id);
-						if (options.description) EquationService.createComponent("description", data.description, equation.id);
-						data.cloudUrl = "http://" + req.headers.host + "/equation/" + equation.id;
-						res.send(data);
-					}
-				});
-			} else {
-				console.log(data.errors);
-				res.send(data.errors);
-			}
-			
+
+		//Create db record first so that we can make use of waterline's
+		//validation rules.
+		Equation.create({
+		  math: options.math,
+		  mathType: options.format
+		}).exec(function(err, equation) {
+		  	if (err) {
+		  		console.log(err);
+			  	return res.badRequest(err);
+		    } 
+		    ConversionService.convert(options, function(data) {
+				if (data.errors == undefined) {
+					//Save all components.
+					if (options.mml) EquationService.createComponent("mml", data.mml, equation.id);
+					if (options.svg) EquationService.createComponent("svg", data.svg, equation.id);
+					if (options.png) EquationService.createComponent("png", data.png, equation.id);
+					if (options.speakText) EquationService.createComponent("description", data.description, equation.id);
+					//Look up equation so that we have all created info.
+					Equation.findOne(equation.id).populate('components').exec(function(err, newEquation) {
+						newEquation.cloudUrl = "http://" + req.headers.host + "/equation/" + equation.id;
+						res.send(newEquation);
+					});
+				} else {
+					console.log(data.errors);
+					res.send(data.errors);
+				}
+			});
 		});
 	},
 

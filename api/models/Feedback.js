@@ -12,10 +12,13 @@ module.exports = {
   		model: 'equation',
   		required: true
   	},
-  	component: {
-  		model: 'component'
+  	components: {
+  		collection: 'component'
   	},
-  	comments: 'string'
+  	comments: {
+  		type: 'string',
+  		required: true
+  	}
   }
 };
 
