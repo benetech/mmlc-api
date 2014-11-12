@@ -94,9 +94,16 @@ var MathmlController = {
 
 	        var fs = require("fs");
 	        options.html = fs.readFileSync(html5.fd);
+	        options.speakText = true;
+	        options.timeout = 10 * 5000;
 	        MathmlController.mathjaxNodePage.typeset(options, function (data) {
-        	  res.attachment(html5.filename);
-              res.end(data.html, 'UTF-8');
+	          if (data.errors !== "undefined") {
+        	  	res.attachment(html5.filename);
+              	res.end(data.html, 'UTF-8');
+              } else {
+				console.log(data.errors);
+				res.send(data.errors);
+			  }
 	        });
 	    });
   	},
