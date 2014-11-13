@@ -22,6 +22,8 @@ fi
 # Install Node.JS packages.
 npm -g -y install sails azure-cli forever
 npm -y install --no-bin-links
+# Testing with Jasmine and Frisby
+npm -g -y install jasmine jasmine-node frisby
 
 # Install mathjax dependency.
 git clone -b develop https://github.com/dpvc/MathJax.git node_modules/MathJax-node/mathjax
