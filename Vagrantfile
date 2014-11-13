@@ -63,12 +63,21 @@ Vagrant.configure('2') do |config|
   # vagrant plugin install vagrant-azure
   # vagrant box add azure https://github.com/msopentech/vagrant-azure/raw/master/dummy.box
   config.vm.provider :azure do |azure, override|
-    # Read settings from YAML file.
+    # Read settings from YAML file. Local dev does not need an Azure account, so skip if no file is there.
     require 'yaml'
-    secrets = YAML.load_file 'secrets.yaml'
+    if File.exists?('secrets.yaml')
+      secrets = YAML.load_file 'secrets.yaml'
+      azure.subscription_id = secrets['subscription_id']
+      azure.mgmt_certificate = secrets['mgmt_certificate']
+      azure.vm_user = secrets['username'] # defaults to 'vagrant' if not provided
+      azure.vm_password = secrets['password'] # Min 8 characters. should contain a lowercase letter, an uppercase letter, a number and a special character.
+      override.ssh.username = secrets['username']
+      override.ssh.password = secrets['password']
+      override.ssh.private_key_path = secrets['ssh_private_key_file']
+      azure.ssh_private_key_file = secrets['ssh_private_key_file']
+      azure.ssh_certificate_file = secrets['ssh_certificate_file']
+    end
     override.vm.box = 'azure' # Run command: vagrant box add azure https://github.com/msopentech/vagrant-azure/raw/master/dummy.box.
-    azure.subscription_id = secrets['subscription_id']
-    azure.mgmt_certificate = secrets['mgmt_certificate']
     azure.mgmt_endpoint = 'https://management.core.windows.net'
     azure.cloud_service_name = 'mathml-cloud'
     azure.storage_acct_name = 'mmlcstorage'
@@ -76,72 +85,12 @@ Vagrant.configure('2') do |config|
     azure.vm_size = 'ExtraSmall'
     azure.vm_name = 'mathml-cloud' # MUST BE LOWERCASE, max 15 characters, can contain letters/numbers/hyphens (must start with a letter, cannot end with a hyphen).
     azure.vm_location = 'West US'
-    azure.vm_user = secrets['username'] # defaults to 'vagrant' if not provided
-    azure.vm_password = secrets['password'] # Min 8 characters. should contain a lowercase letter, an uppercase letter, a number and a special character.
-    override.ssh.username = secrets['username']
-    override.ssh.password = secrets['password']
-    override.ssh.private_key_path = secrets['ssh_private_key_file']
-    azure.ssh_private_key_file = secrets['ssh_private_key_file']
-    azure.ssh_certificate_file = secrets['ssh_certificate_file']
     azure.ssh_port = 22
     azure.tcp_endpoints = '1337:80'
 
     # We don't want the synced folder in Azure.
     override.vm.synced_folder ".", "/vagrant", disabled: true
   end
-
-  # Enable provisioning with CFEngine. CFEngine Community packages are
-  # automatically installed. For example, configure the host as a
-  # policy server and optionally a policy file to run:
-  #
-  # config.vm.provision "cfengine" do |cf|
-  #   cf.am_policy_hub = true
-  #   # cf.run_file = "motd.cf"
-  # end
-  #
-  # You can also configure and bootstrap a client to an existing
-  # policy server:
-  #
-  # config.vm.provision "cfengine" do |cf|
-  #   cf.policy_server_address = "10.0.2.15"
-  # end
-
-  # Enable provisioning with Puppet stand alone.  Puppet manifests
-  # are contained in a directory path relative to this Vagrantfile.
-  # You will need to create the manifests directory and a manifest in
-  # the file default.pp in the manifests_path directory.
-  #
-  # config.vm.provision "puppet" do |puppet|
-  #   puppet.manifests_path = "manifests"
-  #   puppet.manifest_file  = "site.pp"
-  # end
-
-  # Enable provisioning with chef solo, specifying a cookbooks path, roles
-  # path, and data_bags path (all relative to this Vagrantfile), and adding
-  # some recipes and/or roles.
-
-  # Enable provisioning with chef server, specifying the chef server URL,
-  # and the path to the validation key (relative to this Vagrantfile).
-  #
-  # The Opscode Platform uses HTTPS. Substitute your organization for
-  # ORGNAME in the URL and validation key.
-  #
-  # If you have your own Chef Server, use the appropriate URL, which may be
-  # HTTP instead of HTTPS depending on your configuration. Also change the
-  # validation key to validation.pem.
-  #
-  # config.vm.provision "chef_client" do |chef|
-  #   chef.chef_server_url = "https://api.opscode.com/organizations/ORGNAME"
-  #   chef.validation_key_path = "ORGNAME-validator.pem"
-  # end
-  #
-  # If you're using the Opscode platform, your validator client is
-  # ORGNAME-validator, replacing ORGNAME with your organization name.
-  #
-  # If you have your own Chef Server, the default validation client name is
-  # chef-validator, unless you changed the configuration.
-  #
-  #   chef.validation_client_name = "ORGNAME-validator"
 
   # Run bootstrap script to perform additional setup.
   config.vm.provision :shell, path: "bootstrap.sh"
