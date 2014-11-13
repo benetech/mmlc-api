@@ -26,6 +26,10 @@ module.exports = {
     components: {
     	collection: 'component',
     	via: 'equation'
+    },
+    feedback: {
+    	collection: 'feedback',
+    	via: 'equation'
     }
   }
 };

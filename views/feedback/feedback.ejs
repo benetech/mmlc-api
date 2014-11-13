@@ -1,0 +1,21 @@
+<h1 class="page-header">Feedback</h1>
+<table class="table table-striped table-bordered">
+	<thead>
+		<tr>
+			<th>Equation ID</th>
+			<th>Equation</th>
+			<th>Comments</th>
+			<th>Date</th>
+		</tr>
+	</thead>
+	<tbody>
+	<% _.each(feedback, function (f) { %>
+		<tr>
+			<td><a href="/feedback/equation?equationID=<%= f.equation.id %>"><%= f.equation.id %></a></td>
+			<td><%= f.equation.math %></td>
+			<td><%= f.comments %></td>
+			<td><%= f.createdAt %></td>
+		</tr>
+	<% }) %>
+	</tbody>
+</table>

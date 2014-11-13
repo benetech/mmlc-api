@@ -123,10 +123,6 @@ module.exports = {
 					return res.view(data); 
 			}
 		});
-	},
-
-	createComponent: function(format, source, equationId) {
-
 	}
 	
 };

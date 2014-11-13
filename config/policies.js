@@ -30,5 +30,9 @@ module.exports.policies = {
   
   UserController: {
     "*"	: "isAdmin"
-	}
+	},
+
+  FeedbackController: {
+    "feedback": "isAdmin"
+  }
 };
