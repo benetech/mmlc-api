@@ -23,8 +23,8 @@ module.exports = {
       		});
     	})(req, res);
   	},
-  	logout: function (req,res){
-		req.logout();
-		res.send('logout successful');
+  	logout: function (req,res) {
+		  req.logout();
+		  res.send('logout successful');
   	}
 };

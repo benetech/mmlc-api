@@ -52,6 +52,23 @@ module.exports.routes = {
   '/logout': {
     controller: 'AuthController',
     action: 'logout'
+  },
+
+  /** Admin pages. */
+  'get /feedback/feedback': {
+    controller: "FeedbackController",
+    action: "feedback",
+    locals: {
+      layout: 'admin_layout'
+    }
+  },
+
+  'get /feedback/equation': {
+    controller: "FeedbackController",
+    action: "equation",
+    locals: {
+      layout: 'admin_layout'
+    }
   }
 
 };
