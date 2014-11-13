@@ -26,8 +26,11 @@
     "sails-mongo": "~0.10.4",
     "MathJax-node": "https://github.com/benetech/MathJax-node/tarball/master",
     "passport": "~0.2.1",
+    "passport-local": "~1.0.0",
     "passport-http-bearer": "~1.0.1",
-    "sails-generate-auth": "~0.2.0"
+    "sails-generate-auth": "~0.2.0",
+    "bcrypt": "~0.8.0",
+    "extend": "~2.0.0"
   },
   "scripts": {
     "start": "node app.js",

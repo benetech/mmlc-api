@@ -1,5 +1,5 @@
 <div class="jumbotron">
-<form id="mml-editor" class="form-horizontal" method="post" action="/mathml/svg">
+<form id="mml-editor" class="form-horizontal" method="post" action="/equation/svg">
 	<div class="form-group">
 		<fieldset>
 			<legend>Convert a single equation</legend>
@@ -50,8 +50,9 @@
 	<div class="form-group">
 		<input type="submit" id="go" value="Convert Equation" class="btn btn-primary pull-right"/>
 	</div>
+	<p class="text-danger pull-right" id="errorMessage"></p>
 </form>
-<form id="html5-editor" class="form-horizontal" action="/mathml/upload" enctype="multipart/form-data" method="post">
+<form id="html5-editor" class="form-horizontal" action="/equation/upload" enctype="multipart/form-data" method="post">
 	<div class="form-group">
 		<fieldset>
 			<legend>Convert multiple equations in a single HTML5 file</legend>
@@ -72,7 +73,7 @@
 </div>
 <div id="results">
 	<h2>Formats</h2>
-	<div class="panel panel-default description">
+	<div class="panel panel-default description component">
 		<div class="panel-heading"><h3>Text Description</h3></div>
 		<div class="panel-body" id="output-text"></div>
 	</div>
@@ -80,26 +81,55 @@
 		<div class="panel-heading"><h3>MathML in the Cloud URL</h3></div>
 		<div class="panel-body" id="output-url"></div>
 	</div>
-	<div class="panel panel-default png">
+	<div class="panel panel-default png component">
 		<div class="panel-heading"><h3>Png Image </h3></div>
 		<div class="panel-body">
 			<img id="output-pngImage" name="empty" alt="png image" />
 		</div>
 	</div>
-	<div class="panel panel-default mml">
+	<div class="panel panel-default mml component">
 		<div class="panel-heading"><h3>MathML Output</h3></div>
 		<div class="panel-body" id="output-mathml"></div>
 	</div>
-	<div class="panel panel-default mml">
+	<div class="panel panel-default mml component">
 		<div class="panel-heading"><h3>MathML Markup</h3></div>
 		<div class="panel-body"><pre><code id="output-mathml-markup"></code></pre></div>
 	</div>
-	<div class="panel panel-default svg">
+	<div class="panel panel-default svg component">
 		<div class="panel-heading"><h3>SVG Output</h3></div>
 		<div class="panel-body" id="output-svg"></div>
 	</div>
-	<div class="panel panel-default svg">
+	<div class="panel panel-default svg component">
 		<div class="panel-heading"><h3>SVG Markup</h3></div>
 		<div class="panel-body" id="output-svg-markup"></div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading"><h3>Comments</h3></div>
+		<div class="panel-body" id="comments">
+			<form action="/feedback/create" method="post" id="commentForm">
+				<input type="hidden" name="equation" id="equation" />
+				<p>Please review the latest renderings of your equation (above) before submitting feedback comments.</p>
+				<fieldset>
+					<legend>Comments For:</legend>
+					<label class="checkbox-inline">
+					  <input type="checkbox" id="comment-svg" name="components" value="true" />SVG
+					</label>
+					<label class="checkbox-inline">
+					  <input type="checkbox" id="comment-mml" name="components" value="mathml" />MathML
+					</label>
+					<label class="checkbox-inline">
+					  <input type="checkbox" id="comment-png" name="components" value="true" />PNG Image
+					</label>
+					<label class="checkbox-inline">
+					  <input type="checkbox" id="comment-description" name="components" value="true" />Text Description
+					</label>
+				</fieldset>
+				<label for="equationComments">Comments:</label>
+				<textarea id="equationComments" name="comments" class="form-control"></textarea>
+				<br />
+				<button class="btn btn-lg btn-primary" id="feedback" type="submit">Submit Feedback</button>
+				<p id="commentsMessaging" class="success"></p>
+			</form>
+		</div>
 	</div>
 </div>
