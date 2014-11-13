@@ -30,10 +30,14 @@ module.exports = {
 
 	/** Allow admins to view comments. */
 	feedback: function(req, res) {
-		Feedback.find().populate('components').populate('equation').exec(function(err, feedback) {
-			if (err) return res.badRequest(err);
-			return res.view({"feedback": feedback});
-		});
+		Feedback.count(function (err, num) {
+    		if (err) return res.badRequest(err);
+    		var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
+    		Feedback.find({ skip: offset, limit: 10, sort: 'createAt DESC' }).populate('components').populate('equation').exec(function(err, feedback) {
+				if (err) return res.badRequest(err);
+				return res.view({"feedback": feedback, "total": num, "offset": offset});
+			});
+    	});
 	},
 
 	equation: function(req, res) {
