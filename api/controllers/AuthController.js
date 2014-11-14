@@ -19,7 +19,7 @@ module.exports = {
       		}
       		req.logIn(user, function(err) {
         		if (err) res.send(err);
-        		return res.redirect("/");
+        		return res.redirect("/feedback/feedback");
       		});
     	})(req, res);
   	},

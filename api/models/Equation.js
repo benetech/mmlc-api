@@ -12,7 +12,7 @@ module.exports = {
   	mathType: {
     	type: 'string',
     	required: true,
-    	enum: ['AsciiMath', 'MathML', 'LaTeX']
+    	enum: ['AsciiMath', 'MathML', 'TeX']
     },
     math: {
     	type: 'string',
