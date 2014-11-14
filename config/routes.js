@@ -45,6 +45,11 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
+  'POST /equation': {
+    controller: 'EquationController',
+    action: 'convert'
+  },
+
   '/login': {
     controller: 'AuthController',
     action: 'login'
@@ -55,9 +60,9 @@ module.exports.routes = {
   },
 
   /** Admin pages. */
-  'get /feedback/feedback': {
+  'get /feedback': {
     controller: "FeedbackController",
-    action: "feedback",
+    action: "index",
     locals: {
       layout: 'admin_layout'
     }
@@ -69,6 +74,11 @@ module.exports.routes = {
     locals: {
       layout: 'admin_layout'
     }
+  },
+
+  'post /feedback': {
+    controller: "FeedbackController",
+    action: "create"
   }
 
 };

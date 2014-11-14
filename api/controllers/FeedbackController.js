@@ -12,8 +12,9 @@ module.exports = {
 			equation: req.param('equation'),
 			comments: req.param('comments')
 		}).exec(function(err, feedback) {
-			if (req.param('components') != undefined) {
-				req.param('components').forEach(function(component,index) {
+			if (typeof req.param('components') != undefined) {
+				var components = typeof req.param('components') == 'string' ? [req.param('components')] : req.param('components'); 
+				components.forEach(function(component,index) {
 					feedback.components.add(component);
 					feedback.save(function(err) {
 						if (err) console.log(err);
@@ -29,7 +30,7 @@ module.exports = {
 	},
 
 	/** Allow admins to view comments. */
-	feedback: function(req, res) {
+	index: function(req, res) {
 		Feedback.count(function (err, num) {
     		if (err) return res.badRequest(err);
     		var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
