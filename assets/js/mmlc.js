@@ -24,9 +24,9 @@ $('body').ready( function() {
 
     $("#commentForm").on("submit", function(evt) {
     	evt.preventDefault();
-    	var url = "/feedback/create?" + $('#commentForm').serialize(); 
+    	var url = "/feedback?" + $('#commentForm').serialize(); 
     	$.ajax({
-			type: "GET",
+			type: "POST",
 			url: url,
 			dataType: 'json'
 		}).done(function(data) {
@@ -42,10 +42,10 @@ $('body').ready( function() {
 	}
 	window.convert = function() {
 		console.log($('#mml-editor').serialize());
-		var url = "/equation/convert?" + $('#mml-editor').serialize(); 
+		var url = "/equation?" + $('#mml-editor').serialize(); 
 		$("#processing").show();
 		$.ajax({
-			type: "GET",
+			type: "POST",
 			url: url,
 			dataType: 'json'
 		}).fail(function() {

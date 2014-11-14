@@ -12,15 +12,15 @@
 	  <p class="text-info">Showing results <%= parseInt(offset) + 1 %> &mdash; <%= parseInt(offset) + feedback.length %> of <%= total %>.</p>
 	  <ul class="pagination">
 	  	<% if (currentPage != 1) { %>
-	    	<li><a href="/feedback/feedback?offset=<%=back%>"><span aria-hidden="true"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>
+	    	<li><a href="/feedback?offset=<%=back%>"><span aria-hidden="true"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>
 	    <% } %>
 		<% for (var i = 1; i <= pages; i++) { 
 			var skip = (i-1)*limit; 
 			var active = i == currentPage; %>
-			<li <%= active ? "class=active" : "" %>><a href="/feedback/feedback?offset=<%=skip%>"><%= i %></a></li>
+			<li <%= active ? "class=active" : "" %>><a href="/feedback?offset=<%=skip%>"><%= i %></a></li>
 		<% } %>
 		<% if (next < total) { %>
-	    	<li><a href="/feedback/feedback?offset=<%=next%>"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
+	    	<li><a href="/feedback?offset=<%=next%>"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
 	    <% } %>
 	  </ul>
 	</nav>
