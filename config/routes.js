@@ -50,35 +50,57 @@ module.exports.routes = {
     action: 'convert'
   },
 
+  'GET /equation/:id': {
+    controller: 'EquationController',
+    action: 'find'
+  },
+
   '/login': {
     controller: 'AuthController',
     action: 'login'
   },
+
   '/logout': {
     controller: 'AuthController',
     action: 'logout'
   },
 
-  /** Admin pages. */
-  'get /feedback': {
-    controller: "FeedbackController",
-    action: "index",
-    locals: {
-      layout: 'admin_layout'
-    }
-  },
-
-  'get /feedback/equation': {
-    controller: "FeedbackController",
-    action: "equation",
-    locals: {
-      layout: 'admin_layout'
-    }
-  },
-
   'post /feedback': {
     controller: "FeedbackController",
     action: "create"
-  }
+  },
 
+  /** Admin pages. */
+  '/admin': {
+    controller: "AdminController",
+    action: "index",
+    locals: {
+      layout: 'admin/layout'
+    }
+  },
+
+  'get /admin/equation': {
+    controller: 'AdminController',
+    action: 'equation',
+    locals: {
+      layout: null
+    }
+  },
+
+  'get /admin/feedback': {
+    controller: "AdminController",
+    action: "feedback",
+    locals: {
+      layout: null
+    }
+  },
+
+  'get /admin/equations': {
+    controller: "AdminController",
+    action: "equations",
+    locals: {
+      layout: null
+    }
+  }
+  
 };

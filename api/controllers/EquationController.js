@@ -120,7 +120,7 @@ module.exports = {
 				if (wantsjson !== undefined)
 					return res.send(equation)
 				else
-					return res.view(data); 
+					return res.view(equation); 
 			}
 		});
 	}

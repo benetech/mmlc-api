@@ -27,31 +27,6 @@ module.exports = {
 				res.json(feedback);
 			}
 		});
-	},
-
-	/** Allow admins to view comments. */
-	index: function(req, res) {
-		Feedback.count(function (err, num) {
-    		if (err) return res.badRequest(err);
-    		var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
-    		Feedback.find({ skip: offset, limit: 10, sort: 'createAt DESC' }).populate('components').populate('equation').exec(function(err, feedback) {
-				if (err) return res.badRequest(err);
-				return res.view({"feedback": feedback, "total": num, "offset": offset});
-			});
-    	});
-	},
-
-	equation: function(req, res) {
-		if (typeof req.param('equationID') != 'undefined') {
-			Equation.findOne().where({id: req.param('equationID')}).populate('components').exec(function(err, equation) {
-				if (err) return res.badRequest(err);
-				Feedback.find().where({equation: equation.id}).populate('components').exec(function(err, feedback) {
-					return res.view({"equation": equation, "feedback": feedback});
-				});
-			});
-		} else {
-			return res.badRequest('Equation not found.');
-		}
 	}
 };
 
