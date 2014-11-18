@@ -16,13 +16,12 @@ module.exports = {
     		return res.send({
     			message: 'login failed'
     		});
-    		res.send(err);
   		}
   		req.logIn(user, function(err) {
     		if (err) res.send(err);
     		return res.redirect("/admin");
   		});
-  	})(req, res);
+  	}) (req, res);
 	},
     
 	logout: function (req,res) {
