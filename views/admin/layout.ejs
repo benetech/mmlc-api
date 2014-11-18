@@ -10,8 +10,7 @@
 
     <title>MathML Cloud Admin</title>
 
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/styles/bootstrap.min.css">
     <!--STYLES-->
 
     <!-- Custom styles for this template -->
@@ -35,13 +34,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">MathML Cloud Admin</a>
+          <a class="navbar-brand" href="/">MathML Cloud</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/feedback/feedback">Dashboard</a></li>
+            <li><a href="/admin">Dashboard</a></li>
           </ul>
-          <form action="/feedback/equation" method="get" id="findById" class="navbar-form navbar-right">
+          <form action="/admin/feedback/equation" method="get" id="findById" class="navbar-form navbar-right">
             
             <div class="input-group">
                 <label class="sr-only" for="equationID">Equation Id:</label>
@@ -58,9 +57,22 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="/feedback/feedback">Feedback <span class="sr-only">(current)</span></a></li>
-          </ul>
+          <table class="table table-striped table-bordered">
+            <tbody>
+              <tr>
+                <th>Total Equations:</th>
+                <td><%= numEquations %></td>
+              </tr>
+              <tr>
+                <th>Total Comments:</th>
+                <td><%= numFeedback %></td>
+              </tr>
+              <tr>
+                <th>Total Users:</th>
+                <td><%= numUsers %></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <%- body %>
@@ -68,13 +80,14 @@
       </div>
     </div>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
+    <script src="/js/dependencies/jquery-1.11.0.min.js"></script>
+    <script src="/js/admin.js"></script>
+    <script src="/js/libs/bootstrap.min.js"></script>
+    <script src="/js/libs/ie10-viewport-bug-workaround.js"></script>
     <script src="/js/mmlc.js"></script>
     <!--SCRIPTS END-->
+    <script src="/js/admin.js"></script>
   </body>
 </html>

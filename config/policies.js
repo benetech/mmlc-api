@@ -32,8 +32,8 @@ module.exports.policies = {
     "*"	: "isAdmin"
 	},
 
-  FeedbackController: {
-    "*": "isAdmin",
-    "create": true
+  AdminController: {
+    "*": "isAdmin"
   }
+
 };

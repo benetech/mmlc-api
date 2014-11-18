@@ -1,0 +1,43 @@
+<h1 class="page-header">Equations</h1>
+<% if (typeof equations != 'undefined') { %>
+<%
+	var limit = 10;
+	var pages = Math.ceil(numEquations/10);
+	var currentPage = 1;
+	var next = 1 + limit; 
+	var back = 1 - limit;
+%>
+<% if (numEquations > 10) { %>
+	<nav>
+	  <ul class="pagination">
+	  	<% for (var i = 1; i <= pages; i++) { 
+			var skip = (i-1)*limit; 
+			var active = i == currentPage; %>
+			<li <%= active ? "class=active" : "" %>><a href="/admin/equations?offset=<%=skip%>" class="page" data-type="equation"><%= i %></a></li>
+		<% } %>
+	  </ul>
+	</nav>
+<% } %>
+<div id="equationResults">
+	<table class="table table-striped table-bordered" id="resultsTable">
+		<thead>
+			<tr>
+				<th>Equation ID</th>
+				<th>Equation</th>
+				<th>Date</th>
+			</tr>
+		</thead>
+		<tbody>
+		<% _.each(equations, function (e) { %>
+			<tr>
+				<td><a href="/admin/equation?id=<%= e.id %>" class="equation"><%= e.id %></a></td>
+				<td><%= e.math %></td>
+				<td><%= e.createdAt %></td>
+			</tr>
+		<% }) %>
+		</tbody>
+	</table>
+</div>
+<% } else { %>
+<p class="text-info">No equations.</p>
+<% } %>

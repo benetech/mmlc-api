@@ -32,7 +32,7 @@ module.exports = {
 			  	return res.badRequest(err);
 		    } 
 		    ConversionService.convert(options, function(data) {
-				if (data.errors == undefined) {
+				if (typeof(data.errors) == 'undefined') {
 					//Save all components.
 					if (options.mml) EquationService.createComponent("mml", data.mml, equation.id);
 					if (options.svg) EquationService.createComponent("svg", data.svg, equation.id);
@@ -45,7 +45,7 @@ module.exports = {
 					});
 				} else {
 					console.log(data.errors);
-					res.send(data.errors);
+					return res.badRequest(data.errors);
 				}
 			});
 		});
@@ -67,7 +67,7 @@ module.exports = {
 				  // Error handling
 				  if (err) {
 				  	console.log(err);
-				  	res.send({errors: err});
+				  	return res.badRequest(err);
 				  } else {
 				  	//Create component.
 				  	EquationService.createComponent("svg", data.svg, equation.id);
@@ -77,7 +77,7 @@ module.exports = {
 				});
 			} else {
 				console.log(data.errors);
-				res.send(data.errors);
+				return res.badRequest(data.errors);
 			}
 			
 		});
@@ -102,7 +102,7 @@ module.exports = {
               	res.end(data.html, 'UTF-8');
               } else {
 				console.log(data.errors);
-				res.send(data.errors);
+				return res.badRequest(data.errors);
 			  }
 	        });
 	    });
@@ -111,16 +111,15 @@ module.exports = {
 	find: function(req, res) {
 		var equationId = req.param('id');
 		var wantsjson = req.param('json');
-		Equation.find({ _id: equationId }).populate('components').exec(function (err, equation) {
-			// XXX Error handling
+		Equation.findOne({ id: equationId }).populate('components').exec(function (err, equation) {
 			if (err) {
-				return console.log(err);
+				console.log(err);
+				return res.badRequest(err);
 			} else {
-				
-				if (wantsjson !== undefined)
+				if (typeof(wantsjson) != 'undefined')
 					return res.send(equation)
 				else
-					return res.view(data); 
+					return res.view({"equation": equation}); 
 			}
 		});
 	}

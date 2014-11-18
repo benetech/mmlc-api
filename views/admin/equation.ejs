@@ -1,5 +1,4 @@
 <% if (typeof equation != 'undefined') { %>
-	<h1 class="page-header">Equation <%= equation.id %></h1>
 	<p><strong>Math:</strong> `<%= equation.math %>`</p>
 	<p><strong>Math Type:</strong> <%= equation.mathType %></p>
 	<h2>Components</h2>
@@ -46,16 +45,7 @@
 	<% } else { %>
 	<p class="text-info">No feedback for this equation.</p>
 	<% } %>
-	<script type="text/x-mathjax-config">
-		MathJax.Hub.Config({
-		  jax: ["input/TeX","input/MathML","input/AsciiMath","output/HTML-CSS","output/NativeMML", "output/SVG"],
-		  extensions: ["tex2jax.js","mml2jax.js","asciimath2jax.js","MathMenu.js","MathZoom.js","toMathML.js"],
-		  TeX: {
-		    extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
-		  }
-		});
-	</script>
-	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+	
 <% } else { %>
 	<h1>Please enter an equation ID above.</h1>
 <% } %>

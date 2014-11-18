@@ -1,0 +1,51 @@
+<div role="tabpanel">
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#feedback" aria-controls="feedback" role="tab" data-toggle="tab">Feedback</a></li>
+    <li role="presentation"><a href="#equations" aria-controls="equations" role="tab" data-toggle="tab">Equations</a></li>
+    <li role="presentation"><a href="#users" aria-controls="users" role="tab" data-toggle="tab">Users</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="feedback">
+    	<%- partial ('feedback.ejs') %> 
+    </div>
+    <div role="tabpanel" class="tab-pane" id="equations">
+    	<%- partial ('equations.ejs') %> 
+    </div>
+    <div role="tabpanel" class="tab-pane" id="users">
+    	<%- partial ('users.ejs') %> 
+    </div>
+  </div>
+</div>
+
+<!-- Equation Modal -->
+<div class="modal" id="equationModal" tabindex="-1" role="dialog" aria-labelledby="equationLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="equationLabel">Equation</h4>
+      </div>
+      <div class="modal-body" id="equation">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX","input/MathML","input/AsciiMath","output/HTML-CSS","output/NativeMML", "output/SVG"],
+      extensions: ["tex2jax.js","mml2jax.js","asciimath2jax.js","MathMenu.js","MathZoom.js","toMathML.js"],
+      TeX: {
+        extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+      }
+    });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
