@@ -55,6 +55,16 @@ module.exports.routes = {
     action: 'find'
   },
 
+  'POST /equation/svg': {
+    controller: 'EquationController',
+    action: 'svg'
+  },
+
+  'POST /equation/png': {
+    controller: 'EquationController',
+    action: 'png'
+  },
+
   '/login': {
     controller: 'AuthController',
     action: 'login'

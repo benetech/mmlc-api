@@ -83,6 +83,37 @@ module.exports = {
 		});
 	},
 
+	png: function(req, res) {
+		var options = {};
+		options.math = req.param('math');
+		options.format = req.param('mathType');
+		options.png = true;
+		options.speakText = true;
+		ConversionService.convert(options, function(data) {
+			if (typeof(data.errors) == "undefined") {
+				//Create record for callback.
+				Equation.create({
+				  math: options.math,
+				  mathType: options.format
+				}).exec(function(err, equation) {
+				  // Error handling
+				  if (err) {
+				  	console.log(err);
+				  	return res.badRequest(err);
+				  } else {
+				  	//Create component.
+				  	EquationService.createComponent("png", data.png, equation.id);
+					res.send('<img src="' + data.png + '" alt="' + data.description + '" />');
+				  }
+				});
+			} else {
+				console.log(data.errors);
+				return res.badRequest(data.errors);
+			}
+			
+		});
+	},
+
 	/**
 	* Upload HTML5 and convert all equations to mathml.
 	*/
