@@ -30,6 +30,9 @@ module.exports = {
     feedback: {
     	collection: 'feedback',
     	via: 'equation'
+    },
+    html5: {
+        model: 'html5'
     }
   }
 };

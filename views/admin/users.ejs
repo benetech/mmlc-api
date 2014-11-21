@@ -13,7 +13,7 @@
 		<% for (var i = 1; i <= pages; i++) { 
 			var skip = (i-1)*limit; 
 			var active = i == currentPage; %>
-			<li <%= active ? "class=active" : "" %>><a href="/admin/feedback?offset=<%=skip%>"><%= i %></a></li>
+			<li <%= active ? "class=active" : "" %>><a href="/admin/feedback?offset=<%=skip%>" class="page" data-type="user"><%= i %></a></li>
 		<% } %>
 	  </ul>
 	</nav>

@@ -5,6 +5,7 @@
     <li role="presentation" class="active"><a href="#feedback" aria-controls="feedback" role="tab" data-toggle="tab">Feedback</a></li>
     <li role="presentation"><a href="#equations" aria-controls="equations" role="tab" data-toggle="tab">Equations</a></li>
     <li role="presentation"><a href="#users" aria-controls="users" role="tab" data-toggle="tab">Users</a></li>
+    <li role="presentation"><a href="#html5" aria-controls="html5" role="tab" data-toggle="tab">HTML5 Uploads</a></li>
   </ul>
 
   <!-- Tab panes -->
@@ -18,12 +19,15 @@
     <div role="tabpanel" class="tab-pane" id="users">
     	<%- partial ('users.ejs') %> 
     </div>
+    <div role="tabpanel" class="tab-pane" id="html5">
+      <%- partial ('html5uploads.ejs') %> 
+    </div>
   </div>
 </div>
 
 <!-- Equation Modal -->
 <div class="modal" id="equationModal" tabindex="-1" role="dialog" aria-labelledby="equationLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -39,13 +43,3 @@
   </div>
 </div>
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      jax: ["input/TeX","input/MathML","input/AsciiMath","output/HTML-CSS","output/NativeMML", "output/SVG"],
-      extensions: ["tex2jax.js","mml2jax.js","asciimath2jax.js","MathMenu.js","MathZoom.js","toMathML.js"],
-      TeX: {
-        extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
-      }
-    });
-</script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>

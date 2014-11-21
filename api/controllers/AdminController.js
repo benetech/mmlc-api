@@ -41,7 +41,17 @@ module.exports = {
 					callback(err, numFeedback, feedback, numEquations, equations, numUsers, users);
 				});
 			},
-		], function(err, numFeedback, feedback, numEquations, equations, numUsers, users) {
+			function (numFeedback, feedback, numEquations, equations, numUsers, users, callback) {
+				Html5.count(function(err, numHtml5){
+					callback(err, numHtml5, feedback, numEquations, equations, numUsers, users, numHtml5);
+				});
+			},
+			function (numFeedback, feedback, numEquations, equations, numUsers, users, numHtml5, callback) {
+				Html5.find({ skip: 0, limit: limit, sort: 'createdAt DESC' }).populate("equations").exec(function(err, html5) {
+					callback(err, numFeedback, feedback, numEquations, equations, numUsers, users, numHtml5, html5);
+				});
+			}
+		], function(err, numFeedback, feedback, numEquations, equations, numUsers, users, numHtml5, html5) {
 			if (err) return res.badRequest(err);
 			return res.view({
 				"numFeedback": numFeedback, 
@@ -49,7 +59,9 @@ module.exports = {
 				"feedback": feedback, 
 				"equations": equations,
 				"numUsers": numUsers,
-				"users": users
+				"users": users,
+				"numHtml5": numHtml5,
+				"html5": html5
 			});
 		});
 	},
@@ -112,6 +124,55 @@ module.exports = {
 		], function (err, num, offset, feedback) {
 			if (err) return res.badRequest(err);
 			return res.view({"feedback": feedback, "numFeedback": num, "offset": offset});
+		});
+	},
+
+	html5uploads: function (req, res) {
+		waterfall([
+			function(callback) {
+				Html5.count(function (err, num) {
+					callback(err, num);
+				});
+			},
+			function (num, callback) {
+				var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
+    			Html5.find({ skip: offset, limit: 10, sort: 'createdAt DESC' }).populate('equations').exec(function(err, html5) {	
+    				callback(err, num, offset, html5);
+    			});
+			}
+		], function (err, num, offset, html5) {
+			if (err) return res.badRequest(err);
+			return res.view({"html5": html5, "numHtml5": num, "offset": offset});
+		});
+	},
+
+	downloadHtml5: function(req, res) {
+		var html5Id = req.param("id");
+		var source = typeof(req.param("source")) != "undefined";
+		if (typeof(html5Id) == "undefined") return res.badRequest("Please specify html5 record id.");
+		Html5.findOne({id: html5Id}).exec(function(err, html5) {
+			if (err) return res.badRequest(err);
+			res.attachment(html5.filename);
+          	res.end(source ? html5.source : html5.output, 'UTF-8');
+		});
+	},
+
+	html5: function(req, res) {
+		var id = req.param('id');
+		waterfall([
+			function(callback) {
+				Html5.findOne({ id: id }).exec(function (err, html5) {
+					callback(err, html5);
+				});
+			},
+			function (html5, callback) {
+				Equation.find({ html5: html5.id }).populate('components').exec(function(err, equations) {	
+    				callback(err, html5, equations);
+    			});
+			}
+		], function (err, html5, equations) {
+			if (err) return res.badRequest(err);
+			return res.view({"html5": html5, equations: equations});
 		});
 	}
 

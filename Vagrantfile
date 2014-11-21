@@ -86,7 +86,7 @@ Vagrant.configure('2') do |config|
     azure.vm_name = 'mathml-cloud' # MUST BE LOWERCASE, max 15 characters, can contain letters/numbers/hyphens (must start with a letter, cannot end with a hyphen).
     azure.vm_location = 'West US'
     azure.ssh_port = 22
-    azure.tcp_endpoints = '1337:80'
+    azure.tcp_endpoints = '80:80'
 
     # We don't want the synced folder in Azure.
     override.vm.synced_folder ".", "/vagrant", disabled: true

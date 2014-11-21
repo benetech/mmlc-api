@@ -1,0 +1,52 @@
+<h1 class="page-header">Html5 Uploads</h1>
+<% if (typeof html5 != 'undefined') { %>
+<%
+	var limit = 10;
+	var pages = Math.ceil(numHtml5/limit);
+	var currentPage = (1/limit) + 1;
+	var next = 1 + limit; 
+	var back = 1 - limit;
+%>
+<% if (numHtml5 > 10) { %>
+	<nav>
+	  <ul class="pagination">
+		<% for (var i = 1; i <= pages; i++) { 
+			var skip = (i-1)*limit; 
+			var active = i == currentPage; %>
+			<li <%= active ? "class=active" : "" %>><a href="/admin/html5uploads?offset=<%=skip%>" class="page" data-type="html5"><%= i %></a></li>
+		<% } %>
+	  </ul>
+	</nav>
+<% } %>
+<div id="html5Results">
+	<table class="table table-striped table-bordered" id="resultsTable">
+		<thead>
+			<tr>
+				<th>Upload ID</th>
+				<th>File Name</th>
+				<th>Number of Equations</th>
+				<th>Output Format</th>
+				<th>Date</th>
+				<th>Download Options</th>
+			</tr>
+		</thead>
+		<tbody>
+		<% _.each(html5, function (h) { %>
+			<tr>
+				<td><a href="/admin/html5?id=<%=h.id%>"><%= h.id %></a></td>
+				<td><%= h.filename %></td>
+				<td><%= typeof(h.equations) != 'undefined' ? h.equations.length : 0 %></td>
+				<td><%= h.outputFormat %></td>
+				<td><%= h.createdAt %></td>
+				<td>
+					<a href="/admin/downloadHtml5?source=true&id=<%= h.id %>"><span class="sr-only">Download</span> <%= h.filename %> source</a> | 
+					<a href="/admin/downloadHtml5?id=<%= h.id %>"><span class="sr-only">Download</span> <%= h.filename %> output</a>
+				</td>
+			</tr>
+		<% }) %>
+		</tbody>
+	</table>
+</div>
+<% } else { %>
+<p class="text-info">No html5 uploads.</p>
+<% } %>

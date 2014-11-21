@@ -3,7 +3,9 @@ $('body').ready( function() {
 
     $('#mml-editor').on("submit", function(evt) {
     	$("#errorMessage").html("");
-    	if ($("#json").prop("checked") == true) {
+    	if ($("#downloadPNG").prop("checked") == true) {
+    		$('#mml-editor').attr("action", "/equation/png");
+    	} else if ($("#json").prop("checked") == true) {
 	    	$("#results").hide();
 	    	evt.preventDefault();
 	    	if ($("#mml-input").val() != "") {
@@ -14,7 +16,11 @@ $('body').ready( function() {
 		}
     });
 
-    $("#svgFile").on("click", function() {
+    $("#downloadSVG").on("click", function() {
+    	$("#outputOptions").hide();
+    });
+
+    $("#downloadPNG").on("click", function() {
     	$("#outputOptions").hide();
     });
 

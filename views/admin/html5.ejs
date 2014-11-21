@@ -1,0 +1,50 @@
+<h1>HTML5 Upload</h1>
+<% if (typeof html5 != 'undefined') { %>
+	<p><strong>Filename:</strong> <%= html5.filename %></p>
+	<p><strong>Output Format:</strong> <%= html5.outputFormat %></p>
+	<p><strong>Download:</strong>
+		<a href="/admin/downloadHtml5?source=true&id=<%= html5.id %>"><span class="sr-only">Download</span> <%= html5.filename %> source</a> | 
+		<a href="/admin/downloadHtml5?id=<%= html5.id %>"><span class="sr-only">Download</span> <%= html5.filename %> output</a>
+	</p>
+	<% if (equations.length > 0) { %>
+		<h2>Equations</h2>
+		<table class="table table-striped table-bordered" id="resultsTable">
+		<thead>
+			<tr>
+				<th>Equation ID</th>
+				<th>Input Math Type</th>
+				<th>Input Math</th>
+				<th>Output</th>
+			</tr>
+		</thead>
+		<tbody>
+		<% _.each(equations, function(equation) { %>
+			<tr>
+				<td><%= equation.id %></td>
+				<td><%= equation.mathType %></td>
+				<td>
+					<% switch (equation.mathType) { 
+						case "MathML": %>
+
+							<%- equation.math %>
+						<%	break;
+						case "AsciiMath": %>
+							`<%= equation.math %>`
+						<%
+							break;
+						case "TeX": %>
+							$$<%= equation.math %>$$
+						<%
+							break;
+						default:
+							//do nothing.
+						} %>
+				</td>
+				<td><%- equation.components[0].source %></td>
+			</tr>
+		<% }); %>
+		</tbody>
+		</table>
+	<% } %>
+	
+<% } %>

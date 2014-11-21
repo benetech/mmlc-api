@@ -55,6 +55,16 @@ module.exports.routes = {
     action: 'find'
   },
 
+  'POST /equation/svg': {
+    controller: 'EquationController',
+    action: 'svg'
+  },
+
+  'POST /equation/png': {
+    controller: 'EquationController',
+    action: 'png'
+  },
+
   '/login': {
     controller: 'AuthController',
     action: 'login'
@@ -101,6 +111,23 @@ module.exports.routes = {
     locals: {
       layout: null
     }
+  },
+
+  'get /admin/html5uploads': {
+    controller: "AdminController",
+    action: "html5uploads",
+    locals: {
+      layout: null
+    }
+  },
+
+  'get /admin/html5': {
+    controller: 'AdminController',
+    action: 'html5',
+    locals: {
+      layout: 'admin/layout'
+    }
   }
+
   
 };

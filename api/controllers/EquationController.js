@@ -37,7 +37,7 @@ module.exports = {
 					if (options.mml) EquationService.createComponent("mml", data.mml, equation.id);
 					if (options.svg) EquationService.createComponent("svg", data.svg, equation.id);
 					if (options.png) EquationService.createComponent("png", data.png, equation.id);
-					if (options.speakText) EquationService.createComponent("description", data.description, equation.id);
+					if (options.speakText) EquationService.createComponent("description", data.speakText, equation.id);
 					//Look up equation so that we have all created info.
 					Equation.findOne(equation.id).populate('components').exec(function(err, newEquation) {
 						newEquation.cloudUrl = "http://" + req.headers.host + "/equation/" + equation.id;
@@ -83,10 +83,44 @@ module.exports = {
 		});
 	},
 
+	png: function(req, res) {
+		var options = {};
+		options.math = req.param('math');
+		options.format = req.param('mathType');
+		options.png = true;
+		options.speakText = true;
+		ConversionService.convert(options, function(data) {
+			if (typeof(data.errors) == "undefined") {
+				//Create record for callback.
+				Equation.create({
+				  math: options.math,
+				  mathType: options.format
+				}).exec(function(err, equation) {
+				  // Error handling
+				  if (err) {
+				  	console.log(err);
+				  	return res.badRequest(err);
+				  } else {
+				  	//Create component.
+				  	EquationService.createComponent("png", data.png, equation.id);
+					res.send('<img src="' + data.png + '" alt="' + data.speakText + '" />');
+				  }
+				});
+			} else {
+				console.log(data.errors);
+				return res.badRequest(data.errors);
+			}
+			
+		});
+	},
+
 	/**
 	* Upload HTML5 and convert all equations to mathml.
 	*/
 	upload: function  (req, res) {
+		//We need to know what kind of output you want.
+		if (typeof(req.param('outputFormat')) == "undefined" || !req.param('outputFormat') in ["SVG", "NativeMML", "IMG", "PNG", "None"])
+			return res.badRequest("Please specify output format.");	
 		var options = {};
 		req.file('html5').upload(function (err, files) {
 	    	if (err)
@@ -96,10 +130,19 @@ module.exports = {
 	        options.html = fs.readFileSync(html5.fd);
 	        options.speakText = true;
 	        options.timeout = 10 * 5000;
+	        options.renderer = req.param('outputFormat');
+	        options.equations = true;
+	        options.filename = html5.filename;
 	        ConversionService.convertHTML5(options, function (data) {
-	          if (data.errors !== "undefined") {
-        	  	res.attachment(html5.filename);
-              	res.end(data.html, 'UTF-8');
+	          if (typeof(data.errors) == "undefined") {
+	          	if (typeof(req.param('json')) == "undefined") {
+	          		res.attachment(html5.filename);
+          			res.end(data.output, 'UTF-8');	
+	          	} else {
+	          		Equation.find({html5: data.id}).populate('components').exec(function(err, equations) {
+						res.view({html5: data, equations: equations});
+					});
+	          	}
               } else {
 				console.log(data.errors);
 				return res.badRequest(data.errors);
