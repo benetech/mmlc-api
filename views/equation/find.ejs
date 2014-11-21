@@ -6,11 +6,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading"><h3><%= component.format %></h3></div>
 		<div class="panel-body" id="output-text">
-			<% if (component.format != 'png') { %>
-				<%- component.source %>
-			<% } else { %>
-				<img src="<%= component.source %>" alt="PNG" />
-			<% } %>
+			<%- component.source %>
 		</div>
 	</div>
 <% }); %>
