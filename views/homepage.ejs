@@ -73,13 +73,24 @@
 		</fieldset>
 	</div>
 	<div class="form-group">
+		<fieldset>
+			<legend>Would you like to preview the equations' conversions?</legend>
+			<label class="radio-inline">
+			  <input type="radio" name="preview" value="true" checked>Yes
+			</label>
+			<label class="radio-inline">
+			  <input type="radio" name="preview" value="false">No, just let me download the HTML with equations replaced.
+			</label>
+		</fieldset>
+	</div>
+	<div class="form-group">
 		<label for="html5" class="col-sm-2 control-label">HTML5 File</label>
 		<div class="col-sm-10">
 			<input type="file" id="html5" name="html5" />
 		</div>
 	</div>
 	<div class="form-group">
-		<input type="submit" id="go" value="Upload File" class="btn btn-primary pull-right"/>
+		<input type="submit" id="upload" value="Upload File" class="btn btn-primary pull-right"/>
 	</div>
 </form>
 

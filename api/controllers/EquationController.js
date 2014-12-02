@@ -119,12 +119,18 @@ module.exports = {
 	*/
 	upload: function  (req, res) {
 		//We need to know what kind of output you want.
-		if (typeof(req.param('outputFormat')) == "undefined" || !req.param('outputFormat') in ["SVG", "NativeMML", "IMG", "PNG", "None"])
+		if (typeof(req.param('outputFormat')) == "undefined" || !req.param('outputFormat') in ["SVG", "NativeMML", "IMG", "PNG", "None"]) {
 			return res.badRequest("Please specify output format.");	
+		}
 		var options = {};
 		req.file('html5').upload(function (err, files) {
-	    	if (err)
-	        	return res.serverError(err);
+			if (err) {
+	        	console.log(err);
+			  	return res.badRequest(err);
+		    }
+			if (typeof(files[0]) == "undefined") {
+				return res.badRequest("Please specify HTML5 file.");
+			}
 	        var html5 = files[0];
 	        var fs = require("fs");
 	        options.html = fs.readFileSync(html5.fd);
@@ -135,7 +141,7 @@ module.exports = {
 	        options.filename = html5.filename;
 	        ConversionService.convertHTML5(options, function (data) {
 	          if (typeof(data.errors) == "undefined") {
-	          	if (typeof(req.param('json')) == "undefined") {
+	          	if (typeof(req.param('preview')) == "undefined" || req.param('preview') == "false") {
 	          		res.attachment(html5.filename);
           			res.end(data.output, 'UTF-8');	
 	          	} else {
