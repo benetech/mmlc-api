@@ -16,6 +16,13 @@ $('body').ready( function() {
 		}
     });
 
+    $("#html5-editor").on("submit", function(evt) {
+    	if ($("#html5").val() == "") {
+    		alert ("Please select a HTML5 file to upload.");
+    		return false;
+    	}
+    });
+
     $("#downloadSVG").on("click", function() {
     	$("#outputOptions").hide();
     });

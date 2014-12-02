@@ -128,7 +128,6 @@ module.exports = {
 	        	console.log(err);
 			  	return res.badRequest(err);
 		    }
-		    console.log(typeof(files[0]));
 			if (typeof(files[0]) == "undefined") {
 				return res.badRequest("Please specify HTML5 file.");
 			}
