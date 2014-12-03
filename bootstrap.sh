@@ -8,6 +8,27 @@ apt-get upgrade -y
 apt-get install nodejs npm mongodb openjdk-7-jre-headless git -y
 ln -s /usr/bin/nodejs /usr/bin/node
 
+#Install redis.
+wget http://download.redis.io/releases/redis-2.8.17.tar.gz
+tar xzf redis-2.8.17.tar.gz
+cd redis-2.8.17
+make install
+sudo mkdir /etc/redis
+sudo mkdir /var/redis
+sudo cp utils/redis_init_script /etc/init.d/redis_6379
+if [ -d /vagrant ]
+then
+  sudo cp /vagrant/6379.conf /etc/redis/6379.conf
+else
+  sudo cp ~mmlc/mathml-cloud/6379.conf /etc/redis/6379.conf
+fi
+sudo mkdir /var/redis/6379
+sudo update-rc.d redis_6379 defaults
+cd ..
+
+#start redis
+/etc/init.d/redis_6379 start
+
 # Get the source if running in production.
 # The /Vagrant synced folder only exists in the dev environment.
 if [ -d /vagrant ]
@@ -27,3 +48,6 @@ npm -g -y install jasmine jasmine-node frisby
 
 # Install mathjax dependency.
 git clone -b develop https://github.com/dpvc/MathJax.git node_modules/MathJax-node/mathjax
+
+
+
