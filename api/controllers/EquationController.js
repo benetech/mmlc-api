@@ -21,6 +21,9 @@ module.exports = {
 		options.mml = req.param('mml');
 		options.speakText = req.param('description');
 
+		//Do some basic checking on mathml input.
+		if (options.format == "MathML" && !options.math.indexOf("<math") == 0) return res.badRequest("MathML must start with <math");
+
 		//Create db record first so that we can make use of waterline's
 		//validation rules.
 		Equation.create({
