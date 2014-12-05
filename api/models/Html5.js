@@ -9,17 +9,25 @@ module.exports = {
 
   attributes: {
     filename: 'string',
-  	source: 'string',
+  	source: {
+      type: 'string',
+      required: true
+    },
     output: 'string',
     outputFormat: {
         type: 'string',
         required: true,
-        enum: ["SVG", "NativeMML", "IMG", "PNG", "None"]
+        enum: ['svg', 'png', 'description', 'mml']
     },
     equations: {
     	collection: 'equation',
     	via: 'html5'
-    }
+    },
+    status: {
+      type: 'string',
+      required: true,
+      enum: ['accepted', 'processing', 'completed', 'failed']
+    } 
   }
 };
 

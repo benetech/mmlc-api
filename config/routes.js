@@ -80,6 +80,19 @@ module.exports.routes = {
     action: "create"
   },
 
+  'GET /html5/:id': {
+    controller: 'Html5Controller',
+    action: 'find'
+  },
+
+  'get /html5/equations/:id': {
+    controller: "Html5Controller",
+    action: "equations",
+    locals: {
+      layout: null
+    }
+  },
+
   /** Admin pages. */
   '/admin': {
     controller: "AdminController",

@@ -50,7 +50,7 @@
 
   <body>
     <div class="container">
-      <h1 class="title text-primary">MathML Cloud</h1>
+      <h1 class="title text-primary"><a href="/">MathML Cloud</a></h1>
       <%- body %>
     </div>
 
@@ -113,6 +113,24 @@
     <script src="/js/libs/ie10-viewport-bug-workaround.js"></script>
     <script src="/js/mmlc.js"></script>
     <!--SCRIPTS END-->
+
+    <% if (typeof html5 != "undefined") { %>
+       <script type="text/javascript">
+            function doPoll() {
+                $("#processing").show();
+                $.get("/html5/<%= html5.id %>", function(data) {
+                    if (data.html5.status == "completed") {
+                        $("#download").show();
+                        $("#processing").hide();
+                        $("#equations").load("/html5/equations/<%= html5.id %>");
+                    } else {
+                        setTimeout(doPoll, 5000);
+                    }
+                });
+            }
+            doPoll();
+        </script>
+    <% } %>
     
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
