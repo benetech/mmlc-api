@@ -61,8 +61,8 @@ $('body').ready( function() {
 			type: "POST",
 			url: url,
 			dataType: 'json'
-		}).fail(function() {
-			$("#errorMessage").html("There was an error converting your math.");
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			$("#errorMessage").text("There was an error converting your math: " + jqXHR.responseText);
 			$("#processing").hide();
 			setTimeout(function() {
 				$("#errorMessage").attr('tabindex', '-1').focus();

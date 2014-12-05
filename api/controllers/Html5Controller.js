@@ -59,7 +59,8 @@ module.exports = {
 			if (err) {
 				console.log(err);
 				return res.badRequest(err);
-			} else {
+			} 
+			if (typeof(html5) != "undefined") {
 				//load up equations.
 				Equation.find({ html5: html5.id }).populate('components').exec(function(err, equations) {	
 					if (err) return res.badRequest(err);
@@ -69,6 +70,8 @@ module.exports = {
 						res.json({html5: html5, equations: equations});
 					}
 				});
+			} else {
+				res.notFound();
 			}
 		});
 	},
@@ -87,6 +90,7 @@ module.exports = {
 		if (typeof(html5Id) == "undefined") return res.badRequest("Please specify html5 record id.");
 		Html5.findOne({id: html5Id}).exec(function(err, html5) {
 			if (err) return res.badRequest(err);
+			if (typeof(html5) == "undefined") return res.notFound();
 			res.attachment(html5.filename);
           	res.end(source ? html5.source : html5.output, 'UTF-8');
 		});
