@@ -80,6 +80,11 @@ module.exports.routes = {
     action: "create"
   },
 
+  'POST /html5': {
+    controller: "Html5Controller",
+    action: "upload"
+  },
+
   'GET /html5/:id': {
     controller: 'Html5Controller',
     action: 'find'
