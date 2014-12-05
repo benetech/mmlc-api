@@ -90,6 +90,11 @@ module.exports.routes = {
     action: 'find'
   },
 
+  'GET /html5/download/:id': {
+    controller: 'Html5Controller',
+    action: 'download'
+  },
+
   'get /html5/equations/:id': {
     controller: "Html5Controller",
     action: "equations",

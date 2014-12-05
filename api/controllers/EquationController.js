@@ -121,6 +121,8 @@ module.exports = {
 			if (err) {
 				console.log(err);
 				return res.badRequest(err);
+			} else if (typeof(equation) == "undefined") {
+				res.notFound();
 			} else {
 				if (typeof(wantsjson) != 'undefined')
 					return res.send(equation)
