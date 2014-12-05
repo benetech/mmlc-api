@@ -57,11 +57,11 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="/admin">Dashboard</a></li>
           </ul>
-          <form action="/admin/equation" method="get" id="findById" class="navbar-form navbar-right">
+          <form action="/equation" method="get" id="findById" class="navbar-form navbar-right">
             
             <div class="input-group">
                 <label class="sr-only" for="equationID">Equation Id:</label>
-              <input type="text" class="form-control" id="equationID" name="equationID" placeholder="Equation ID">
+              <input type="text" class="form-control" id="equationID" name="id" placeholder="Equation ID">
                 <span class="input-group-btn">
                   <button class="btn btn-default" type="submit">Go</button>
                 </span>
@@ -115,8 +115,23 @@
     <script src="/js/libs/ie10-viewport-bug-workaround.js"></script>
     <script src="/js/mmlc.js"></script>
     <!--SCRIPTS END-->
-    <script src="/js/admin.js"></script>
 
-    
+    <!-- Equation Modal -->
+    <div class="modal" id="equationModal" tabindex="-1" role="dialog" aria-labelledby="equationLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="equationLabel">Equation</h4>
+          </div>
+          <div class="modal-body" id="equation">
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

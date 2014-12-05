@@ -1,16 +1,18 @@
 $(function() {
 	//bind pagination.
-	$(".page").unbind().click(function(evt) {
-		evt.preventDefault();
-		var href = $(this).attr("href");
-		var dataType = $(this).data("type");
-		$(this).parent("li").siblings().removeClass("active");
-		$(this).parent("li").addClass("active");
-		$("#" + dataType + "Results").load(href + " #resultsTable", function(data) {
-			bindEquations();	
-			MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-		});
-	});	
+	bindPagination = function() {
+		$(".page").unbind().click(function(evt) {
+			evt.preventDefault();
+			var href = $(this).attr("href");
+			var dataType = $(this).data("type");
+			$(this).parent("li").siblings().removeClass("active");
+			$(this).parent("li").addClass("active");
+			$("#" + dataType + "Results").load(href + " #resultsTable", function(data) {
+				bindEquations();	
+				MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+			});
+		});	
+	}
 
 	bindEquations = function() {
 		//Bind equations
