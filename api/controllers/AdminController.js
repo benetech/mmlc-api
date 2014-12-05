@@ -146,17 +146,6 @@ module.exports = {
 		});
 	},
 
-	downloadHtml5: function(req, res) {
-		var html5Id = req.param("id");
-		var source = typeof(req.param("source")) != "undefined";
-		if (typeof(html5Id) == "undefined") return res.badRequest("Please specify html5 record id.");
-		Html5.findOne({id: html5Id}).exec(function(err, html5) {
-			if (err) return res.badRequest(err);
-			res.attachment(html5.filename);
-          	res.end(source ? html5.source : html5.output, 'UTF-8');
-		});
-	},
-
 	html5: function(req, res) {
 		var id = req.param('id');
 		waterfall([

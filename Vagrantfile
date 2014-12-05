@@ -18,6 +18,7 @@ Vagrant.configure('2') do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 1337, host: 1337
+  config.vm.network "forwarded_port", guest: 3000, host: 3000
   
   # Share the home directory for access to host source code
   # and use NFS for 10-100x speedup:
@@ -90,6 +91,11 @@ Vagrant.configure('2') do |config|
 
     # We don't want the synced folder in Azure.
     override.vm.synced_folder ".", "/vagrant", disabled: true
+  end
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 3072
+    v.cpus = 2
   end
 
   # Run bootstrap script to perform additional setup.

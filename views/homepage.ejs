@@ -55,20 +55,20 @@
 </form>
 </div>
 <div class="jumbotron">
-<form id="html5-editor" class="form-horizontal" action="/equation/upload" enctype="multipart/form-data" method="post">
+<form id="html5-editor" class="form-horizontal" action="/html5/upload" enctype="multipart/form-data" method="post">
 	<input type="hidden" name="json" value="true" />
 	<h2>Convert multiple equations in a single HTML5 file</h2>
 	<div class="form-group">
 		<fieldset>
 			<legend>Select output format</legend>
 			<label class="radio-inline">
-			  <input type="radio" name="outputFormat" value="SVG" checked>SVG
+			  <input type="radio" name="outputFormat" value="svg" checked>SVG
 			</label>
 			<label class="radio-inline">
-			  <input type="radio" name="outputFormat" value="NativeMML">MathML
+			  <input type="radio" name="outputFormat" value="mml">MathML
 			</label>
 			<label class="radio-inline">
-			  <input type="radio" name="outputFormat" value="PNG">PNG
+			  <input type="radio" name="outputFormat" value="png">PNG
 			</label>
 		</fieldset>
 	</div>
