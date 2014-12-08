@@ -7,7 +7,7 @@
 	var next = 1 + limit; 
 	var back = 1 - limit;
 %>
-<% if (numEquations > 10) { %>
+<% if (numEquations > limit) { %>
 	<nav>
 	  <ul class="pagination">
 	  	<% for (var i = 1; i <= pages; i++) { 
@@ -30,7 +30,7 @@
 		<tbody>
 		<% _.each(equations, function (e) { %>
 			<tr>
-				<td><a href="/admin/equation?id=<%= e.id %>" class="equation"><%= e.id %></a></td>
+				<td><a href="/equation/<%= e.id %>" class="equation"><%= e.id %></a></td>
 				<td>
 					<% switch (e.mathType) { 
 						case "MathML": %>

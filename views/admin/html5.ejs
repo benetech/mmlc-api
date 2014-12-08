@@ -20,7 +20,7 @@
 		<tbody>
 		<% _.each(equations, function(equation) { %>
 			<tr>
-				<td><a href="/admin/equation?id=<%= equation.id %>" class="equation"><%= equation.id %></a></td>
+				<td><a href="/equation?id=<%= equation.id %>" class="equation"><%= equation.id %></a></td>
 				<td><%= equation.mathType %></td>
 				<td>
 					<% switch (equation.mathType) { 
