@@ -4,7 +4,10 @@
 <h2>Components</h2>
 <% _.each(equation.components, function(component) { %>
 	<div class="panel panel-default">
-		<div class="panel-heading"><h3><%= component.format %></h3></div>
+		<div class="panel-heading">
+			<h3><%= component.format %><span class="pull-right"><a href="/component/<%= component.id %>">Download <%= component.format %></a></span></h3>
+
+		</div>
 		<div class="panel-body" id="output-text">
 			<%- component.source %>
 		</div>

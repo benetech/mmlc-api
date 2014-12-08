@@ -98,6 +98,7 @@ $('body').ready( function() {
 					$("#output-mathml-markup").html(sanitizeMathML(component.source));
 					break;
 			}
+			$(".download-" + component.format).attr("href", "/component/" + component.id);
 			$("." + component.format).show();
 			$("#comment-" + component.format).show();
 			$("#comment-" + component.format).prop("disabled", false);
