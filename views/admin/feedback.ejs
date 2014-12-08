@@ -7,7 +7,7 @@
 	var next = 1 + limit; 
 	var back = 1 - limit;
 %>
-<% if (numFeedback > 20) { %>
+<% if (numFeedback > limit) { %>
 	<nav>
 	  <ul class="pagination">
 		<% for (var i = 1; i <= pages; i++) { 
@@ -31,7 +31,7 @@
 		<tbody>
 		<% _.each(feedback, function (f) { %>
 			<tr>
-				<td><a href="/admin/equation?id=<%= f.equation.id %>" class="equation"><%= f.equation.id %></a></td>
+				<td><a href="/equation/<%= f.equation.id %>" class="equation"><%= f.equation.id %></a></td>
 				<td><%= f.equation.math %></td>
 				<td><%= f.comments %></td>
 				<td><%= f.createdAt %></td>

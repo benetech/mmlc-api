@@ -43,7 +43,7 @@ module.exports = {
 			},
 			function (numFeedback, feedback, numEquations, equations, numUsers, users, callback) {
 				Html5.count(function(err, numHtml5){
-					callback(err, numHtml5, feedback, numEquations, equations, numUsers, users, numHtml5);
+					callback(err, numFeedback, feedback, numEquations, equations, numUsers, users, numHtml5);
 				});
 			},
 			function (numFeedback, feedback, numEquations, equations, numUsers, users, numHtml5, callback) {
