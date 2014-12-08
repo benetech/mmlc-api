@@ -103,6 +103,14 @@ module.exports.routes = {
     }
   },
 
+  'GET /component/:id': {
+    controller: "ComponentController",
+    action: "download",
+    locals: {
+      layout: null
+    }
+  },
+
   /** Admin pages. */
   '/admin': {
     controller: "AdminController",
