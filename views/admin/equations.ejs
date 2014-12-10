@@ -30,7 +30,7 @@
 		<tbody>
 		<% _.each(equations, function (e) { %>
 			<tr>
-				<td><a href="/equation/<%= e.id %>" class="equation"><%= e.id %></a></td>
+				<td><a href="/equation/<%= e.id %>?preview=true" class="equation"><%= e.id %></a></td>
 				<td>
 					<% switch (e.mathType) { 
 						case "MathML": %>
