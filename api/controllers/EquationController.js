@@ -122,7 +122,7 @@ module.exports = {
 
 	find: function(req, res) {
 		var equationId = req.param('id');
-		var wantsjson = req.param('json');
+		var preview = req.param('preview');
 		Equation.findOne({ id: equationId }).populate('components').exec(function (err, equation) {
 			if (err) {
 				console.log(err);
@@ -130,10 +130,10 @@ module.exports = {
 			} else if (typeof(equation) == "undefined") {
 				res.notFound();
 			} else {
-				if (typeof(wantsjson) != 'undefined')
-					return res.send(equation)
+				if (typeof(preview) != 'undefined')
+					return res.view({"equation": equation});
 				else
-					return res.view({"equation": equation}); 
+					return res.send(equation); 
 			}
 		});
 	}

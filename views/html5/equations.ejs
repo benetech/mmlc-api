@@ -12,7 +12,7 @@
 <% if (typeof equations != 'undefined') { %>
 	<% _.each(equations, function(equation) { %>
 		<tr>
-			<td><a href="/equation/<%= equation.id %>"><%= equation.id %></a></td>
+			<td><a href="/equation/<%= equation.id %>?preview=true"><%= equation.id %></a></td>
 			<td><%= equation.mathType %></td>
 			<td><%= equation.math %></td>
 			<td><%- equation.components[0].source %></td>
