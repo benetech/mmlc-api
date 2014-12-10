@@ -130,10 +130,11 @@ module.exports = {
 			} else if (typeof(equation) == "undefined") {
 				res.notFound();
 			} else {
-				if (typeof(preview) != 'undefined')
+				if (req.wantsJSON) {
+					return res.json(equation); 
+				} else {
 					return res.view({"equation": equation});
-				else
-					return res.send(equation); 
+				}
 			}
 		});
 	}
