@@ -31,7 +31,7 @@
 		<tbody>
 		<% _.each(feedback, function (f) { %>
 			<tr>
-				<td><a href="/equation/<%= f.equation.id %>?preview=true" class="equation"><%= f.equation.id %></a></td>
+				<td><a href="/equation/<%= f.equation.id %>" class="equation"><%= f.equation.id %></a></td>
 				<td><%= f.equation.math %></td>
 				<td><%= f.comments %></td>
 				<td><%= f.createdAt %></td>
