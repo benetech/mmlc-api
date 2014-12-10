@@ -4,7 +4,7 @@
 	<p><strong>Output Format:</strong> <%= html5.outputFormat %></p>
 	<p id="download" style="display: none;"><strong>Download:</strong>
 		<a href="/html5/download/<%= html5.id %>?source=true"><span class="sr-only">Download</span> <%= html5.filename %> source</a> | 
-		<a href="/html5/download/<%= html5.id %>"><span class="sr-only">Download</span> <%= html5.filename %> output</a>
+		<a href="/html5/<%= html5.id %>/output"><span class="sr-only">Download</span> <%= html5.filename %> output</a>
 	</p>
 	<div id="processing">
 		<img src="/images/load.gif" alt="Please wait" />
