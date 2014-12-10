@@ -80,8 +80,7 @@ $('body').ready( function() {
 		$.each(equation.components, function(key, component) {
 			switch (component.format) {
 				case "png": 
-					$("#output-pngImage").attr("src", component.source);
-					$("#output-pngImage").attr("alt", "PNG Component");
+					$("#output-pngImage").html(component.source);
 					break;
 				case "svg":
 					$("#output-svg").empty();

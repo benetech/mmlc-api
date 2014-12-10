@@ -39,7 +39,10 @@ module.exports = {
 					//Save all components.
 					if (options.mml) EquationService.createComponent("mml", data.mml, equation.id);
 					if (options.svg) EquationService.createComponent("svg", data.svg, equation.id);
-					if (options.png) EquationService.createComponent("png", data.png, equation.id);
+					if (options.png) {
+						var pngSource = "<img src=\"" + data.png + "\" alt=\"" + data.speakText + "\" />";
+						EquationService.createComponent("png", pngSource, equation.id);
+					} 
 					if (options.speakText) EquationService.createComponent("description", data.speakText, equation.id);
 					//Look up equation so that we have all created info.
 					Equation.findOne(equation.id).populate('components').exec(function(err, newEquation) {
