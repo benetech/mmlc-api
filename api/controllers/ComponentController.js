@@ -25,10 +25,7 @@ module.exports = {
               		res.end(component.source, 'UTF-8');
               		break;
               	case 'png':
-              		//we need to get alt text as well.
-              		Component.findOne({equation: component.equation.id, format: "description"}).exec(function(err, description) {
-              			res.send('<img src="' + component.source + '" alt="' + description.source + '" />');
-              		});
+              		res.send(component.source);
               		break;
               	case 'description':
               		res.send(component.source);
