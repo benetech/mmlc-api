@@ -12,7 +12,7 @@ module.exports = {
 			equation: req.param('equation'),
 			comments: req.param('comments')
 		}).exec(function(err, feedback) {
-			if (typeof req.param('components') != undefined) {
+			if (typeof req.param('components') != "undefined") {
 				var components = typeof req.param('components') == 'string' ? [req.param('components')] : req.param('components'); 
 				components.forEach(function(component,index) {
 					feedback.components.add(component);
