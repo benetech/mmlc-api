@@ -17,7 +17,7 @@ module.exports = {
 				});
 			},
 			function (numFeedback, callback) {
-				Feedback.find({ skip: 0, limit: limit, sort: 'createdAt DESC' }).populate('equation').exec(function(err, feedback) {
+				Feedback.find({ skip: 0, limit: limit, sort: 'createdAt DESC' }).populate('equation').populate('components').exec(function(err, feedback) {
 					callback(err, numFeedback, feedback);
 				});
 			},

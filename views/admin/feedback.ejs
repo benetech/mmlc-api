@@ -25,6 +25,7 @@
 				<th>Equation ID</th>
 				<th>Equation</th>
 				<th>Comments</th>
+				<th>Components</th>
 				<th>Date</th>
 			</tr>
 		</thead>
@@ -34,6 +35,11 @@
 				<td><a href="/equation/<%= f.equation.id %>" class="equation"><%= f.equation.id %></a></td>
 				<td><%= f.equation.math %></td>
 				<td><%= f.comments %></td>
+				<td>
+					<% _.each(f.components, function (component) { %>
+						<a href="/component/<%= component.id %>"><%= component.format %></a>
+					<% }); %>
+				</td>
 				<td><%= f.createdAt %></td>
 			</tr>
 		<% }) %>
