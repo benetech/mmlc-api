@@ -6,7 +6,7 @@ var frisby = require('/usr/local/lib/node_modules/frisby');
 //var base_url = 'http://mathml-cloud.cloudapp.net';
 //var base_url = 'http://23.101.204.234';
 // Local testing
-var base_url = 'http://192.168.1.3:1337';
+var base_url = 'http://localhost:1337';
 
 describe("User login", function() {
 	
