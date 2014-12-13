@@ -27,6 +27,16 @@ module.exports = {
       collection: 'equation',
       via: 'submittedBy'
     },
+    organization: {
+      type: 'string',
+      required: false
+    },
+    organizationalAffiliation: {
+      collection: 'string',
+      enum: ['K-12 Education', 'Post-Secondary Education', 'Learning Management System', 
+        'Academic Administration', 'Original Content Author', 'Publisher / Product Owner', 
+        'Service Provider', 'Classroom Instructor', 'Other']
+    },
     toJSON: function() {
       var obj = this.toObject();
       delete obj.password;
