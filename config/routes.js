@@ -45,27 +45,27 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  'GET /signUp': {
+  'get /signUp': {
     controller: 'UserController',
     action: 'signUp'
   },
 
-  'POST /equation': {
+  'post /equation': {
     controller: 'EquationController',
     action: 'convert'
   },
 
-  'GET /equation/:id': {
+  'get /equation/:id': {
     controller: 'EquationController',
     action: 'find'
   },
 
-  'POST /equation/svg': {
+  'post /equation/svg': {
     controller: 'EquationController',
     action: 'svg'
   },
 
-  'POST /equation/png': {
+  'post /equation/png': {
     controller: 'EquationController',
     action: 'png'
   },
@@ -85,22 +85,22 @@ module.exports.routes = {
     action: "create"
   },
 
-  'POST /html5': {
+  'post /html5': {
     controller: "Html5Controller",
     action: "upload"
   },
 
-  'GET /html5/:id': {
+  'post /html5/:id': {
     controller: 'Html5Controller',
     action: 'find'
   },
 
-  'GET /html5/:id/source': {
+  'get /html5/:id/source': {
     controller: 'Html5Controller',
     action: 'downloadSource'
   },
 
-  'GET /html5/:id/output': {
+  'get /html5/:id/output': {
     controller: 'Html5Controller',
     action: 'downloadOutput'
   },
@@ -113,7 +113,7 @@ module.exports.routes = {
     }
   },
 
-  'GET /component/:id': {
+  'get /component/:id': {
     controller: "ComponentController",
     action: "download",
     locals: {
