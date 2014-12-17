@@ -13,12 +13,21 @@ var path = require('path');
 var FormData = require('form-data');
 
 // Local testing
-var base_url = 'http://localhost:1337';
-//var base_url = 'https://mathmlcloud.azure-api.net';
-//var base_url = 'https://104.40.56.172'; // mathmlcloud.azure-api.net
+//var base_url = 'http://localhost:1337';
+var base_url = 'http://mathmlcloud.azure-api.net';
+//var base_url = 'http://104.40.56.172'; // mathmlcloud.azure-api.net
 //var base_url = 'http://23.101.204.234'; // mathml-cloud.cloudapp.net
 
 var subscription_key = '6b442c2169084711afdd43ad5ba1dfeb';
+// Local data
+// var equation_id = '54907da59d199c6a0a85d97e';
+// var component_id = '548b08e8a857f0db35d7a2bc';
+// var html5_id = '54907d9d9d199c6a0a85d97b';
+
+// Live data
+var equation_id = '54874e5c62848a90ab0d79b8';
+var component_id = '54874e6562848a90ab0d79bc';
+var html5_id = '5490758da7967a8c61e10103';
 
 describe("MathML Cloud API features", function() {
 	// Global setup for all tests
@@ -31,10 +40,8 @@ describe("MathML Cloud API features", function() {
 
 	//---- GET /component/{id}
 	frisby.create("Get component")
-		.get(base_url + '/component/548b08e8a857f0db35d7a2bc', 
-			{
-				"subscription-key" : subscription_key
-			}
+		.get(base_url + '/component/' + component_id 
+			+ "?subscription-key=" + subscription_key
 		)
 		.expectStatus(200)
 		.expectHeaderContains("content-type", "text/html")
@@ -43,10 +50,8 @@ describe("MathML Cloud API features", function() {
 
 	//---- GET /html5/{id}
 	frisby.create("Get HTML5 resource")
-		.get(base_url + '/html5/54907d9d9d199c6a0a85d97b', 
-			{
-				"subscription-key" : subscription_key
-			}
+		.get(base_url + '/html5/' + html5_id 
+			+ "?subscription-key=" + subscription_key
 		)
 		.expectStatus(200)
 		.expectHeaderContains("content-type", "application/json")
@@ -58,10 +63,8 @@ describe("MathML Cloud API features", function() {
 
 	//---- GET /html5/{id}/output
 	frisby.create("Get HTML5 output")
-		.get(base_url + '/html5/54907d9d9d199c6a0a85d97b/output', 
-			{
-				"subscription-key" : subscription_key
-			}
+		.get(base_url + '/html5/' + html5_id + '/output'
+			+ "?subscription-key=" + subscription_key
 		)
 		.expectStatus(200)
 		.expectHeaderContains("content-type", "text/html")
@@ -69,10 +72,8 @@ describe("MathML Cloud API features", function() {
 
 	//---- GET /html5/{id}/source
 	frisby.create("Get HTML5 source")
-		.get(base_url + '/html5/54907d9d9d199c6a0a85d97b/source', 
-			{
-				"subscription-key" : subscription_key
-			}
+		.get(base_url + '/html5/' + html5_id + '/source'
+			+ "?subscription-key=" + subscription_key
 		)
 		.expectStatus(200)
 		.expectHeaderContains("content-type", "text/html")
@@ -80,16 +81,15 @@ describe("MathML Cloud API features", function() {
 
 	//---- POST /feedback
 	frisby.create("Post feedback")
-		.post(base_url + '/feedback', {
-			equation : '548b6ae78b6657643d8716b5', 
+		.post(base_url + '/feedback' + "?subscription-key=" + subscription_key, {
+			equation : equation_id, 
 			comments : 'Testing API call',
-			"subscription-key" : subscription_key
 		})
 		.expectStatus(200)
 		.expectHeaderContains("content-type", "application/json")
 		.expectJSON({
 			comments : 'Testing API call',
-			equation : '548b6ae78b6657643d8716b5', 
+			equation : equation_id, 
 		})
 		.toss();
 
@@ -97,26 +97,22 @@ describe("MathML Cloud API features", function() {
 	
 	//---- GET /equation/{id}
 	frisby.create("Get equation")
-		.get(base_url + '/equation/54907da59d199c6a0a85d97e', 
-			{
-				"subscription-key" : subscription_key
-			}
+		.get(base_url + '/equation/' + equation_id
+			+ "?subscription-key=" + subscription_key
 		)
 		.expectStatus(200)
 		.expectHeaderContains("content-type", "application/json")
 		.expectJSON("components.?", {
 			format : "svg",
-			id : '54907da59d199c6a0a85d984'
 		})
 		.toss();
 		
 	//---- POST /equation
 	frisby.create("Convert ASCII math")
-		.post(base_url + '/equation', {
+		.post(base_url + '/equation' + "?subscription-key=" + subscription_key, {
 			mathType : 'AsciiMath', 
 			math : 'a^2+b^2=c^2',
 			description : 'true',
-			"subscription-key" : subscription_key
 		})
 		.expectStatus(200)
 		.expectHeaderContains("content-type", "application/json")
@@ -128,11 +124,10 @@ describe("MathML Cloud API features", function() {
 	
 	//---- POST /equation/svg
 	frisby.create("Convert ASCII math to SVG")
-		.post(base_url + '/equation/svg', {
+		.post(base_url + '/equation/svg' + "?subscription-key=" + subscription_key, {
 			mathType : 'AsciiMath', 
 			math : 'a^2+b^2=c^2',
 			description : 'true',
-			"subscription-key" : subscription_key
 		})
 		.expectStatus(200)
 		.expectHeaderContains("content-type", "image/svg+xml")
@@ -149,7 +144,7 @@ describe("MathML Cloud API features", function() {
 	});
 
 	frisby.create("Post HTML5")
-		.post(base_url + '/html5', 
+		.post(base_url + '/html5' + "?subscription-key=" + subscription_key, 
 		form,
 		{
 		    json: false,
@@ -157,7 +152,6 @@ describe("MathML Cloud API features", function() {
 		      'content-type': 'multipart/form-data; boundary=' + form.getBoundary(),
 		      'content-length': form.getLengthSync()
 		    },
-			"subscription-key" : subscription_key
 		})
 		.expectStatus(202)
 		.expectHeaderContains("content-type", "application/json")
@@ -170,27 +164,23 @@ describe("MathML Cloud API features", function() {
 	//---- POST by anonymous, denied
 	frisby.create("Anonymous client")
 		.post(base_url + '/feedback', {
-			equation : '548b6ae78b6657643d8716b5', 
+			equation : equation_id, 
 			comments : 'Testing API call',
 		})
 		.expectStatus(401)
 		.expectHeaderContains("content-type", "application/json")
-		.expectJSON({
-			message : 'Something',
-		})
+		.expectBodyContains('Access denied due to missing subscription key.')
 		.toss();
 
 	//---- POST by client with wrong subscription, denied
 	frisby.create("Unsubscribed client")
 		.post(base_url + '/feedback', {
-			equation : '548b6ae78b6657643d8716b5', 
+			equation : equation_id, 
 			comments : 'Testing API call',
 			"subscription-key" : '1234567890'
 		})
 		.expectStatus(401)
 		.expectHeaderContains("content-type", "application/json")
-		.expectJSON({
-			message : 'Something',
-		})
+		.expectBodyContains('Access denied due to missing subscription key.')
 		.toss();
 });
