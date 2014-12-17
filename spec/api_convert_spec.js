@@ -14,12 +14,15 @@ var FormData = require('form-data');
 
 // Local testing
 //var base_url = 'http://localhost:1337';
+// Server testing
 var base_url = 'http://mathmlcloud.azure-api.net';
 //var base_url = 'http://104.40.56.172'; // mathmlcloud.azure-api.net
 //var base_url = 'http://mathml-cloud.cloudapp.net';
 //var base_url = 'http://23.101.204.234'; // mathml-cloud.cloudapp.net
 
-var subscription_key = '6b442c2169084711afdd43ad5ba1dfeb';
+// This is the key for QAadmin@benetech.org
+var subscription_key = 'caeb604dc5fd49a6b077493b7acad583';
+
 // Local data
 // var equation_id = '54907da59d199c6a0a85d97e';
 // var component_id = '548b08e8a857f0db35d7a2bc';
