@@ -15,6 +15,10 @@ module.exports = {
 			}
 			return res.send(users);
 		});
+	},
+
+	signUp: function(req, res) {
+		return res.view();
 	}
 };
 

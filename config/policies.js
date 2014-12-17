@@ -29,7 +29,8 @@ module.exports.policies = {
   // '*': true,
   
   UserController: {
-    "*"	: "isAdmin"
+    "*"	: "isAdmin",
+    "signUp": true
 	},
 
   AdminController: {

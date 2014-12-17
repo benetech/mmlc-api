@@ -38,7 +38,7 @@ module.exports = {
                     return res.badRequest(err);
                 }
                 //Submit job request.
-                ConversionService.submitHTML5Conversion(dbHtml5, function(err) {
+                QueueService.submitHTML5ConversionJob(dbHtml5, function(err) {
                 	if (typeof(err) != "undefined") {
                 		console.log(err);
                 		return res.badRequest(err);

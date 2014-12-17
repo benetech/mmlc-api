@@ -1,23 +1,3 @@
-//Start up queue and set it to process conversions.
-var kue = require('kue'), jobs = kue.createQueue();
-kue.app.listen(3000);
-jobs.process('html5 conversion', function(job, done) { 
-  //Update status of html5. 
-  Html5.update({id: job.data.html5Id}, {status: 'processing'}).exec(function(err, html5s) {
-    if (err) console.log(err);
-  });
-  ConversionService.convertHTML5(job.data, done);
-});
-jobs.on('job complete', function(id,result){
-  kue.Job.get(id, function(err, job) {
-    if (err) return;
-    //Complete status.
-    Html5.update({id: job.data.html5Id}, {status: 'completed'}).exec(function(err, html5s) {
-        if (err) console.log(err);
-    });
-    job.remove(function(jobErr) { if (jobErr) throw jobErr; });
-  });
-});
 module.exports = {
     convert: function(options, done) {
         var mathjaxNode = require("../../node_modules/MathJax-node/lib/mj-single.js"),
