@@ -20,15 +20,6 @@ var base_url = 'http://localhost:1337';
 
 var subscription_key = '6b442c2169084711afdd43ad5ba1dfeb';
 
-// Set up the HTML5 file posting
-var html5Path = path.resolve(__dirname, './data/sample-math.html');
-var form = new FormData();
-form.append('outputFormat', 'svg');
-form.append('html5', fs.createReadStream(html5Path), {
-	// we need to set the knownLength so we can call  form.getLengthSync()
-	knownLength: fs.statSync(html5Path).size
-});
-
 describe("MathML Cloud API features", function() {
 	// Global setup for all tests
 	frisby.globalSetup({
@@ -148,6 +139,15 @@ describe("MathML Cloud API features", function() {
 		.toss();
 	
 	//---- POST /html5
+	// Set up the HTML5 file posting
+	var html5Path = path.resolve(__dirname, './data/sample-math.html');
+	var form = new FormData();
+	form.append('outputFormat', 'svg');
+	form.append('html5', fs.createReadStream(html5Path), {
+		// we need to set the knownLength so we can call  form.getLengthSync()
+		knownLength: fs.statSync(html5Path).size
+	});
+
 	frisby.create("Post HTML5")
 		.post(base_url + '/html5', 
 		form,
@@ -164,6 +164,33 @@ describe("MathML Cloud API features", function() {
 		.expectJSON({
 			outputFormat : 'svg',
 			"status" : 'accepted'
+		})
+		.toss();
+
+	//---- POST by anonymous, denied
+	frisby.create("Anonymous client")
+		.post(base_url + '/feedback', {
+			equation : '548b6ae78b6657643d8716b5', 
+			comments : 'Testing API call',
+		})
+		.expectStatus(401)
+		.expectHeaderContains("content-type", "application/json")
+		.expectJSON({
+			message : 'Something',
+		})
+		.toss();
+
+	//---- POST by client with wrong subscription, denied
+	frisby.create("Unsubscribed client")
+		.post(base_url + '/feedback', {
+			equation : '548b6ae78b6657643d8716b5', 
+			comments : 'Testing API call',
+			"subscription-key" : '1234567890'
+		})
+		.expectStatus(401)
+		.expectHeaderContains("content-type", "application/json")
+		.expectJSON({
+			message : 'Something',
 		})
 		.toss();
 });
