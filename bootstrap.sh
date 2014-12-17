@@ -41,7 +41,7 @@ else
 fi
 
 # Install Node.JS packages.
-npm -g -y install sails azure-cli forever
+npm -g -y install sails azure-cli pm2
 npm -y install --no-bin-links
 # Testing with Jasmine and Frisby
 npm -g -y install jasmine jasmine-node frisby
