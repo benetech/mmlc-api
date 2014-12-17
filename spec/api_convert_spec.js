@@ -16,6 +16,7 @@ var FormData = require('form-data');
 //var base_url = 'http://localhost:1337';
 var base_url = 'http://mathmlcloud.azure-api.net';
 //var base_url = 'http://104.40.56.172'; // mathmlcloud.azure-api.net
+//var base_url = 'http://mathml-cloud.cloudapp.net';
 //var base_url = 'http://23.101.204.234'; // mathml-cloud.cloudapp.net
 
 var subscription_key = '6b442c2169084711afdd43ad5ba1dfeb';
