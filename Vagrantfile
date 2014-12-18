@@ -70,53 +70,25 @@ Vagrant.configure('2') do |config|
       secrets = YAML.load_file 'secrets.yaml'
       azure.subscription_id = secrets['subscription_id']
       azure.mgmt_certificate = secrets['mgmt_certificate']
-      azure.vm_user = secrets['username'] # defaults to 'vagrant' if not provided
-      azure.vm_password = secrets['password'] # Min 8 characters. should contain a lowercase letter, an uppercase letter, a number and a special character.
+      azure.vm_user = secrets['username']
+      azure.vm_password = secrets['password']
       override.ssh.username = secrets['username']
       override.ssh.password = secrets['password']
       override.ssh.private_key_path = secrets['ssh_private_key_file']
       azure.ssh_private_key_file = secrets['ssh_private_key_file']
       azure.ssh_certificate_file = secrets['ssh_certificate_file']
     end
+    # Override the default VM name with environment settings
+    # MUST BE LOWERCASE, max 15 characters, can contain letters/numbers/hyphens (must start with a letter, cannot end with a hyphen).
+    vm_name = if ENV['AZURE_VM_NAME'] then ENV['AZURE_VM_NAME'] else 'mathml-cloud' end
+
     override.vm.box = 'azure' # Run command: vagrant box add azure https://github.com/msopentech/vagrant-azure/raw/master/dummy.box.
     azure.mgmt_endpoint = 'https://management.core.windows.net'
-    azure.cloud_service_name = 'mathml-cloud'
+    azure.cloud_service_name = vm_name
     azure.storage_acct_name = 'mmlcstorage'
     azure.vm_image = 'b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-14_04-LTS-amd64-server-20140416.1-en-us-30GB'
     azure.vm_size = 'ExtraSmall'
-    azure.vm_name = 'mathml-cloud' # MUST BE LOWERCASE, max 15 characters, can contain letters/numbers/hyphens (must start with a letter, cannot end with a hyphen).
-    azure.vm_location = 'West US'
-    azure.ssh_port = 22
-    azure.tcp_endpoints = '80:80,3000:3000'
-
-    # We don't want the synced folder in Azure.
-    override.vm.synced_folder ".", "/vagrant", disabled: true
-  end
-
-  # Staging environment, similar to live above
-  # TODO: Can we reduce the duplication of config between these two?
-  config.vm.provider :azure_staging do |azure, override|
-    # Read settings from YAML file. Local dev does not need an Azure account, so skip if no file is there.
-    require 'yaml'
-    if File.exists?('secrets.yaml')
-      secrets = YAML.load_file 'secrets.yaml'
-      azure.subscription_id = secrets['subscription_id']
-      azure.mgmt_certificate = secrets['mgmt_certificate']
-      azure.vm_user = secrets['username'] # defaults to 'vagrant' if not provided
-      azure.vm_password = secrets['password'] # Min 8 characters. should contain a lowercase letter, an uppercase letter, a number and a special character.
-      override.ssh.username = secrets['username']
-      override.ssh.password = secrets['password']
-      override.ssh.private_key_path = secrets['ssh_private_key_file']
-      azure.ssh_private_key_file = secrets['ssh_private_key_file']
-      azure.ssh_certificate_file = secrets['ssh_certificate_file']
-    end
-    override.vm.box = 'azure' # Run command: vagrant box add azure https://github.com/msopentech/vagrant-azure/raw/master/dummy.box.
-    azure.mgmt_endpoint = 'https://management.core.windows.net'
-    azure.cloud_service_name = 'mathml-staging'
-    azure.storage_acct_name = 'mmlcstorage'
-    azure.vm_image = 'b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-14_04-LTS-amd64-server-20140416.1-en-us-30GB'
-    azure.vm_size = 'ExtraSmall'
-    azure.vm_name = 'mathml-staging' # MUST BE LOWERCASE, max 15 characters, can contain letters/numbers/hyphens (must start with a letter, cannot end with a hyphen).
+    azure.vm_name = vm_name
     azure.vm_location = 'West US'
     azure.ssh_port = 22
     azure.tcp_endpoints = '80:80,3000:3000'
