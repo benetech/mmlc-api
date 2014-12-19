@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/images/favicon.ico">
+
+    <title>MathML Cloud</title>
+
+     <!--  
+        Stylesheets and Preprocessors
+        ==============================
+
+        You can always bring in CSS files manually with `<link>` tags, or asynchronously
+        using a solution like AMD (RequireJS).  Or, if you like, you can take advantage 
+        of Sails' conventional asset pipeline (boilerplate Gruntfile).
+
+        By default, stylesheets from your `assets/styles` folder are included
+        here automatically (between STYLES and STYLES END). Both CSS (.css) and LESS (.less)
+        are supported. In production, your styles will be minified and concatenated into
+        a single file.
+        
+        To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
+        For example, here are a few things you could do:
+            
+            + Change the order of your CSS files
+            + Import stylesheets from other directories
+            + Use a different or additional preprocessor, like SASS, SCSS or Stylus
+    -->
+    <!--STYLES-->
+    <link rel="stylesheet" href="/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/mmlc.css">
+    <!--STYLES END-->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+          jax: ["input/TeX","input/MathML","input/AsciiMath","output/HTML-CSS","output/NativeMML", "output/SVG"],
+          extensions: ["tex2jax.js","mml2jax.js","asciimath2jax.js","MathMenu.js","MathZoom.js","toMathML.js"],
+          TeX: {
+            extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+          }
+        });
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+    <script data-main="js/main" src="js/libs/require/require.js"></script>
+
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">MathML Cloud</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <form class="navbar-form navbar-right" action="/auth/process" method="post">
+                    <div class="form-group">
+                        <label for="username" class="sr-only">Username</label>
+                        <input type="text" name="username" id="username" placeholder="Email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="sr-only">Password</label>
+                        <input type="password" id="password" placeholder="Password" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign in</button>
+                </form>
+            </div><!--/.navbar-collapse -->
+        </div>
+    </nav>
+
+    <div class="container spacer">
+       <div role="tabpanel" id="equation-form">
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#equation-tab" aria-controls="equation" data-toggle="tab" class="tab">Convert Equation</a></li>
+            <li role="presentation"><a href="#html5-tab" aria-controls="profile" data-toggle="tab" class="tab">Upload HTML5</a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="equation-tab">
+                <form id="mml-editor" method="post" action="/equation/svg">
+                    <h1>Convert a single equation</h1>
+                    <div class="form-group row">
+                        <label for="mml-input" class="col-sm-3 control-label">Ascii Math, TeX or MathML</label>
+                        <div class="col-sm-9">
+                            <textarea id="mml-input" name="math" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="mathType" class="col-sm-3 control-label">Math Type</label>
+                        <div class="col-sm-9">
+                            <select id="mathType" name="mathType" class="form-control">
+                                <option value="AsciiMath">Ascii Math</option>
+                                <option value="MathML">MathML</option>
+                                <option value="TeX">LaTeX</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <span class="col-sm-3 control-label"><strong>Output Format</strong></span>
+                        <div class="col-sm-9">
+                            <label class="radio-inline">
+                              <input type="radio" id="json" name="downloadOption" value="true" checked>Output multiple formats
+                            </label>
+                            <label class="radio-inline">
+                              <input type="radio" id="downloadSVG" name="downloadOption" value="true">Download as SVG
+                            </label>
+                            <label class="radio-inline">
+                              <input type="radio" id="downloadPNG" name="downloadOption" value="true">Download as PNG
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row" id="outputOptions">
+                        <span class="col-sm-3 control-label"><strong>Component Formats</strong></span>
+                        <div class="col-sm-9">
+                            <label class="checkbox-inline">
+                              <input type="checkbox" id="svg" name="svg" value="true" checked>SVG
+                            </label>
+                            <label class="checkbox-inline">
+                              <input type="checkbox" id="mml" name="mml" value="mathml" checked>MathML
+                            </label>
+                            <label class="checkbox-inline">
+                              <input type="checkbox" id="png" name="png" value="true" checked>PNG Image
+                            </label>
+                            <label class="checkbox-inline">
+                              <input type="checkbox" id="description" name="description" value="true" checked>Text Description
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" id="go" value="Convert Equation" class="btn btn-primary pull-right"/>
+                    </div>
+                    <p class="text-danger pull-right" id="errorMessage"></p>
+                </form>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="html5-tab">
+                <form id="html5-editor" action="/html5" enctype="multipart/form-data" method="post">
+                    <h1>Convert multiple equations in a single HTML5 file</h1>
+                    <div class="form-group">
+                        <fieldset>
+                            <legend>Select output format</legend>
+                            <label class="radio-inline">
+                              <input type="radio" name="outputFormat" value="svg" checked>SVG
+                            </label>
+                            <label class="radio-inline">
+                              <input type="radio" name="outputFormat" value="mml">MathML
+                            </label>
+                            <label class="radio-inline">
+                              <input type="radio" name="outputFormat" value="png">PNG
+                            </label>
+                        </fieldset>
+                    </div>
+                    <div class="form-group">
+                        <label for="html5" class="col-sm-2 control-label">HTML5 File</label>
+                        <div class="col-sm-10">
+                            <input type="file" id="html5" name="html5" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" id="upload" value="Upload File" class="btn btn-primary pull-right"/>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="container" id="results">
+    </div>
+
+    <div class="container">
+      <footer>
+        <p>&copy; Benetech 2014</p>
+      </footer>
+    </div> <!-- /container -->
+    <!-- Modal Template. Use for any of your modals. -->
+    <div class="modal" id="mmlcModal" tabindex="-1" role="dialog" aria-labelledby="mmlcModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="mmlcModalLabel"></h4>
+                </div>
+                <div class="modal-body" id="mmlcModalBody">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>
+
+
+
+

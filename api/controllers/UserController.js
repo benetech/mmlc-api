@@ -18,7 +18,7 @@ module.exports = {
 	},
 
 	signUp: function(req, res) {
-		return res.view();
+		res.view();
 	}
 };
 

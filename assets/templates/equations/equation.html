@@ -1,0 +1,37 @@
+<h2>Equation</h2>
+<p><strong>Math:</strong> <%= equation.get("math") %></p>
+<p><strong>Math Type:</strong> <%= equation.get("mathType") %></p>
+<h2>Components</h2>
+<% _.each(equation.get("components"), function(component) { %>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3><%= component.format %><span class="pull-right"><a href="/component/<%= component.id %>" target="_blank">Download <%= component.format %></a></span></h3>
+        </div>
+        <div class="panel-body" id="output-text">
+            <%= component.source %>
+        </div>
+    </div>
+<% }); %>
+<h2>Feedback</h2>
+<div class="panel panel-default">
+    <div class="panel-heading"><h3>Comments</h3></div>
+    <div class="panel-body" id="comments">
+        <form action="/feedback/create" method="post" class="commentsForm">
+            <input type="hidden" name="equation" id="equation" value="<%= equation.get("id") %>"/>
+            <p>Please review the latest renderings of your equation (above) before submitting feedback comments.</p>
+            <fieldset>
+                <legend>Comments For:</legend>
+                <% _.each(equation.get("components"), function(component) { %>
+                    <label class="checkbox-inline">
+                      <input type="checkbox" name="components" value="<%= component.id %>" /><%= component.format %>
+                    </label>
+                <% }); %>
+            </fieldset><br />
+            <label for="equationComments">Comments:</label>
+            <textarea id="equationComments" name="comments" class="form-control"></textarea>
+            <br />
+            <button class="btn btn-lg btn-primary" id="feedback" type="submit">Submit Feedback</button>
+            <p id="commentsMessaging" class="success"></p>
+        </form>
+    </div>
+</div>

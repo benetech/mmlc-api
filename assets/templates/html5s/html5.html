@@ -1,0 +1,26 @@
+<h2>
+    <% if (html5.get("status") == "processing" || html5.get("status") == "accepted") { %>
+        Please wait while we process your 
+    <% } %>
+    HTML5 Upload
+</h2>
+<p><strong>Filename:</strong> <%= html5.get("filename") %></p>
+<p><strong>Output Format:</strong> <%= html5.get("outputFormat") %></p>
+<p><strong>Status:</strong> <%= html5.get("status") %></p>
+<p id="download"><strong>Download:</strong>
+    <a href="/html5/<%= html5.get("id") %>/source"><span class="sr-only">Download</span> <%= html5.get("filename") %> source</a>
+    <% if (typeof(html5.get("output")) != "undefined") { %> 
+        | <a href="/html5/<%= html5.get("id") %>/output"><span class="sr-only">Download</span> <%= html5.get("filename") %> output</a>
+    <% } %>
+</p>
+<div id="processing">
+    <img src="/images/load.gif" alt="Please wait" />
+</div>
+<div id="equations">
+    
+</div>
+<% if (typeof(html5.get("output")) != "undefined") { %> 
+    <h2>Preview</h2>
+<% } %>
+<div id="preview">
+</div>

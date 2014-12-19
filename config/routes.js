@@ -32,9 +32,9 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {
-    view: 'homepage'
-  },
+  //'/': {
+  //  view: 'homepage'
+  //},
 
   /***************************************************************************
   *                                                                          *
@@ -90,7 +90,7 @@ module.exports.routes = {
     action: "upload"
   },
 
-  'post /html5/:id': {
+  'get /html5/:id': {
     controller: 'Html5Controller',
     action: 'find'
   },
@@ -105,12 +105,9 @@ module.exports.routes = {
     action: 'downloadOutput'
   },
 
-  'get /html5/equations/:id': {
+  'get /html5/:id/equations': {
     controller: "Html5Controller",
-    action: "equations",
-    locals: {
-      layout: null
-    }
+    action: "equations"
   },
 
   'get /component/:id': {

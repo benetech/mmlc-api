@@ -19,7 +19,8 @@ module.exports = {
   		}
   		req.logIn(user, function(err) {
     		if (err) res.send(err);
-    		return res.redirect("/admin");
+        console.log("logged in!");
+    		return res.redirect("/");
   		});
   	}) (req, res);
 	},

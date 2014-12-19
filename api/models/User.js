@@ -9,6 +9,14 @@ var bcrypt = require('bcrypt');
 module.exports = {
 
   attributes: {
+    firstName: {
+      type: 'string',
+      required: true
+    },
+    lastName: {
+      type: 'string',
+      required: true
+    },
     username: {
       type: 'string',
       required: true,
@@ -21,7 +29,8 @@ module.exports = {
     role: {
       type: 'string',
       required: true,
-      enum: ['admin', 'user']
+      enum: ['admin', 'user'],
+      defaultsTo: 'user'
     },
     equations: {
       collection: 'equation',
@@ -30,6 +39,9 @@ module.exports = {
     organization: {
       type: 'string',
       required: false
+    },
+    organizationTypes: {
+      type: 'array'
     },
     toJSON: function() {
       var obj = this.toObject();
@@ -50,6 +62,14 @@ module.exports = {
         }
       });
     });
+  },
+
+  afterCreate: function(user, cb) {
+    //Login user.
+    req.logIn(user, function(err) {
+        if (err) res.send(err);
+    });
+    cb(null, user);
   }
 };
 
