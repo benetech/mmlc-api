@@ -46,6 +46,7 @@
   "author": "Benetech",
   "license": "",
   "devDependencies": {
-    "jasmine": "~2.0.1"
+    "jasmine": "~2.0.1",
+	"form-data": "~0.2.0"
   }
 }

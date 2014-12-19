@@ -15,7 +15,8 @@ var FormData = require('form-data');
 // Local testing
 //var base_url = 'http://localhost:1337';
 // Server testing
-var base_url = 'http://mathmlcloud.azure-api.net';
+var base_url = 'http://mathml-staging.cloudapp.net';
+//var base_url = 'http://mathmlcloud.azure-api.net';
 //var base_url = 'http://104.40.56.172'; // mathmlcloud.azure-api.net
 //var base_url = 'http://mathml-cloud.cloudapp.net';
 //var base_url = 'http://23.101.204.234'; // mathml-cloud.cloudapp.net
@@ -23,15 +24,10 @@ var base_url = 'http://mathmlcloud.azure-api.net';
 // This is the key for QAadmin@benetech.org
 var subscription_key = 'caeb604dc5fd49a6b077493b7acad583';
 
-// Local data
-// var equation_id = '54907da59d199c6a0a85d97e';
-// var component_id = '548b08e8a857f0db35d7a2bc';
-// var html5_id = '54907d9d9d199c6a0a85d97b';
-
 // Live data
-var equation_id = '54874e5c62848a90ab0d79b8';
-var component_id = '54874e6562848a90ab0d79bc';
-var html5_id = '5490758da7967a8c61e10103';
+var equation_id = '54946d0b96934481106fd7df';
+var component_id = '54946d1196934481106fd7e3';
+var html5_id = '54947d4923c316bf1e662a48';
 
 describe("MathML Cloud API features", function() {
 	// Global setup for all tests
@@ -59,7 +55,7 @@ describe("MathML Cloud API features", function() {
 		)
 		.expectStatus(200)
 		.expectHeaderContains("content-type", "application/json")
-		.expectJSON("html5", {
+		.expectJSON( {
 			filename : "sample-math.html",
 			outputFormat : "svg",
 		})
@@ -97,8 +93,6 @@ describe("MathML Cloud API features", function() {
 		})
 		.toss();
 
-	//**** NOT YET WORKING ****
-	
 	//---- GET /equation/{id}
 	frisby.create("Get equation")
 		.get(base_url + '/equation/' + equation_id
