@@ -30,4 +30,4 @@ Then the app should be running at http://localhost:1337.
 License
 ---------
 
-See the [LICENSE.txt](blob/master/LICENSE.txt) file for use information.
+See the [LICENSE.txt](LICENSE.txt) file for use information.
