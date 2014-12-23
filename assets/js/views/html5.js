@@ -19,11 +19,10 @@ define([
       setTimeout(function() {
         html5View.$("h2:first").attr('tabindex', '-1').focus();
       }, 500);
-      if (typeof html5View.timerId == "undefined" && 
-        (html5View.model.get("status") == "accepted" || html5View.model.get("status") == "processing")) {
+      if (typeof(html5View.timerId) != "undefined") clearTimeout(html5View.timerId);
+      if (html5View.model.get("status") == "accepted" || html5View.model.get("status") == "processing") {
         html5View.doPoll();
       } else if (html5View.model.get("status") == "completed") {
-        clearTimeout(html5View.timerId); 
         //get equations.
         var equations = new Html5EquationCollection([], { id: html5View.model.get("id") });
         equations.fetch({

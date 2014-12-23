@@ -13,9 +13,9 @@
         | <a href="/html5/<%= html5.get("id") %>/output"><span class="sr-only">Download</span> <%= html5.get("filename") %> output</a>
     <% } %>
 </p>
-<div id="processing">
-    <img src="/images/load.gif" alt="Please wait" />
-</div>
+<% if (typeof(html5.get("comments")) != "undefined") { %>
+    <p class="error"><strong>Errors:</strong> <%= html5.get("comments") %></p>
+<% } %>
 <div id="equations">
     
 </div>

@@ -9,17 +9,6 @@ module.exports = {
         });
     },
 
-    submitHTML5Conversion: function(options, done) {
-        var job = jobs.create('html5 conversion', {title: 'Convert math in ' + options.filename, html5Id: options.id}).save(function(err) {
-            if (!err) { 
-                done();
-            } else { 
-                console.log(err);
-                done({err: err});
-            }
-        });
-    },
-
     convertHTML5: function(options, done) {
         var conversionService = this;
         Html5.findOne({ id: options.html5Id }).exec(function(err, html5) {
@@ -55,7 +44,6 @@ module.exports = {
         try {
             mathjaxNode.typeset(mathjaxOptions, function (data) {
                 if (typeof(data.errors) != "undefined") {
-                    console.log("Errors typesetting page: " + data.errors);
                     done(data.errors);
                 } else {
                     //update html5.

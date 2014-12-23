@@ -31,7 +31,9 @@ define([
         alert ("Please select a HTML5 file to upload.");
         return false;
       }
-      $("#upload").text("Please wait, uploading html5");
+      $("#errorMessage").html("");
+      $("#results").html("");
+      $("#upload").prop("value", "Please wait, uploading html5");
       e.preventDefault();
       var data = new FormData();
       data.append("outputFormat", $("input[name='outputFormat']:checked").val());
@@ -54,7 +56,7 @@ define([
         var html5View = new Html5View();
         html5View.model = new Html5(data);
         html5View.render();
-        $("#upload").text("Upload File");
+        $("#upload").prop("value", "Upload File");
       });
     },
 
