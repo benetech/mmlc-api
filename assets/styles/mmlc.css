@@ -1,3 +1,21 @@
+body {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+.spacer {
+    margin-top: 40px; /* define margin as you see fit */
+}
+
+legend {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+  max-width: 100%;
+  border: none;
+  color: #002F65;
+}
 
 div.output {
 	border: 1px solid black;

@@ -18,11 +18,11 @@ module.exports = {
         job.remove(function(jobErr) { if (jobErr) throw jobErr; });
       });
     });
-    sails.jobs.on('job failed', function(id,result){
+    sails.jobs.on('job failed', function(id,result) {
       sails.kue.Job.get(id, function(err, job) {
         if (err) return;
         //Complete status.
-        Html5.update({id: job.data.html5Id}, {status: 'failed'}).exec(function(err, html5s) {
+        Html5.update({id: job.data.html5Id}, {status: 'failed', comments: result}).exec(function(err, html5s) {
             if (err) console.log(err);
         });
       });

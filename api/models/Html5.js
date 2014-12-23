@@ -27,7 +27,10 @@ module.exports = {
       type: 'string',
       required: true,
       enum: ['accepted', 'processing', 'completed', 'failed']
-    } 
+    },
+    comments: {
+      type: 'string'
+    }
   }
 };
 

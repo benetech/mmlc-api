@@ -43,11 +43,7 @@ module.exports = {
                 		console.log(err);
                 		return res.badRequest(err);
                 	}
-                	if (req.wantsJSON) {
-		          		res.accepted(dbHtml5);	
-		          	} else {
-		          		res.redirect("/html5/" + dbHtml5.id);
-		          	}
+                	res.accepted(dbHtml5);	
                 });
             });
 	    });
@@ -61,15 +57,7 @@ module.exports = {
 				return res.badRequest(err);
 			} 
 			if (typeof(html5) != "undefined") {
-				//load up equations.
-				Equation.find({ html5: html5.id }).populate('components').exec(function(err, equations) {	
-					if (err) return res.badRequest(err);
-					if (req.wantsJSON) {
-						res.json({html5: html5, equations: equations});
-					} else {
-						res.view({html5: html5, equations: equations});
-					}
-				});
+				res.json(html5);
 			} else {
 				res.notFound();
 			}
@@ -80,7 +68,7 @@ module.exports = {
 		var html5Id = req.param('id');
 		Equation.find({ html5: html5Id }).populate('components').exec(function(err, equations) {	
 			if (err) return res.badRequest(err);
-			res.view({equations: equations});
+			res.json(equations);
 		});
 	},
 

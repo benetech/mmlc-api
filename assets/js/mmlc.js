@@ -107,4 +107,10 @@ $('body').ready( function() {
 		$("#equation").val(equation.id);
 
 	}
+    $(".tab").on("click", function() {
+        setTimeout(function() {
+            $("h1").attr('tabindex', '-1').focus();
+        }, 500);
+        
+    });
 });

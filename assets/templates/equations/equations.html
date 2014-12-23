@@ -1,0 +1,24 @@
+<% if (typeof equations != 'undefined') { %>
+    
+    <h2>Equations</h2>
+    <table class="table table-striped table-bordered" id="resultsTable">
+    <thead>
+        <tr>
+            <th>Equation ID</th>
+            <th>Input Math Type</th>
+            <th>Input Math</th>
+            <th>Output</th>
+        </tr>
+    </thead>
+    <tbody>
+    <% _.each(equations, function(equation) { %>
+        <tr>
+            <td><a href="/equation/<%= equation.get("id") %>" data-toggle="modal" data-target="mmlcModal" data-model="<%= equation.get("id") %>" class="feedback">Submit Feedback</a></td>
+            <td><%= equation.get("mathType") %></td>
+            <td><%= equation.get("math") %></td>
+            <td><%= equation.get("components")[0].source %></td>
+        </tr>
+    <% }); %>
+    </tbody>
+    </table>
+<% } %>

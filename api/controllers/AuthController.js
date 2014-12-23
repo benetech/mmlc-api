@@ -19,7 +19,11 @@ module.exports = {
   		}
   		req.logIn(user, function(err) {
     		if (err) res.send(err);
-    		return res.redirect("/admin");
+        if (req.wantsJSON) {
+          return res.json(true);
+        } else {
+    		  return res.redirect("/");
+        }
   		});
   	}) (req, res);
 	},
@@ -27,5 +31,9 @@ module.exports = {
 	logout: function (req,res) {
 	  req.logout();
 	  res.send('logout successful');
-	}
+	},
+
+  loggedInUser: function(req, res) {
+    return res.send(typeof(req.user) != "undefined" ? req.user.toJSON() : "");
+  }
 };
