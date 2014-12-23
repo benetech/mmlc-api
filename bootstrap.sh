@@ -8,6 +8,17 @@ apt-get upgrade -y
 apt-get install nodejs npm mongodb openjdk-7-jre-headless git -y
 ln -s /usr/bin/nodejs /usr/bin/node
 
+# Get the source if running in production.
+# The /Vagrant synced folder only exists in the dev environment.
+if [ -d /vagrant ]
+then
+  cd /vagrant
+else
+  git clone https://github.com/benetech/mmlc-experiments ~mmlc/mathml-cloud
+  chown -R ~mmlc/mathml-cloud mmlc
+  cd ~mmlc/mathml-cloud
+fi
+
 #Install redis.
 wget http://download.redis.io/releases/redis-2.8.17.tar.gz
 tar xzf redis-2.8.17.tar.gz
@@ -28,17 +39,6 @@ cd ..
 
 #start redis
 /etc/init.d/redis_6379 start
-
-# Get the source if running in production.
-# The /Vagrant synced folder only exists in the dev environment.
-if [ -d /vagrant ]
-then
-  cd /vagrant
-else
-  git clone https://github.com/benetech/mmlc-experiments ~mmlc/mathml-cloud
-  chown -R ~mmlc/mathml-cloud mmlc
-  cd ~mmlc/mathml-cloud
-fi
 
 # Install Node.JS packages.
 npm -g -y install sails azure-cli pm2

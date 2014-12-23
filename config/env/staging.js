@@ -1,7 +1,7 @@
 /**
- * Production environment settings
+ * Staging environment settings
  *
- * This file can include shared settings for a production environment,
+ * This file can include shared settings for a development team,
  * such as API keys or remote database passwords.  If you're using
  * a version control solution for your Sails app, this file will
  * be committed to your repository unless you add it to your .gitignore
@@ -13,13 +13,13 @@
 module.exports = {
 
   /***************************************************************************
-   * Set the default database connection for models in the production        *
+   * Set the default database connection for models in the development       *
    * environment (see config/connections.js and config/models.js )           *
    ***************************************************************************/
 
   models: {
-     connection: 'productionMongodbServer'
-  },
+     connection: 'stagingMongodbServer'
+  }
 
   /***************************************************************************
    * Set the port                        *
@@ -32,7 +32,7 @@ module.exports = {
    ***************************************************************************/
 
   log: {
-    level: "warn"
+    level: "debug"
   }
 
 };
