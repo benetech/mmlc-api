@@ -54,7 +54,7 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav id="navbar" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -65,8 +65,8 @@
                 </button>
                 <a class="navbar-brand" href="/">MathML Cloud</a>
             </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <form class="navbar-form navbar-right" action="/auth/process" method="post">
+            <div id="login" class="navbar-collapse collapse">
+                <form class="navbar-form navbar-right login" action="/auth/process" method="post">
                     <div class="form-group">
                         <label for="username" class="sr-only">Username</label>
                         <input type="text" name="username" id="username" placeholder="Email" class="form-control">

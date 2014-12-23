@@ -80,6 +80,11 @@ module.exports.routes = {
     action: 'logout'
   },
 
+  '/loggedInUser': {
+    controller: 'AuthController',
+    action: 'loggedInUser'
+  },
+
   'post /feedback': {
     controller: "FeedbackController",
     action: "create"
