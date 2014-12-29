@@ -163,7 +163,26 @@ module.exports = {
 			if (err) return res.badRequest(err);
 			return res.view({"html5": html5, equations: equations});
 		});
-	}
+	},
+
+	users: function (req, res) {
+		waterfall([
+			function(callback) {
+				User.count(function (err, num) {
+					callback(err, num);
+				});
+			},
+			function (num, callback) {
+				var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
+    			User.find({ skip: offset, limit: 10, sort: 'createdAt DESC' }).exec(function(err, users) {	
+    				callback(err, num, offset, users);
+    			});
+			}
+		], function (err, num, offset, users) {
+			if (err) return res.badRequest(err);
+			return res.view({"users": users, "numUsers": num, "offset": offset});
+		});
+	},
 
 
 };

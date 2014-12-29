@@ -65,18 +65,8 @@
                 </button>
                 <a class="navbar-brand" href="/">MathML Cloud</a>
             </div>
-            <div id="login" class="navbar-collapse collapse">
-                <form class="navbar-form navbar-right login" action="/auth/process" method="post">
-                    <div class="form-group">
-                        <label for="username" class="sr-only">Username</label>
-                        <input type="text" name="username" id="username" placeholder="Email" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="password" class="sr-only">Password</label>
-                        <input type="password" id="password" placeholder="Password" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Sign in</button>
-                </form>
+            <div id="optionalNav" class="navbar-collapse collapse">
+                
             </div><!--/.navbar-collapse -->
         </div>
     </nav>
@@ -190,7 +180,7 @@
     </div> <!-- /container -->
     <!-- Modal Template. Use for any of your modals. -->
     <div class="modal" id="mmlcModal" tabindex="-1" role="dialog" aria-labelledby="mmlcModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>

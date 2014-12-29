@@ -62,14 +62,6 @@ module.exports = {
         }
       });
     });
-  },
-
-  afterCreate: function(user, cb) {
-    //Login user.
-    req.logIn(user, function(err) {
-        if (err) res.send(err);
-    });
-    cb(null, user);
   }
 };
 

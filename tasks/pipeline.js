@@ -25,8 +25,14 @@ var cssFilesToInject = [
 var jsFilesToInject = [
   
   // Load sails.io before everything else
-  'js/dependencies/sails.io.js'
+  'js/dependencies/sails.io.js',
+  // Dependencies like jQuery, or Angular are brought in here
+  'js/libs/jquery/jquery.min.js',
+  'js/libs/bootstrap/bootstrap.min.js',
+  'js/libs/bootstrap/ie10-viewport-bug-workaround.js',
+  'js/admin.js'
 ];
+
 
 
 // Client-side HTML templates are injected using the sources below

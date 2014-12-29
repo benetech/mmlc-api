@@ -3,42 +3,59 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!/templates/users/sign_up.html'
-], function($, _, Backbone, equationTemplate) {
-  var FeedbackView = Backbone.View.extend({
+  'stickit',
+  'validation',
+  'text!/templates/users/sign_up.html',
+  'js/models/user.js'
+], function($, _, Backbone, stickit, validation, signUpTemplate, User) {
+  var SignUpView = Backbone.View.extend({
 
     events: {
-      "submit .commentsForm": "submitComments"
+      "submit #signUp": "createUser"
+    },
+
+    bindings: {
+      "#firstName": "firstName",
+      "#lastName": "lastName",
+      "#username": "username",
+      "#confirmEmail": "confirmEmail",
+      "#password": "password",
+      "#termsOfService": "termsOfService",
+      "#organization": "organization",
+      "input[name='organizationTypes']": "organizationTypes"
     },
 
     //div.
     el:  $("#mmlcModal"),
     
-    // Render the recommendation.
     render: function() {
-      var compiledTemplate = _.template(equationTemplate)({equation: this.model});
-      this.$("#mmlcModalBody").html(compiledTemplate);
-      this.$("#mmlcModalLabel").html("Submit Feedback");
+      var signUp = this;
+      signUp.model = new User();
+      var compiledTemplate = _.template(signUpTemplate)({user: signUp.model});
+      signUp.$("#mmlcModalBody").html(compiledTemplate);
+      signUp.$("#mmlcModalLabel").html("Register");
+      signUp.stickit();
+      validation.bind(signUp);
+      setTimeout(function() {
+        signUp.$("input:first").attr('tabindex', '-1').focus();
+      }, 1000);
       return this;
     },
 
-    submitComments: function(e) {
-      var feedbackView = this;
+    createUser: function(e) {
+      var signUp = this;
       e.preventDefault();
-      var url = "/feedback?" + feedbackView.$('.commentsForm').serialize(); 
-      console.log(url);
-      $.ajax({
-        type: "POST",
-        url: url,
-        dataType: 'json'
-      }).done(function(data) {
-        $("#commentsMessaging").html("Thank you for your feedback!");
-        setTimeout(function() {
-          $("#commentsMessaging").attr('tabindex', '-1').focus();
-        }, 500);
-      });
+      if (this.model.isValid(true)) {
+        //create user.
+        signUp.model.save(null, {success: function() { 
+          $('#mmlcModal').modal('hide');
+        }});
+      } else {
+        //set focus on first field with error.
+        signUp.$(".error:first").focus();
+      }
     }
     
   });
-  return FeedbackView;
+  return SignUpView;
 });

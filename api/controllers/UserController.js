@@ -19,6 +19,17 @@ module.exports = {
 
 	signUp: function(req, res) {
 		res.view();
+	},
+
+	create: function(req, res) {
+		User.create(req.body).then(function (user) {
+        	req.logIn(user, function(err) {
+	    		if (err) res.send(err);
+		        return res.json(user);
+	  		});
+        }).catch(function(e) {
+        	return res.badRequest(e);
+        });
 	}
 };
 
