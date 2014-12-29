@@ -77,6 +77,10 @@ module.exports.connections = {
     adapter: 'sails-mongo',
   },
 
+  stagingMongodbServer: {
+    adapter: 'sails-mongo',
+  },
+
   /***************************************************************************
   *                                                                          *
   * PostgreSQL is another officially supported relational database.          *
