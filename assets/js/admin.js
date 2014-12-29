@@ -14,5 +14,11 @@ $(function() {
 		});	
 	}
 	bindPagination();
+	$(".tab").on("click", function() {
+        setTimeout(function() {
+            $("h1").attr('tabindex', '-1').focus();
+        }, 500);
+        
+    });
 	
 });
