@@ -29,12 +29,16 @@ define([
     el:  $("#mmlcModal"),
     
     render: function() {
-      this.model = new User();
-      var compiledTemplate = _.template(signUpTemplate)({user: this.model});
-      this.$("#mmlcModalBody").html(compiledTemplate);
-      this.$("#mmlcModalLabel").html("Register");
-      this.stickit();
-      validation.bind(this);
+      var signUp = this;
+      signUp.model = new User();
+      var compiledTemplate = _.template(signUpTemplate)({user: signUp.model});
+      signUp.$("#mmlcModalBody").html(compiledTemplate);
+      signUp.$("#mmlcModalLabel").html("Register");
+      signUp.stickit();
+      validation.bind(signUp);
+      setTimeout(function() {
+        signUp.$("input:first").attr('tabindex', '-1').focus();
+      }, 1000);
       return this;
     },
 
