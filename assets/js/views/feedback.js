@@ -14,7 +14,6 @@ define([
     //div.
     el:  $("#mmlcModal"),
     
-    // Render the recommendation.
     render: function() {
       var compiledTemplate = _.template(equationTemplate)({equation: this.model});
       this.$("#mmlcModalBody").html(compiledTemplate);

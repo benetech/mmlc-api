@@ -3,26 +3,34 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'bootstrap'
-], function($, _, Backbone, bootstrap) {
+  'bootstrap',
+  'js/views/sign_up.js',
+  'text!/templates/user_nav.html',
+  'text!/templates/public_nav.html',
+  'js/models/user.js'
+], function($, _, Backbone, bootstrap, SignUpView, userNavTemplate, publicNavTemplate, User) {
   var NavBarView = Backbone.View.extend({
 
     events: {
       "submit .login": "logInUser",
-      "click .register": "showRegisterModal"
+      "click #registerLink": "showRegisterModal",
+      "click #logout": "logOutUser"
     },
     
     //div.
-    el:  $("#navbar"),
+    el:  $("#optionalNav"),
 
-    initialize: function() {
-      var navbar = this;
-      //if the user is logged in, hide log in form.
+    render: function() {
+      var navBar = this;
       $.get("/loggedInUser").done(function(data) {
-        console.log(data);
-        if (data) {
-          navbar.$("#login").hide();
-        }  
+        if (data != "") {
+          navBar.model = new User(data);
+          var compiledTemplate = _.template(userNavTemplate)({user: navBar.model});
+        } else {
+          var compiledTemplate = _.template(publicNavTemplate);
+        }
+        navBar.$el.html(compiledTemplate);
+        return navBar;
       });
     },
     
@@ -32,15 +40,34 @@ define([
       var submitForm = $(e.currentTarget);
       $.post($(submitForm).attr("action"), {username: $("#username").val(), password: $("#password").val()}, function(data) {
         if (data) {
-          alert("Hi!");
-          navbar.$(".login").hide();
+          if (typeof(data.message) != "undefined") {
+            alert(data.message);
+          } else {
+            navbar.render();
+          }
+        }
+      });
+    },
+
+    logOutUser: function(e) {
+      var navbar = this;
+      e.preventDefault();
+      $.get("/auth/logout", function(data) {
+        if(data == "logout successful") {
+          navbar.render();
         }
       });
     },
 
     showRegisterModal: function(e) {
       e.preventDefault();
-      
+      var navBar = this;
+      var signUpView = new SignUpView();
+      signUpView.render();
+      $("#mmlcModal").modal('show');
+      $("#mmlcModal").on('hidden.bs.modal', function (e) {
+        navBar.render();
+      });
     }
     
   });
