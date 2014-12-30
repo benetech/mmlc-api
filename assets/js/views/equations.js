@@ -26,9 +26,7 @@ define([
       e.preventDefault();
       var link = $(e.currentTarget);
       var feedbackView = new FeedbackView();
-      console.log(link.data("model"));
       var equation = this.collection.get(link.data("model"));
-      console.log(equation);
       feedbackView.model = equation;
       feedbackView.render();
       $("#mmlcModal").modal('show');
