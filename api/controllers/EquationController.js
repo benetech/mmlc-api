@@ -143,7 +143,9 @@ module.exports = {
 	},
 
 	myEquations: function(req, res) {
-		Equation.find({submittedBy: req.user.id}).populate('components').exec(function(err, equations) {
+		var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
+		Equation.find({ submittedBy: req.user.id, skip: offset, limit: 10, sort: 'createdAt DESC' }).populate('components').exec(function(err, equations) {
+			if (err) return res.badRequest(err);
 			res.json(equations);
 		});
 	}

@@ -33,9 +33,6 @@ define([
             equationsView.delegateEvents();
           }
         });
-        //Load preview.
-        var preview = html5View.model.get("output").split("<body")[1].split(">").slice(1).join(">").split("</body>")[0];
-        html5View.$("#preview").html(preview);
       }
       return this;
     },

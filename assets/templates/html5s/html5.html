@@ -19,8 +19,11 @@
 <div id="equations">
     
 </div>
-<% if (typeof(html5.get("output")) != "undefined") { %> 
+<% if (typeof(html5.get("output")) != "undefined") { 
+    var preview = html5.get("output").split("<body")[1].split(">").slice(1).join(">").split("</body>")[0];
+%> 
     <h2>Preview</h2>
+    <div id="preview">
+        <%= preview %>
+    </div>
 <% } %>
-<div id="preview">
-</div>

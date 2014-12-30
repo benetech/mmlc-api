@@ -36,6 +36,10 @@ module.exports = {
       collection: 'equation',
       via: 'submittedBy'
     },
+    uploads: {
+      collection: 'html5',
+      via: 'submittedBy'
+    },
     organization: {
       type: 'string',
       required: false

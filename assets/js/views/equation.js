@@ -25,7 +25,6 @@ define([
       var feedbackView = this;
       e.preventDefault();
       var url = "/feedback?" + feedbackView.$('.commentsForm').serialize(); 
-      console.log(url);
       $.ajax({
         type: "POST",
         url: url,

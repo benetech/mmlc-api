@@ -41,6 +41,11 @@ module.exports.policies = {
   EquationController: {
     "myEquations": "authenticated",
     "*": true
+  },
+
+  Html5Controller: {
+    "myUploads": "authenticated",
+    "*": true
   }
 
 };

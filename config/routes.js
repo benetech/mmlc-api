@@ -175,6 +175,11 @@ module.exports.routes = {
   'get /myEquations': {
     controller: 'EquationController',
     action: 'myEquations'
+  },
+
+  'get /myUploads': {
+    controller: 'Html5Controller',
+    action: 'myUploads'
   }
 
   

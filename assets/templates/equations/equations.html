@@ -1,6 +1,22 @@
-<% if (typeof equations != 'undefined') { %>
-    
-    <h2>Equations</h2>
+<% if (typeof equations != 'undefined') { 
+    var limit = 10;
+    var pages = Math.ceil(equations.length/10);
+    var currentPage = 1;
+    var next = 1 + limit; 
+    var back = 1 - limit;
+%>
+<% if (equations.length > 10) { %>
+    <nav>
+      <ul class="pagination">
+        <% for (var i = 1; i <= pages; i++) { 
+            var skip = (i-1)*limit; 
+            var active = i == currentPage; %>
+            <li <%= active ? "class=active" : "" %>><a href="#/uploads/<%=skip%>" class="page" data-type="html5"><%= i %></a></li>
+        <% } %>
+      </ul>
+    </nav>
+<% } %>
+    <h1>Equations</h1>
     <table class="table table-striped table-bordered" id="resultsTable">
     <thead>
         <tr>
