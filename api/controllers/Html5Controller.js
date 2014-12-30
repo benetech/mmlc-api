@@ -27,7 +27,6 @@ module.exports = {
 	        var fs = require("fs");
 	        
 	        //Save HTML5. 
-            console.log(req.user);
             var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
             Html5.create({
             			source: fs.readFileSync(html5.fd), 
