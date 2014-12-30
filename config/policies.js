@@ -36,6 +36,11 @@ module.exports.policies = {
 
   AdminController: {
     "*": "isAdmin"
+  },
+
+  EquationController: {
+    "myEquations": "authenticated",
+    "*": true
   }
 
 };

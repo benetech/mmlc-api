@@ -170,6 +170,11 @@ module.exports.routes = {
     locals: {
       layout: 'admin/layout'
     }
+  },
+
+  'get /myEquations': {
+    controller: 'EquationController',
+    action: 'myEquations'
   }
 
   

@@ -9,7 +9,7 @@ define([
 ], function($, _, Backbone, html5Template, Html5EquationCollection, EquationsView) {
   var Html5View = Backbone.View.extend({
     //div.
-    el:  $("#results"),
+    tagName:  "div",
 
     // Render the recommendation.
     render: function() {

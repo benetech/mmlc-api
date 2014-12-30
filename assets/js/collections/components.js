@@ -1,4 +1,4 @@
-// Image Collection
+// Component Collection
 // ---------------
 define([
   'underscore',

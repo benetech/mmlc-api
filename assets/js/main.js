@@ -12,6 +12,10 @@ require.config({
     validation: 'libs/backbone/backbone-validation-amd-min'
   },
   shim: {
+    "backbone": {
+      deps: ["underscore", "jquery"],
+      exports: "Backbone"
+    },
     "bootstrap": {
       deps: ["jquery"],
       exports: "bootstrap"

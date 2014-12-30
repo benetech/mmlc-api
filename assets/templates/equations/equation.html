@@ -1,6 +1,7 @@
 <h2>Equation</h2>
 <p><strong>Math:</strong> <%= equation.get("math") %></p>
 <p><strong>Math Type:</strong> <%= equation.get("mathType") %></p>
+<p><strong>ID:</strong> <a href="#/equation/<%= equation.get("id") %>"><%= equation.get("id") %></a></p>
 <h2>Components</h2>
 <% _.each(equation.get("components"), function(component) { %>
     <div class="panel panel-default">
@@ -29,9 +30,13 @@
             </fieldset><br />
             <label for="equationComments">Comments:</label>
             <textarea id="equationComments" name="comments" class="form-control"></textarea>
-            <br />
+            <br />  
             <button class="btn btn-lg btn-primary" id="feedback" type="submit">Submit Feedback</button>
             <p id="commentsMessaging" class="success"></p>
         </form>
     </div>
+</div>
+<div id="html5-preview">
+    <h2>Html5 Preview</h2>
+    <div id="preview"></div>
 </div>

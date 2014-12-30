@@ -1,4 +1,4 @@
-// Image Collection
+// Html5 Collection
 // ---------------
 define([
   'underscore',

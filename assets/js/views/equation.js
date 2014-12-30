@@ -12,9 +12,9 @@ define([
     },
 
     //div.
-    el:  $("#results"),
+    tagName:  "div",
     
-    // Render the recommendation.
+    // Render the equation.
     render: function() {
       var compiledTemplate = _.template(equationTemplate)({equation: this.model});
       this.$el.html(compiledTemplate);
