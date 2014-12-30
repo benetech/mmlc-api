@@ -11,7 +11,7 @@ define([
     //div.
     tagName:  "div",
 
-    // Render the recommendation.
+    // Render the html5
     render: function() {
       var html5View = this;
       var compiledTemplate = _.template(html5Template)({html5: html5View.model});
@@ -28,8 +28,9 @@ define([
         equations.fetch({
           success: function(collection) {
             var equationsView = new EquationsView();
+            equationsView.$el = html5View.$('#equations');
             equationsView.collection = collection;
-            html5View.$("#equations").html(equationsView.render().el);
+            equationsView.render();
             equationsView.delegateEvents();
           }
         });
