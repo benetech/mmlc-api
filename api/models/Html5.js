@@ -30,6 +30,12 @@ module.exports = {
     },
     comments: {
       type: 'string'
+    },
+    submittedBy: {
+      model: 'user'
+    },
+    ip_address: {
+        type: 'string'
     }
   }
 };

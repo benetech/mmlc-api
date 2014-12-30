@@ -1,18 +1,18 @@
-// Html5 Collection
+// Equation collection
 // ---------------
 define([
   'underscore',
   'backbone',
   '/js/models/equation.js'
 ], function(_, Backbone, Equation){
-  var Html5EquationCollection = Backbone.Collection.extend({
+  var EquationCollection = Backbone.Collection.extend({
     initialize: function(models, options) {
-        this.id = options.id;
+        this.offset = options.offset;
     },
     url: function() {
-        return '/html5/' + this.id + '/equations';
+        return '/myEquations?offset=' + this.offset;
     },
     model: Equation,
   });
-  return Html5EquationCollection;
+  return EquationCollection;
 });

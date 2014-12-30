@@ -4,7 +4,6 @@
  * @description :: Server-side logic for managing Equations
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-
 module.exports = {
 	
 	/**
@@ -28,11 +27,15 @@ module.exports = {
 	        var fs = require("fs");
 	        
 	        //Save HTML5. 
+            console.log(req.user);
+            var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
             Html5.create({
             			source: fs.readFileSync(html5.fd), 
             			filename: html5.filename, 
             			outputFormat: req.param('outputFormat'),
-            			status: 'accepted'}).exec(function(err, dbHtml5) {
+            			status: 'accepted',
+                        submittedBy: req.user,
+                        ip_address: ip}).exec(function(err, dbHtml5) {
                 if (err) {
                     console.log(err);
                     return res.badRequest(err);
@@ -78,7 +81,15 @@ module.exports = {
 
 	downloadOutput: function(req, res) {
 		Html5Service.download(req, res, false);
-	}
+	},
+
+    myUploads: function(req, res) {
+        var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
+        Html5.find({ submittedBy: req.user.id, skip: offset, limit: 10, sort: 'createdAt DESC' }).populate("equations").exec(function(err, html5) {
+            if (err) return res.badRequest(err);
+            res.json(html5);
+        });
+    }
 	
 };
 

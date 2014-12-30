@@ -33,6 +33,9 @@ module.exports = {
     },
     html5: {
         model: 'html5'
+    },
+    ip_address: {
+        type: 'string'
     }
   }
 };

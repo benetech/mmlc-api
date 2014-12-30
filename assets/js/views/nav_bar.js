@@ -14,11 +14,19 @@ define([
     events: {
       "submit .login": "logInUser",
       "click #registerLink": "showRegisterModal",
-      "click #logout": "logOutUser"
+      "click #logout": "logOutUser",
+      "click .pageLink": "setFocusOnH1"
     },
     
     //div.
     el:  $("#optionalNav"),
+
+    setFocusOnH1: function() {
+
+      setTimeout(function() {
+        $("h1:first").attr('tabindex', '-1').focus();
+      }, 1500);
+    },
 
     render: function() {
       var navBar = this;

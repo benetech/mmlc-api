@@ -170,6 +170,16 @@ module.exports.routes = {
     locals: {
       layout: 'admin/layout'
     }
+  },
+
+  'get /myEquations': {
+    controller: 'EquationController',
+    action: 'myEquations'
+  },
+
+  'get /myUploads': {
+    controller: 'Html5Controller',
+    action: 'myUploads'
   }
 
   

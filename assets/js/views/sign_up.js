@@ -37,7 +37,7 @@ define([
       signUp.stickit();
       validation.bind(signUp);
       setTimeout(function() {
-        signUp.$("input:first").attr('tabindex', '-1').focus();
+        signUp.$("input:first").focus();
       }, 1000);
       return this;
     },

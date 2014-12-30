@@ -26,9 +26,12 @@ module.exports = {
 
 		//Create db record first so that we can make use of waterline's
 		//validation rules.
+		var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 		Equation.create({
 		  math: options.math,
-		  mathType: options.format
+		  mathType: options.format,
+		  submittedBy: req.user,
+		  ip_address: ip
 		}).exec(function(err, equation) {
 		  	if (err) {
 		  		console.log(err);
@@ -123,7 +126,7 @@ module.exports = {
 	find: function(req, res) {
 		var equationId = req.param('id');
 		var preview = req.param('preview');
-		Equation.findOne({ id: equationId }).populate('components').exec(function (err, equation) {
+		Equation.findOne({ id: equationId }).populate('components').populate('html5').exec(function (err, equation) {
 			if (err) {
 				console.log(err);
 				return res.badRequest(err);
@@ -136,6 +139,14 @@ module.exports = {
 					return res.view({"equation": equation});
 				}
 			}
+		});
+	},
+
+	myEquations: function(req, res) {
+		var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
+		Equation.find({ submittedBy: req.user.id, skip: offset, limit: 10, sort: 'createdAt DESC' }).populate('components').exec(function(err, equations) {
+			if (err) return res.badRequest(err);
+			res.json(equations);
 		});
 	}
 	

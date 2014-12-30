@@ -7,12 +7,15 @@ define([
   'js/views/equation.js',
   '/js/views/html5.js',
   'js/models/equation.js',
-  'js/models/html5.js'
-], function($, _, Backbone, Bootstrap, EquationView, Html5View, Equation, Html5){
+  'js/models/html5.js',
+  'text!/templates/form.html'
+], function($, _, Backbone, Bootstrap, EquationView, Html5View, Equation, Html5, formTemplate){
   var FormView = Backbone.View.extend({
-    el: $('#equation-form'),
+
+    el: $('#main-content'),
+
     events: {
-      "click .tab": "setFocusOnH1",
+      "click .tab": "clickTab",
       "submit #mml-editor": "convertEquation",
       "submit #html5-editor": "uploadHtml5",
       "click #downloadSVG": "hideOutputOptions",
@@ -20,13 +23,23 @@ define([
       "click #json": "showOutputOptions"
     },
 
-    setFocusOnH1: function() {
+    render: function() {
+      var formView = this;
+      var compiledTemplate = _.template(formTemplate);
+      formView.$el.html(compiledTemplate);
+      return this;
+    },
+
+    clickTab: function() {
+      var formView = this;
       setTimeout(function() {
         $("h1").attr('tabindex', '-1').focus();
       }, 500);
+      formView.$("#results").html("");
     },
 
     uploadHtml5: function(e) {
+      var formView = this;
       if ($("#html5").val() == "") {
         alert ("Please select a HTML5 file to upload.");
         return false;
@@ -55,7 +68,7 @@ define([
       }).success(function(data) {
         var html5View = new Html5View();
         html5View.model = new Html5(data);
-        html5View.render();
+        formView.$("#results").html(html5View.render().el);
         $("#upload").prop("value", "Upload File");
       });
     },
@@ -77,8 +90,9 @@ define([
     },
 
     convert: function() {
+      var formView = this;
+      $("#go").prop("value", "Please wait, converting equation.");
       var url = "/equation?" + $('#mml-editor').serialize(); 
-      $("#processing").show();
       $.ajax({
         type: "POST",
         url: url,
@@ -92,7 +106,12 @@ define([
       }).success(function(data) {
         var equationView = new EquationView();
         equationView.model = new Equation(data);
-        equationView.render();
+        formView.$("#results").html(equationView.render().el);
+        setTimeout(function() {
+          formView.$("h2:first").attr('tabindex', '-1').focus();
+        }, 500);
+      }).always(function() {
+        $("#go").prop("value", "Convert Equation");
       });
     },
 
