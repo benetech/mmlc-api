@@ -24,9 +24,7 @@ define([
             required: true
         },
         confirmPassword: {
-          required: function(val, attr, computed) {
-            return computed.password === val;
-          }
+          equalTo: 'password'
         },
         termsOfService: {
             acceptance: true
