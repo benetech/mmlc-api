@@ -1,3 +1,4 @@
+var waterfall = require('async-waterfall'), jsdom = require("jsdom").jsdom, serializeDocument = require("jsdom").serializeDocument; 
 module.exports = {
     convert: function(options, done) {
         var mathjaxNode = require("../../node_modules/MathJax-node/lib/mj-single.js"),
@@ -46,23 +47,44 @@ module.exports = {
                 if (typeof(data.errors) != "undefined") {
                     done(data.errors);
                 } else {
-                    //update html5.
-                    Html5.update({id: html5.id}, {output: data.html}).exec(function(err, html5s) {
-                        //Save all jax.
-                        if (typeof(data.equations) != "undefined") {
-                            data.equations.forEach(function(equation, index) {
-                                if (equation.originalText != '') {
-                                    Equation.create({
+                    var doc = jsdom(data.html);
+                    var window = doc.parentWindow;
+                    waterfall([
+                        function (callback) {
+                            //Save all jax.
+                            if (typeof(data.equations) != "undefined") {
+                                data.equations.forEach(function(equation, index) {
+                                    if (equation.originalText != '') {
+                                        Equation.create({
                                         math: equation.originalText,
                                         mathType: equation.inputJax,
                                         html5: html5.id}).exec(function(err, dbEquation) {
-                                         if (err) console.log(err);
-                                         //Create output component.
-                                         EquationService.createComponent(html5.outputFormat, equation.outputJax, dbEquation.id);
-                                    });
-                                }
+                                            if (err) done(err);
+                                            //Create output component.
+                                            EquationService.createComponent(html5.outputFormat, equation.outputJax, dbEquation.id);
+                                            if (window.document.getElementById(equation.inputID) != null) {
+                                                var domEquation = window.document.getElementById(equation.inputID);
+                                                domEquation.setAttribute("id", dbEquation.id);
+                                                var comment = window.document.createComment("http://mathml-cloud.cloudapp.net/equation/" + dbEquation.id);
+                                                var parent = domEquation.parentElement;
+                                                parent.insertBefore(comment, domEquation);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                            callback();
+                        },
+                        function(callback){
+                            //update html5.
+                            Html5.update({id: html5.id}, {output: serializeDocument(doc)}).exec(function(err, html5s) {
+                                if (err) callback(err);
                             });
+                            callback();
                         }
+                    ],
+                    function(err) {
+                        if (err) done(err);
                         done();
                     });
                 }
