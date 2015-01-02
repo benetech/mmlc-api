@@ -136,7 +136,7 @@ module.exports = {
 				if (req.wantsJSON) {
 					return res.json(equation); 
 				} else {
-					return res.view({"equation": equation});
+					return res.redirect("#/equation/" + equation.id);
 				}
 			}
 		});
