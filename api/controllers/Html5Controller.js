@@ -16,16 +16,22 @@ module.exports = {
 		}
 		var options = {};
 		req.file('html5').upload(function (err, files) {
-			if (err) {
+			
+            if (err) {
 	        	console.log(err);
 			  	return res.badRequest(err);
 		    }
 			if (typeof(files[0]) == "undefined") {
 				return res.badRequest("Please specify HTML5 file.");
-			}
-	        var html5 = files[0];
-	        var fs = require("fs");
+			} 
+            var html5 = files[0];
+            var fs = require("fs");
+            var path = require("path");
+            if (path.extname(html5.filename) != ".html") {
+                return res.badRequest("Only html files are supported.");
+            }
 	        
+
 	        //Save HTML5. 
             var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
             Html5.create({
@@ -59,7 +65,11 @@ module.exports = {
 				return res.badRequest(err);
 			} 
 			if (typeof(html5) != "undefined") {
-				res.json(html5);
+                if (req.wantsJSON) {
+                    res.json(html5);
+                } else {
+                    return res.redirect("#/html5/" + html5.id);
+                }
 			} else {
 				res.notFound();
 			}

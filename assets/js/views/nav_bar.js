@@ -7,8 +7,9 @@ define([
   'js/views/sign_up.js',
   'text!/templates/user_nav.html',
   'text!/templates/public_nav.html',
-  'js/models/user.js'
-], function($, _, Backbone, bootstrap, SignUpView, userNavTemplate, publicNavTemplate, User) {
+  'js/models/user.js',
+  'js/views/form.js'
+], function($, _, Backbone, bootstrap, SignUpView, userNavTemplate, publicNavTemplate, User, FormView) {
   var NavBarView = Backbone.View.extend({
 
     events: {
@@ -63,6 +64,8 @@ define([
       $.get("/auth/logout", function(data) {
         if(data == "logout successful") {
           navbar.render();
+          var formView = new FormView();
+          formView.render();
         }
       });
     },

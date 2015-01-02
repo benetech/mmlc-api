@@ -20,6 +20,7 @@ define([
       "#username": "username",
       "#confirmEmail": "confirmEmail",
       "#password": "password",
+      "#confirmPassword": "confirmPassword",
       "#termsOfService": "termsOfService",
       "#organization": "organization",
       "input[name='organizationTypes']": "organizationTypes"

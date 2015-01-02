@@ -44,7 +44,7 @@ define([
         alert ("Please select a HTML5 file to upload.");
         return false;
       }
-      $("#errorMessage").html("");
+      formView.$(".errorMessage").html("");
       $("#results").html("");
       $("#upload").prop("value", "Please wait, uploading html5");
       e.preventDefault();
@@ -60,22 +60,23 @@ define([
         processData: false,
         type: 'POST'
       }).fail(function(jqXHR, textStatus, errorThrown) {
-        $("#errorMessage").text("There was an error converting your math: " + jqXHR.responseText);
+        formView.$(".errorMessage").text("There was an error converting your math: " + jqXHR.responseText);
         $("#processing").hide();
         setTimeout(function() {
-          $("#errorMessage").attr('tabindex', '-1').focus();
+          formView.$(".errorMessage").attr('tabindex', '-1').focus();
         }, 500);
       }).success(function(data) {
         var html5View = new Html5View();
         html5View.model = new Html5(data);
         formView.$("#results").html(html5View.render().el);
+      }).always(function() {
         $("#upload").prop("value", "Upload File");
       });
     },
 
     convertEquation: function(e) {
       var formView = this;
-      $("#errorMessage").html("");
+      formView.$(".errorMessage").html("");
       $("#results").html("");
       if ($("#downloadPNG").prop("checked") == true) {
         $('#mml-editor').attr("action", "/equation/png");
@@ -98,10 +99,10 @@ define([
         url: url,
         dataType: 'json'
       }).fail(function(jqXHR, textStatus, errorThrown) {
-        $("#errorMessage").text("There was an error converting your math: " + jqXHR.responseText);
+        formView.$(".errorMessage").text("There was an error converting your math: " + jqXHR.responseText);
         $("#processing").hide();
         setTimeout(function() {
-          $("#errorMessage").attr('tabindex', '-1').focus();
+          formView.$(".errorMessage").attr('tabindex', '-1').focus();
         }, 500);
       }).success(function(data) {
         var equationView = new EquationView();
