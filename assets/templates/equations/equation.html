@@ -36,10 +36,10 @@
         </form>
     </div>
 </div>
-<% if (typeof(equation.get("html5")) != "undefined") { 
+<% if (typeof(equation.get("html5")) != "undefined" && typeof(equation.get("html5").output) != "undefined") { 
     var preview = equation.get("html5").output.split("<body")[1].split(">").slice(1).join(">").split("</body>")[0];
 %>
-    <h2>Html5 Preview</h2>
+    <h2><a href="#/html5/<%= equation.get("html5").id %>">Html5 Preview</a></h2>
     <div id="preview">
         <%= preview %>
     </div>
