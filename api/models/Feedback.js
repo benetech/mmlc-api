@@ -18,7 +18,10 @@ module.exports = {
   	comments: {
   		type: 'string',
   		required: true
-  	}
+  	},
+    submittedBy: {
+      model: 'user'
+    }
   }
 };
 

@@ -26,6 +26,7 @@
 				<th>File Name</th>
 				<th>Number of Equations</th>
 				<th>Output Format</th>
+				<th>Submitted By</th>
 				<th>Date</th>
 				<th>Download Options</th>
 			</tr>
@@ -37,6 +38,11 @@
 				<td><%= h.filename %></td>
 				<td><%= typeof(h.equations) != 'undefined' ? h.equations.length : 0 %></td>
 				<td><%= h.outputFormat %></td>
+				<td>
+					<% if (typeof(h.submittedBy) != "undefined") { %>
+						<%= h.submittedBy.username %>
+					<% } %>
+				</td>
 				<td><%= h.createdAt %></td>
 				<td>
 					<a href="/admin/downloadHtml5?source=true&id=<%= h.id %>"><span class="sr-only">Download</span> <%= h.filename %> source</a> | 

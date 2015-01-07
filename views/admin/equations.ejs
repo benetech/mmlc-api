@@ -24,6 +24,7 @@
 			<tr>
 				<th>Equation ID</th>
 				<th>Equation</th>
+				<th>Submitted By</th>
 				<th>Date</th>
 			</tr>
 		</thead>
@@ -48,6 +49,11 @@
 						default:
 							//do nothing.
 					} %>
+				</td>
+				<td>
+					<% if (typeof(e.submittedBy) != "undefined") { %>
+						<%= e.submittedBy.username %>
+					<% } %>
 				</td>
 				<td><%= e.createdAt %></td>
 			</tr>
