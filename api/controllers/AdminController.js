@@ -17,7 +17,7 @@ module.exports = {
 				});
 			},
 			function (numFeedback, callback) {
-				Feedback.find({ skip: 0, limit: limit, sort: 'createdAt DESC' }).populate('equation').populate('components').exec(function(err, feedback) {
+				Feedback.find({ skip: 0, limit: limit, sort: 'createdAt DESC' }).populate('equation').populate('components').populate('submittedBy').exec(function(err, feedback) {
 					callback(err, numFeedback, feedback);
 				});
 			},
@@ -27,7 +27,7 @@ module.exports = {
 				});
 			},
 			function (numFeedback, feedback, numEquations, callback) {
-				Equation.find({ skip: 0, limit: limit, sort: 'createdAt DESC' }).populate('components').exec(function(err, equations) {
+				Equation.find({ skip: 0, limit: limit, sort: 'createdAt DESC' }).populate('components').populate('submittedBy').exec(function(err, equations) {
 					callback(err, numFeedback, feedback, numEquations, equations);
 				});
 			},
@@ -47,7 +47,7 @@ module.exports = {
 				});
 			},
 			function (numFeedback, feedback, numEquations, equations, numUsers, users, numHtml5, callback) {
-				Html5.find({ skip: 0, limit: limit, sort: 'createdAt DESC' }).populate("equations").exec(function(err, html5) {
+				Html5.find({ skip: 0, limit: limit, sort: 'createdAt DESC' }).populate("equations").populate('submittedBy').exec(function(err, html5) {
 					callback(err, numFeedback, feedback, numEquations, equations, numUsers, users, numHtml5, html5);
 				});
 			}
@@ -97,7 +97,7 @@ module.exports = {
 			},
 			function(num, callback) {
 				var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
-				Equation.find({ skip: offset, limit: 10, sort: 'createdAt DESC' }).exec(function(err, equations) {
+				Equation.find({ skip: offset, limit: 10, sort: 'createdAt DESC' }).populate('submittedBy').exec(function(err, equations) {
 					callback(err, num, offset, equations);
 				});
 			}
@@ -117,7 +117,7 @@ module.exports = {
 			},
 			function (num, callback) {
 				var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
-    			Feedback.find({ skip: offset, limit: 10, sort: 'createdAt DESC' }).populate('components').populate('equation').exec(function(err, feedback) {	
+    			Feedback.find({ skip: offset, limit: 10, sort: 'createdAt DESC' }).populate('submittedBy').populate('components').populate('equation').exec(function(err, feedback) {	
     				callback(err, num, offset, feedback);
     			});
 			}
@@ -136,7 +136,7 @@ module.exports = {
 			},
 			function (num, callback) {
 				var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
-    			Html5.find({ skip: offset, limit: 10, sort: 'createdAt DESC' }).populate('equations').exec(function(err, html5) {	
+    			Html5.find({ skip: offset, limit: 10, sort: 'createdAt DESC' }).populate('submittedBy').populate('equations').exec(function(err, html5) {	
     				callback(err, num, offset, html5);
     			});
 			}

@@ -10,7 +10,8 @@ module.exports = {
 	create: function(req, res) {
 		Feedback.create({
 			equation: req.param('equation'),
-			comments: req.param('comments')
+			comments: req.param('comments'),
+			submittedBy: req.user
 		}).exec(function(err, feedback) {
 			if (typeof req.param('components') != "undefined") {
 				var components = typeof req.param('components') == 'string' ? [req.param('components')] : req.param('components'); 

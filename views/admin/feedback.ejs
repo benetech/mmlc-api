@@ -26,6 +26,7 @@
 				<th>Equation</th>
 				<th>Comments</th>
 				<th>Components</th>
+				<th>Submitted By</th>
 				<th>Date</th>
 			</tr>
 		</thead>
@@ -39,6 +40,11 @@
 					<% _.each(f.components, function (component) { %>
 						<a href="/component/<%= component.id %>"><%= component.format %></a>
 					<% }); %>
+				</td>
+				<td>
+					<% if (typeof(f.submittedBy) != "undefined") { %>
+						<%= f.submittedBy.username %>
+					<% } %>
 				</td>
 				<td><%= f.createdAt %></td>
 			</tr>
