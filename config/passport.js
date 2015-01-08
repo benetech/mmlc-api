@@ -1,6 +1,5 @@
 var passport = require('passport'),
-LocalStrategy = require('passport-local').Strategy,
-BasicStrategy = require('passport-http').BasicStrategy;
+LocalStrategy = require('passport-local').Strategy;
 module.exports = {
   http: {
     customMiddleware: function(app){
