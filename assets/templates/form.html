@@ -1,98 +1,71 @@
-<div role="tabpanel" id="equation-form">
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#equation-tab" aria-controls="equation" data-toggle="tab" class="tab">Convert Equation</a></li>
-    <li role="presentation"><a href="#html5-tab" aria-controls="profile" data-toggle="tab" class="tab">Upload HTML5</a></li>
-  </ul>
-
-  <!-- Tab panes -->
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="equation-tab">
-        <form id="mml-editor" method="post" action="/equation/svg">
-            <h1>Convert a single equation</h1>
-            <div class="form-group row">
-                <label for="mml-input" class="col-sm-3 control-label">Ascii Math, TeX or MathML</label>
-                <div class="col-sm-9">
-                    <textarea id="mml-input" name="math" class="form-control"></textarea>
-                </div>
+<div id="equation-form">
+    <h1>Conversion Form</h1>
+    <form id="mml-editor" method="post" action="/equation/svg" class="form-horizontal form">
+        <div class="form-group row">
+            <label class="col-sm-3 control-label">
+                <input type="radio" name="conversionType" id="singleEquation" value="singleEquation" checked>
+                Convert a Single Equation Using:
+            </label>
+            <div class="col-sm-9">
+                <label class="radio-inline"><input type="radio" name="mathType" value="AsciiMath" class="radio-inline radio singleEquation" checked> Ascii Math</label>
+                <label class="radio-inline"><input type="radio" name="mathType" value="MathML" class="radio-inline radio singleEquation"> MathML</label>
+                <label class="radio-inline"><input type="radio" name="mathType" value="TeX" class="radio-inline radio singleEquation"> LaTeX</label>
             </div>
-            <div class="form-group row">
-                <label for="mathType" class="col-sm-3 control-label">Math Type</label>
-                <div class="col-sm-9">
-                    <select id="mathType" name="mathType" class="form-control">
-                        <option value="AsciiMath">Ascii Math</option>
-                        <option value="MathML">MathML</option>
-                        <option value="TeX">LaTeX</option>
-                    </select>
-                </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-3 control-label" for="mml-input"><span class="sr-only">Equation</span></label>
+            <div class="col-sm-9">
+                <textarea id="mml-input" name="math" class="form-control singleEquation"></textarea>
             </div>
-            <div class="form-group row">
-                <span class="col-sm-3 control-label"><strong>Output Format</strong></span>
-                <div class="col-sm-9">
-                    <label class="radio-inline">
-                      <input type="radio" id="json" name="downloadOption" value="true" checked>Output multiple formats
-                    </label>
-                    <label class="radio-inline">
-                      <input type="radio" id="downloadSVG" name="downloadOption" value="true">Download as SVG
-                    </label>
-                    <label class="radio-inline">
-                      <input type="radio" id="downloadPNG" name="downloadOption" value="true">Download as PNG
-                    </label>
-                </div>
+        </div>
+        <div class="form-group row" id="outputOptions">
+            <span class="col-sm-3 control-label"><strong>Component Formats:</strong></span>
+            <div class="col-sm-9">
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="svg" name="svg" value="true" checked class="singleEquation">SVG
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="mml" name="mml" value="mathml" class="singleEquation" checked>MathML
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="png" name="png" value="true" class="singleEquation" checked>PNG Image
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="description" name="description" value="true" class="singleEquation" checked>Text Description
+                </label>
             </div>
-            <div class="form-group row" id="outputOptions">
-                <span class="col-sm-3 control-label"><strong>Component Formats</strong></span>
-                <div class="col-sm-9">
-                    <label class="checkbox-inline">
-                      <input type="checkbox" id="svg" name="svg" value="true" checked>SVG
-                    </label>
-                    <label class="checkbox-inline">
-                      <input type="checkbox" id="mml" name="mml" value="mathml" checked>MathML
-                    </label>
-                    <label class="checkbox-inline">
-                      <input type="checkbox" id="png" name="png" value="true" checked>PNG Image
-                    </label>
-                    <label class="checkbox-inline">
-                      <input type="checkbox" id="description" name="description" value="true" checked>Text Description
-                    </label>
-                </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-3 control-label">
+                <input type="radio" name="conversionType" id="multipleEquations" value="multipleEquations">
+                Convert Multiple Equations:
+            </label>
+            <div class="col-sm-9">
+                <label for="html5" class="sr-only">HTML5 File</label>
+                <input type="file" id="html5" name="html5" class="multipleEquations" disabled/>
             </div>
-            <div class="form-group">
-                <input type="submit" id="go" value="Convert Equation" class="btn btn-primary pull-right"/>
+        </div>
+        <fieldset>
+        <div class="form-group">
+            <legend class="col-sm-3 control-label">Replace Equations With:</legend>
+            <div class="col-sm-9">
+                <label class="radio-inline">
+                  <input type="radio" name="outputFormat" value="svg" class="multipleEquations" checked disabled>SVG
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="outputFormat" value="mml" class="multipleEquations" disabled>MathML
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="outputFormat" value="png" class="multipleEquations" disabled>PNG
+                </label>
             </div>
-            <p class="text-danger pull-right errorMessage"></p>
-        </form>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="html5-tab">
-        <form id="html5-editor" action="/html5" enctype="multipart/form-data" method="post">
-            <h1>Convert multiple equations in a single HTML5 file</h1>
-            <div class="form-group">
-                <fieldset>
-                    <legend>Select output format</legend>
-                    <label class="radio-inline">
-                      <input type="radio" name="outputFormat" value="svg" checked>SVG
-                    </label>
-                    <label class="radio-inline">
-                      <input type="radio" name="outputFormat" value="mml">MathML
-                    </label>
-                    <label class="radio-inline">
-                      <input type="radio" name="outputFormat" value="png">PNG
-                    </label>
-                </fieldset>
-            </div>
-            <div class="form-group">
-                <label for="html5" class="col-sm-2 control-label">HTML5 File</label>
-                <div class="col-sm-10">
-                    <input type="file" id="html5" name="html5" />
-                </div>
-            </div>
-            <div class="form-group">
-                <input type="submit" id="upload" value="Upload File" class="btn btn-primary pull-right"/>
-            </div>
-            <p class="text-danger pull-right errorMessage"></p>
-        </form>
-    </div>
-  </div>
+        </div>
+        </fieldset>
+        <div class="form-group">
+            <input type="submit" id="go" value="Convert" class="btn btn-primary pull-right"/>
+        </div>
+        <p class="text-danger pull-right errorMessage"></p>
+    </form>
 </div>
 <div class="clearfix"></div>
 <div id="results">

@@ -39,12 +39,19 @@ module.exports.policies = {
   },
 
   EquationController: {
-    "myEquations": "authenticated",
+    "myEquations": ["authenticate", "authenticated"],
+    "create": "authenticate",
     "*": true
   },
 
   Html5Controller: {
-    "myUploads": "authenticated",
+    "myUploads": ["authenticate", "authenticated"],
+    "upload": "authenticate",
+    "*": true
+  },
+
+  FeedbackController: {
+    "create": "authenticate",
     "*": true
   }
 
