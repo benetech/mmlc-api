@@ -9,18 +9,14 @@ define([
   'js/models/equation.js',
   'js/models/html5.js',
   'text!/templates/form.html'
-], function($, _, Backbone, Bootstrap, EquationView, Html5View, Equation, Html5, formTemplate){
+], function($, _, Backbone, Bootstrap, EquationView, Html5View, Equation, Html5, formTemplate) {
   var FormView = Backbone.View.extend({
 
     el: $('#main-content'),
 
     events: {
-      "click .tab": "clickTab",
-      "submit #mml-editor": "convertEquation",
-      "submit #html5-editor": "uploadHtml5",
-      "click #downloadSVG": "hideOutputOptions",
-      "click #downloadPNG": "hideOutputOptions",
-      "click #json": "showOutputOptions"
+      "submit #mml-editor": "submitConversionForm",
+      "click input[name=conversionType]": "toggleFormSection"
     },
 
     render: function() {
@@ -30,12 +26,15 @@ define([
       return this;
     },
 
-    clickTab: function() {
+    submitConversionForm: function(e) {
+      e.preventDefault();
       var formView = this;
-      setTimeout(function() {
-        $("h1").attr('tabindex', '-1').focus();
-      }, 500);
-      formView.$("#results").html("");
+      var conversionType = formView.$("input[name=conversionType]:checked");
+      if (conversionType.attr("id") == "singleEquation") {
+        formView.convertEquation(e);
+      } else {
+        formView.uploadHtml5(e);
+      }
     },
 
     uploadHtml5: function(e) {
@@ -46,8 +45,7 @@ define([
       }
       formView.$(".errorMessage").html("");
       $("#results").html("");
-      $("#upload").prop("value", "Please wait, uploading html5");
-      e.preventDefault();
+      $("#go").prop("value", "Please wait, uploading html5");
       var data = new FormData();
       data.append("outputFormat", $("input[name='outputFormat']:checked").val());
       data.append("preview", $("input[name='preview']").val());
@@ -70,7 +68,7 @@ define([
         html5View.model = new Html5(data);
         formView.$("#results").html(html5View.render().el);
       }).always(function() {
-        $("#upload").prop("value", "Upload File");
+        $("#go").prop("value", "Upload File");
       });
     },
 
@@ -78,16 +76,11 @@ define([
       var formView = this;
       formView.$(".errorMessage").html("");
       $("#results").html("");
-      if ($("#downloadPNG").prop("checked") == true) {
-        $('#mml-editor').attr("action", "/equation/png");
-      } else if ($("#json").prop("checked") == true) {
-        e.preventDefault();
-        if ($("#mml-input").val() != "") {
-          formView.convert();
-        } else {
-          alert("Please enter an equation.");
-        }
-      }
+      if (formView.$("#mml-input").val() != "") {
+        formView.convert();
+      } else {
+        alert("Please enter an equation.");
+      }      
     },
 
     convert: function() {
@@ -118,6 +111,15 @@ define([
 
     hideOutputOptions: function() {
       $("#outputOptions").hide();
+    },
+
+    toggleFormSection: function(e) {
+      var radio = $(e.currentTarget);
+      var enable = radio.prop("id");
+      var disable = enable == "singleEquation" ? "multipleEquations" : "singleEquation";
+      $("." + enable).prop("disabled", false);
+      $("." + disable).prop("disabled", true);
+
     }
   });
   // Our module now returns our view
