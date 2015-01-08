@@ -35,7 +35,7 @@ module.exports = {
 	        //Save HTML5. 
             var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
             Html5.create({
-            			source: fs.readFileSync(html5.fd), 
+            			source: fs.readFileSync(html5.fd, {encoding: "utf8"}), 
             			filename: html5.filename, 
             			outputFormat: req.param('outputFormat'),
             			status: 'accepted',
