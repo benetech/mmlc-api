@@ -4,7 +4,7 @@ var frisby = require('/usr/local/lib/node_modules/frisby');
 // Local testing
 var base_url = 'http://localhost:1337';
 // Server testing
-//var base_url = 'http://mathml-staging.cloudapp.net';
+//var base_url = 'https://staging.mathmlcloud.org';
 
 xdescribe("User login", function() {
 	// TODO: Need to ensure that this user already exists

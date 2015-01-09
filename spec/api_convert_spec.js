@@ -15,11 +15,8 @@ var FormData = require('form-data');
 // Local testing
 //var base_url = 'http://localhost:1337';
 // Server testing
-var base_url = 'http://mathml-staging.cloudapp.net';
-//var base_url = 'http://mathmlcloud.azure-api.net';
+var base_url = 'https://api.staging.mathmlcloud.org';
 //var base_url = 'http://104.40.56.172'; // mathmlcloud.azure-api.net
-//var base_url = 'http://mathml-cloud.cloudapp.net';
-//var base_url = 'http://23.101.204.234'; // mathml-cloud.cloudapp.net
 
 // This is the key for QAadmin@benetech.org
 var subscription_key = 'caeb604dc5fd49a6b077493b7acad583';
