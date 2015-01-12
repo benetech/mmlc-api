@@ -25,7 +25,16 @@ cd /vagrant
 sails lift
 ```
 
-Then the app should be running at http://localhost:1337.
+The app should be running at http://localhost:1337.
+
+Hosting
+--------
+
+An instance of the application is hosted by Benetech in Microsoft Azure:
+* Interactive form: http://mathmlcloud.org
+* API use: http://mathmlcloud.portal.azure-api.net
+
+If you wish to run the application in your own environment, the Vagrantfile in the project has a provider definition that allows you to provision an instance in Microsoft Azure, but you are free to host it wherever you like. Documentation on provisioning in other virtual machine environments, like Docker, Hyper-V or AWS, is available on the Vagrant site.
 
 License
 ---------
