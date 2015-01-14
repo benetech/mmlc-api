@@ -33,7 +33,7 @@
             <td><a href="/equation/<%= equation.get("id") %>" data-toggle="modal" data-target="mmlcModal" data-model="<%= equation.get("id") %>" class="feedback">Submit Feedback</a></td>
             <td><%= equation.get("mathType") %></td>
             <td><%= equation.get("math") %></td>
-            <td><%= equation.get("components")[0].source %></td>
+            <td><%= typeof(equation.get("components"))  != "undefined" && equation.get("components").length > 0 ? equation.get("components")[0].source : "" %></td>
         </tr>
     <% }); %>
     </tbody>

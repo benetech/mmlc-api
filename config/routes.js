@@ -55,6 +55,11 @@ module.exports.routes = {
     action: 'convert'
   },
 
+  'put /equation:id': {
+    controller: 'EquationController',
+    action: 'update'
+  },
+
   'get /equation/:id': {
     controller: 'EquationController',
     action: 'find'

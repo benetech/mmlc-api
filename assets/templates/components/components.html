@@ -1,0 +1,23 @@
+<h2>Outputs</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="info">Output Type</th>
+            <th class="info">Graphic Preview</th>
+            <th class="info">Text/Markup</th>
+            <th class="info">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% _.each(components, function(component) { %>
+            <tr>
+                <td><%= component.get("format") %></td>
+                <td><%= component.get("source") %></td>
+                <td>
+                    <textarea class="form-control"><%= component.get("source") %></textarea>
+                </td>
+                <td><a href="/component/<%= component.get("id") %>" target="_blank">Download <%= component.get("format") %></a></td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>

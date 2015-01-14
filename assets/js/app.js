@@ -14,6 +14,8 @@ define([
 
   var user;
 
+  var router;
+
   var initialize = function() {
     var app = this;
     //See if we have a logged in user.

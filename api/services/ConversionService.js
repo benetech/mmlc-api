@@ -1,5 +1,34 @@
 var waterfall = require('async-waterfall'), jsdom = require("jsdom").jsdom, serializeDocument = require("jsdom").serializeDocument; 
 module.exports = {
+
+    convertEquation: function(options, equation, host, done) {
+        ConversionService.convert(options, function(data) {
+            if (typeof(data.errors) == 'undefined') {
+                //clean up any old components.
+                Component.destroy({equation:equation.id}).exec(function(err, components) {
+                    if (err) return done(err);
+                    //Save all components.
+                    if (options.mml) EquationService.createComponent("mml", data.mml, equation.id);
+                    if (options.svg) EquationService.createComponent("svg", data.svg, equation.id);
+                    if (options.png) {
+                        var pngSource = "<img src=\"" + data.png + "\" alt=\"" + data.speakText + "\" />";
+                        EquationService.createComponent("png", pngSource, equation.id);
+                    } 
+                    if (options.speakText) EquationService.createComponent("description", data.speakText, equation.id);
+                    //Look up equation so that we have all created info.
+                    Equation.findOne(equation.id).populate('components').exec(function(err, newEquation) {
+                        newEquation.cloudUrl = "http://" + host + "/equation/" + equation.id;
+                        return done(null, newEquation);
+                    });
+                });
+                
+            } else {
+                console.log(data.errors);
+                return done(data.errors);
+            }
+        });
+    },
+
     convert: function(options, done) {
         var mathjaxNode = require("../../node_modules/MathJax-node/lib/mj-single.js"),
             extend = require("extend"),

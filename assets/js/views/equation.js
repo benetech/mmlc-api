@@ -4,12 +4,16 @@ define([
   'underscore',
   'backbone',
   'text!/templates/equations/equation.html',
-  'js/models/feedback.js'
-], function($, _, Backbone, equationTemplate, Feedback) {
+  'js/models/feedback.js',
+  'js/models/equation.js',
+  'js/views/components.js',
+  'js/collections/components.js'
+], function($, _, Backbone, equationTemplate, Feedback, Equation, ComponentsView, ComponentsCollection) {
   var EquationView = Backbone.View.extend({
 
     events: {
-      "submit .commentsForm": "submitComments"
+      "submit .commentsForm": "submitComments",
+      "click #updateEquation": "updateEquation"
     },
 
     //div.
@@ -19,6 +23,12 @@ define([
     render: function() {
       var compiledTemplate = _.template(equationTemplate)({equation: this.model});
       this.$el.html(compiledTemplate);
+      var componentsView = new ComponentsView();
+      componentsView.$el = this.$('#components');
+      console.log(this.model.get("components"));
+      componentsView.collection = new ComponentsCollection(this.model.get("components"));
+      componentsView.render();
+      componentsView.delegateEvents();
       return this;
     },
 
@@ -37,6 +47,28 @@ define([
         setTimeout(function() {
           $("#commentsMessaging").attr('tabindex', '-1').focus();
         }, 500);
+      });
+    },
+
+    updateEquation: function(e) {
+      e.preventDefault();
+      var equationView = this;
+      equationView.model.save({math: equationView.$("#equationMath").val()}, {
+        success: function(model, response, options) {
+          var updatedEquation = new Equation(response);
+          var componentsView = new ComponentsView();
+          componentsView.collection = new ComponentsCollection(updatedEquation.get("components"));
+          equationView.$("#components").html(componentsView.render().el);
+          setTimeout(function() {
+            equationView.$("h2:first").attr('tabindex', '-1').focus();
+          }, 500);
+        },
+        error: function(model, response, options) {
+          equationView.$(".errorMessage").text("There was an error converting your math: " + response);
+          setTimeout(function() {
+            equationView.$(".errorMessage").attr('tabindex', '-1').focus();
+          }, 500);
+        }
       });
     }
     

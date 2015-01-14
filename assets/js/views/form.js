@@ -102,15 +102,16 @@ define([
       }
       equation.save(null, {
         success: function(model, response, options) {
+          console.log(App.router);
           var equationView = new EquationView();
           equationView.model = new Equation(response);
-          formView.$("#results").html(equationView.render().el);
+          $("#main-content").html(equationView.render().el);
           setTimeout(function() {
             formView.$("h2:first").attr('tabindex', '-1').focus();
           }, 500);
         },
         error: function(model, response, options) {
-          formView.$(".errorMessage").text("There was an error converting your math: " + jqXHR.responseText);
+          formView.$(".errorMessage").text("There was an error converting your math: " + response);
           setTimeout(function() {
             formView.$(".errorMessage").attr('tabindex', '-1').focus();
           }, 500);
