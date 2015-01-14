@@ -50,6 +50,9 @@ define([
       data.append("outputFormat", $("input[name='outputFormat']:checked").val());
       data.append("preview", $("input[name='preview']").val());
       data.append("html5", $("#html5")[0].files[0]);
+      if (App.user != "") {
+        data.append("access_token", App.user.get("access_token"));
+      }
       $.ajax({
         url: '/html5',
         data: data,
@@ -85,27 +88,33 @@ define([
 
     convert: function() {
       var formView = this;
-      $("#go").prop("value", "Please wait, converting equation.");
-      var url = "/equation?" + $('#mml-editor').serialize(); 
-      $.ajax({
-        type: "POST",
-        url: url,
-        dataType: 'json'
-      }).fail(function(jqXHR, textStatus, errorThrown) {
-        formView.$(".errorMessage").text("There was an error converting your math: " + jqXHR.responseText);
-        $("#processing").hide();
-        setTimeout(function() {
-          formView.$(".errorMessage").attr('tabindex', '-1').focus();
-        }, 500);
-      }).success(function(data) {
-        var equationView = new EquationView();
-        equationView.model = new Equation(data);
-        formView.$("#results").html(equationView.render().el);
-        setTimeout(function() {
-          formView.$("h2:first").attr('tabindex', '-1').focus();
-        }, 500);
-      }).always(function() {
-        $("#go").prop("value", "Convert Equation");
+      var equation = new Equation();
+      equation.set({
+        math: formView.$("textarea[name=math]").val(),
+        mathType: formView.$("input[name=mathType]:checked").val(),
+        svg: formView.$("input[name=svg]").prop("checked"),
+        mml: formView.$("input[name=mml]").prop("checked"),
+        png: formView.$("input[name=png]").prop("checked"),
+        description: formView.$("input[name=description]").prop("checked")
+      });
+      if (App.user != "") {
+        equation.set({access_token: App.user.get("access_token")});
+      }
+      equation.save(null, {
+        success: function(model, response, options) {
+          var equationView = new EquationView();
+          equationView.model = new Equation(response);
+          formView.$("#results").html(equationView.render().el);
+          setTimeout(function() {
+            formView.$("h2:first").attr('tabindex', '-1').focus();
+          }, 500);
+        },
+        error: function(model, response, options) {
+          formView.$(".errorMessage").text("There was an error converting your math: " + jqXHR.responseText);
+          setTimeout(function() {
+            formView.$(".errorMessage").attr('tabindex', '-1').focus();
+          }, 500);
+        }
       });
     },
 

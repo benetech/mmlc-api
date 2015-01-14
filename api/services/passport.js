@@ -1,6 +1,7 @@
 var passport = require('passport'), 
   LocalStrategy = require('passport-local').Strategy, 
-  bcrypt = require('bcrypt');
+  bcrypt = require('bcrypt'),
+  BearerStrategy = require('passport-http-bearer').Strategy;
 
 //helper functions
 function findById(id, fn) {
@@ -17,6 +18,17 @@ function findByUsername(u, fn) {
   User.findOne({
     username: u
   }).exec(function (err, user) {
+    // Error handling
+    if (err) {
+      return fn(null, null);
+      // The User was found successfully!
+    } else {
+      return fn(null, user);
+    }
+  });
+}
+function findByToken(token, fn) {
+  User.findOne({access_token: token}).exec(function(err, user) {
     // Error handling
     if (err) {
       return fn(null, null);
@@ -80,3 +92,21 @@ passport.use(new LocalStrategy(
     });
   }
 ));
+
+passport.use('bearer', new BearerStrategy(
+  function(token, done) {
+    // asynchronous validation, for effect...
+    process.nextTick(function () {
+      // Find the user by token. If there is no user with the given token, set
+      // the user to `false` to indicate failure. Otherwise, return the
+      // authenticated `user`. Note that in a production-ready application, one
+      // would want to validate the token for authenticity.
+      findByToken(token, function(err, user) {
+        if (err) { return done(err); }
+        if (!user) { return done(null, false); }
+        return done(null, user);
+      })
+    });
+  }
+));
+  

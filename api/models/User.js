@@ -47,6 +47,10 @@ module.exports = {
     organizationTypes: {
       type: 'array'
     },
+    access_token: {
+      type: 'string',
+      required: false
+    },
     toJSON: function() {
       var obj = this.toObject();
       delete obj.password;

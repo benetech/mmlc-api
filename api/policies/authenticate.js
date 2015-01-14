@@ -3,16 +3,18 @@
  */
 var passport = require('passport');
 module.exports = function (req, res, ok) {
-    if (typeof(req.param("username")) != "undefined" && typeof(req.param("password")) != "undefined") {
-        passport.authenticate('local', {session: false}, function(err, user, info) {
-            if ((err) || (!user)) {
-                return res.badRequest("login failed");
+    if (typeof(req.param("access_token")) != "undefined") {
+        passport.authenticate('bearer', {session: false}, function(err, user, info) {
+            if (err) return ok(err);
+            if (user) {
+                req.logIn(user, function(err) {
+                    if (err) res.send(err);
+                    return ok();
+                });
+            } else {
+                return res.badRequest("Invalid token.");
             }
-            req.logIn(user, function(err) {
-                if (err) res.badRequest("login failed");
-                ok();
-            });
-        }) (req, res)
+        })(req, res);
     } else {
         ok();
     }

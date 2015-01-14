@@ -5,13 +5,36 @@ define([
   'backbone',
   'bootstrap',
   'router', 
-  'validation'
-], function($, _, Backbone, Bootstrap, Router, validation) {
+  'validation',
+  'js/models/csrf.js',
+  'js/models/user.js'
+], function($, _, Backbone, Bootstrap, Router, validation, Csrf, User) {
 
+  var API = "http://localhost:1337";
 
-  var initialize = function(){
-    // Pass in our Router module and call it's initialize function
-    Router.initialize();
+  var user;
+
+  var initialize = function() {
+    var app = this;
+    //See if we have a logged in user.
+    $.get("/loggedInUser").done(function(data) {
+      app.user = new User(data);
+    });
+
+    //Get csrf token.
+    var csrf = new Csrf();
+    csrf.fetch({
+      success: function() {
+        $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
+          options.xhrFields = {
+            withCredentials: true
+          };
+          jqXHR.setRequestHeader('X-CSRF-Token', csrf.get('_csrf'));
+        });
+        // Pass in our Router module and call it's initialize function
+        Router.initialize();
+      }
+    });
 
     //initialize validation.
     validation.configure({
@@ -35,8 +58,10 @@ define([
     });
   }
 
-  return {
-    initialize: initialize
+  return App = {
+    initialize: initialize,
+    user: user,
+    API: API
   };
 });
 

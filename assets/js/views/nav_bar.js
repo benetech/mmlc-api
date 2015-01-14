@@ -31,16 +31,14 @@ define([
 
     render: function() {
       var navBar = this;
-      $.get("/loggedInUser").done(function(data) {
-        if (data != "") {
-          navBar.model = new User(data);
-          var compiledTemplate = _.template(userNavTemplate)({user: navBar.model});
-        } else {
-          var compiledTemplate = _.template(publicNavTemplate);
-        }
-        navBar.$el.html(compiledTemplate);
-        return navBar;
-      });
+      if (App.user != "") {
+        navBar.model = new User(App.user);
+        var compiledTemplate = _.template(userNavTemplate)({user: navBar.model});
+      } else {
+        var compiledTemplate = _.template(publicNavTemplate);
+      }
+      navBar.$el.html(compiledTemplate);
+      return navBar;
     },
     
     logInUser: function(e) {
@@ -52,6 +50,7 @@ define([
           if (typeof(data.message) != "undefined") {
             alert(data.message);
           } else {
+            App.user = new User(data);
             navbar.render();
           }
         }
@@ -63,6 +62,7 @@ define([
       e.preventDefault();
       $.get("/auth/logout", function(data) {
         if(data == "logout successful") {
+          App.user = "";
           navbar.render();
           var formView = new FormView();
           formView.render();

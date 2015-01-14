@@ -3,8 +3,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'text!/templates/equations/equation.html'
-], function($, _, Backbone, equationTemplate) {
+  'text!/templates/equations/equation.html',
+  'js/models/feedback.js'
+], function($, _, Backbone, equationTemplate, Feedback) {
   var EquationView = Backbone.View.extend({
 
     events: {
@@ -24,6 +25,8 @@ define([
     submitComments: function(e) {
       var feedbackView = this;
       e.preventDefault();
+      var feedback = new Feedback();
+
       var url = "/feedback?" + feedbackView.$('.commentsForm').serialize(); 
       $.ajax({
         type: "POST",

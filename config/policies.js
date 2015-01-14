@@ -40,7 +40,7 @@ module.exports.policies = {
 
   EquationController: {
     "myEquations": ["authenticate", "authenticated"],
-    "create": "authenticate",
+    "convert": "authenticate",
     "*": true
   },
 

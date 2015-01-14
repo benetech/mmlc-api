@@ -3,7 +3,9 @@ define([
   'backbone'
 ], function(_, Backbone){
   var Html5 = Backbone.Model.extend({
-    urlRoot : '/html5'
+    url: function(){
+        return App.API + '/html5';
+    }
   });
   return Html5;
 });
