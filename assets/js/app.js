@@ -10,7 +10,7 @@ define([
   'js/models/user.js'
 ], function($, _, Backbone, Bootstrap, Router, validation, Csrf, User) {
 
-  var API = "http://staging.mathmlcloud.org";
+  var API = "https://api.staging.mathmlcloud.org";
 
   var user;
 
@@ -24,6 +24,10 @@ define([
         app.user = new User(data);
       }
     });
+    //From here on out, go through API.
+    $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
+      options.url = app.API + options.url;
+    });
 
     //Get csrf token.
     var csrf = new Csrf();
@@ -34,6 +38,7 @@ define([
             withCredentials: true
           };
           jqXHR.setRequestHeader('X-CSRF-Token', csrf.get('_csrf'));
+          options.url = app.API + options.url;
         });
         // Pass in our Router module and call it's initialize function
         Router.initialize();
