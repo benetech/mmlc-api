@@ -38,6 +38,8 @@ define([
 
   var initialize = function(){
     var app_router = new AppRouter;
+    app_router.initializeNav();
+
     app_router.on('route:showEquation', function(id) {
       var equationView = new EquationView();
       var equation = new Equation({id: id});
@@ -57,7 +59,6 @@ define([
           $("#main-content").html(html5View.render().el)
         }
       });
-      app_router.initializeNav();
     });
 
     app_router.on('route:showEquations', function(offset) {
@@ -69,7 +70,6 @@ define([
           $("#main-content").html(equationsView.render().el);   
         }
       });
-      app_router.initializeNav();
     });
 
     app_router.on('route:showUploads', function(offset){
@@ -81,19 +81,16 @@ define([
           $("#main-content").html(uploadsView.render().el);    
         }
       });
-      app_router.initializeNav();
     });
 	
 	app_router.on('route:showAbout', function() {
 		var aboutView = new AboutView();
 		$("#main-content").html(aboutView.render().el);
-		app_router.initializeNav();
 	});
 
     app_router.on('route:defaultAction', function(actions){
       var formView = new FormView();
       formView.render();
-      app_router.initializeNav();
     });
     Backbone.history.start();
   };
