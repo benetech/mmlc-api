@@ -33,7 +33,7 @@ define([
       var navBar = this;
       if (typeof(App.user) != "undefined") {
         navBar.model = new User(App.user);
-        var compiledTemplate = _.template(userNavTemplate)({user: navBar.model});
+        var compiledTemplate = _.template(userNavTemplate)({user: App.user});
       } else {
         var compiledTemplate = _.template(publicNavTemplate);
       }
