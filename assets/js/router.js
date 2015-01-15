@@ -38,9 +38,10 @@ define([
     var app_router = new AppRouter;
     app_router.on('route:showEquation', function(id) {
       var equationView = new EquationView();
-      equationView.model = new Equation({id: id});
-      equationView.model.fetch({
-        success: function() {
+      var equation = new Equation({id: id});
+      equation.fetch({
+        success: function(model, response, options) {
+          equationView.model = new Equation(response);
           $("#main-content").html(equationView.render().el)
         }
       });

@@ -17,7 +17,6 @@ define([
     tagName:  "div",
     
     render: function() {
-      console.log(this.collection.models);
       var compiledTemplate = _.template(componentsTemplate)({components: this.collection.models});
       this.$el.html(compiledTemplate);
       return this;

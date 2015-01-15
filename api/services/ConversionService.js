@@ -91,6 +91,7 @@ module.exports = {
                                             if (err) done(err);
                                             //Create output component.
                                             EquationService.createComponent(html5.outputFormat, equation.outputJax, dbEquation.id);
+                                            EquationService.createComponent("description", equation.speakText, dbEquation.id);
                                             if (window.document.getElementById(equation.inputID) != null) {
                                                 var domEquation = window.document.getElementById(equation.inputID);
                                                 domEquation.setAttribute("id", dbEquation.id);

@@ -10,7 +10,7 @@ define([
   'js/models/user.js'
 ], function($, _, Backbone, Bootstrap, Router, validation, Csrf, User) {
 
-  var API = "http://localhost:1337";
+  var API = "http://staging.mathmlcloud.org";
 
   var user;
 
@@ -20,7 +20,9 @@ define([
     var app = this;
     //See if we have a logged in user.
     $.get("/loggedInUser").done(function(data) {
-      app.user = new User(data);
+      if (data != "") {
+        app.user = new User(data);
+      }
     });
 
     //Get csrf token.
