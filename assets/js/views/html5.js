@@ -24,12 +24,11 @@ define([
         html5View.doPoll();
       } else if (html5View.model.get("status") == "completed") {
         //get equations.
-        var equations = new Html5EquationCollection([], { id: html5View.model.get("id") });
-        equations.fetch({
+        var equationsView = new EquationsView();
+        equationsView.collection = new Html5EquationCollection([], { id: html5View.model.get("id") });
+        equationsView.collection.fetch({
           success: function(collection) {
-            var equationsView = new EquationsView();
             equationsView.$el = html5View.$('#equations');
-            equationsView.collection = collection;
             equationsView.render();
             equationsView.delegateEvents();
           }

@@ -25,8 +25,7 @@ define([
       this.$el.html(compiledTemplate);
       var componentsView = new ComponentsView();
       componentsView.$el = this.$('#components');
-      console.log(this.model.get("components"));
-      componentsView.collection = new ComponentsCollection(this.model.get("components"));
+      componentsView.collection = this.model.get("components");
       componentsView.render();
       componentsView.delegateEvents();
       return this;

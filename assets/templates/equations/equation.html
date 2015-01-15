@@ -20,9 +20,9 @@
             <p>Please review the latest renderings of your equation (above) before submitting feedback comments.</p>
             <fieldset>
                 <legend>Comments For:</legend>
-                <% _.each(equation.get("components"), function(component) { %>
+                <% _.each(equation.get("components").models, function(component) { %>
                     <label class="checkbox-inline">
-                      <input type="checkbox" name="components" value="<%= component.id %>" /><%= component.format %>
+                      <input type="checkbox" name="components" value="<%= component.get("id") %>" /><%= component.get("format") %>
                     </label>
                 <% }); %>
             </fieldset><br />

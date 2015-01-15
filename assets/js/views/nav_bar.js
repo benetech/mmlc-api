@@ -31,7 +31,7 @@ define([
 
     render: function() {
       var navBar = this;
-      if (App.user != "") {
+      if (typeof(App.user) != "undefined") {
         navBar.model = new User(App.user);
         var compiledTemplate = _.template(userNavTemplate)({user: navBar.model});
       } else {
@@ -62,7 +62,7 @@ define([
       e.preventDefault();
       $.get("/auth/logout", function(data) {
         if(data == "logout successful") {
-          App.user = "";
+          delete App.user;
           navbar.render();
           var formView = new FormView();
           formView.render();
