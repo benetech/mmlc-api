@@ -12,8 +12,9 @@ define([
   'js/models/html5.js',
   'js/collections/equations.js',
   'js/collections/html5s.js',
-  'js/views/html5_uploads.js'
-], function($, _, Backbone, FormView, NavBarView, EquationView, EquationsView, Html5View, Equation, Html5, EquationCollection, Html5Collection, Html5UploadsView){
+  'js/views/html5_uploads.js',
+  'js/views/about.js'
+], function($, _, Backbone, FormView, NavBarView, EquationView, EquationsView, Html5View, Equation, Html5, EquationCollection, Html5Collection, Html5UploadsView, AboutView){
   var AppRouter = Backbone.Router.extend({
     routes: {
       // Define some URL routes
@@ -23,6 +24,7 @@ define([
       'uploads': 'showUploads',
       'uploads/:offset': 'showUploads',
       'html5/:id': 'showHtml5',
+      'about': 'showAbout',
 
       // Default
       '*actions': 'defaultAction'
@@ -36,6 +38,8 @@ define([
 
   var initialize = function(){
     var app_router = new AppRouter;
+    app_router.initializeNav();
+
     app_router.on('route:showEquation', function(id) {
       var equationView = new EquationView();
       var equation = new Equation({id: id});
@@ -45,7 +49,6 @@ define([
           $("#main-content").html(equationView.render().el)
         }
       });
-      app_router.initializeNav();
     });
 
     app_router.on('route:showHtml5', function(id) {
@@ -56,7 +59,6 @@ define([
           $("#main-content").html(html5View.render().el)
         }
       });
-      app_router.initializeNav();
     });
 
     app_router.on('route:showEquations', function(offset) {
@@ -68,7 +70,6 @@ define([
           $("#main-content").html(equationsView.render().el);   
         }
       });
-      app_router.initializeNav();
     });
 
     app_router.on('route:showUploads', function(offset){
@@ -80,13 +81,16 @@ define([
           $("#main-content").html(uploadsView.render().el);    
         }
       });
-      app_router.initializeNav();
     });
+	
+	app_router.on('route:showAbout', function() {
+		var aboutView = new AboutView();
+		$("#main-content").html(aboutView.render().el);
+	});
 
     app_router.on('route:defaultAction', function(actions){
       var formView = new FormView();
       formView.render();
-      app_router.initializeNav();
     });
     Backbone.history.start();
   };
