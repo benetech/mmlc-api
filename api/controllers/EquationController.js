@@ -13,6 +13,7 @@ module.exports = {
 	* @param res returns json
 	*/
 	convert: function(req, res) {
+		var equationController = this;
 		var options = {};
 		options.math = req.param('math');
 		options.format = req.param('mathType');
@@ -37,25 +38,46 @@ module.exports = {
 		  		console.log(err);
 			  	return res.badRequest(err);
 		    } 
-		    ConversionService.convert(options, function(data) {
-				if (typeof(data.errors) == 'undefined') {
-					//Save all components.
-					if (options.mml) EquationService.createComponent("mml", data.mml, equation.id);
-					if (options.svg) EquationService.createComponent("svg", data.svg, equation.id);
-					if (options.png) {
-						var pngSource = "<img src=\"" + data.png + "\" alt=\"" + data.speakText + "\" />";
-						EquationService.createComponent("png", pngSource, equation.id);
-					} 
-					if (options.speakText) EquationService.createComponent("description", data.speakText, equation.id);
-					//Look up equation so that we have all created info.
-					Equation.findOne(equation.id).populate('components').exec(function(err, newEquation) {
-						newEquation.cloudUrl = "http://" + req.headers.host + "/equation/" + equation.id;
-						res.send(newEquation);
-					});
-				} else {
-					console.log(data.errors);
-					return res.badRequest(data.errors);
-				}
+		    ConversionService.convertEquation(options, equation, req.headers.host, function(err, newEquation) {
+		    	if (err) return res.badRequest("Error converting equation.");
+		    	return res.json(newEquation);	
+		    });
+		});
+	},
+
+	update: function(req, res) {
+		Equation.findOne({id: req.param("id")}).populate("components").exec(function(err, equation) {
+			if (err) return res.badRequest("Equation Not Found");
+			if(typeof(equation) == "undefined") {
+				return res.notFound();
+			}
+			var options = {};
+			options.math = req.param('math');
+			options.format = equation.mathType;
+			equation.components.forEach(function(component, index) {
+				switch (component.format) {
+					case "description":
+						options.speakText = true;
+						break;
+					case "mml":
+						options.mml = true;
+						break;
+					case "svg":
+						options.svg = true;
+						break;
+					case "png":
+						options.png = true;
+						break;
+					default: 
+						//do nothing.
+						break;		
+				} 
+			});
+			Equation.update({id: equation.id}, {math: req.param("math")}).exec(function(err, equations) {
+				ConversionService.convertEquation(options, equations[0], req.headers.host, function(err, newEquation) {
+			    	if (err) return res.badRequest("Error converting equation.");
+			    	return res.json(newEquation);	
+			    });
 			});
 		});
 	},
@@ -148,7 +170,9 @@ module.exports = {
 			if (err) return res.badRequest(err);
 			res.json(equations);
 		});
-	}
+	},
+
+	
 	
 };
 

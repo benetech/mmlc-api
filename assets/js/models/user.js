@@ -2,7 +2,7 @@ define([
   'underscore',
   'backbone',
   'validation'
-], function(_, Backbone, validation){
+], function(_, Backbone, validation) {
   var User = Backbone.Model.extend({
     urlRoot : '/user',
     blacklist: ["confirmEmail", "confirmPassword", "termsOfService"],

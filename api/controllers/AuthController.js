@@ -4,8 +4,10 @@
  * @description :: Server-side logic for managing Authcontrollers
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-var passport = require('passport');
+var passport = require('passport'), jwt = require('jwt-simple');
+var secret = 'm@th3l^7@ud';
 module.exports = {
+
 	login: function (req, res) {
   	res.view();
 	},
@@ -19,11 +21,15 @@ module.exports = {
   		}
   		req.logIn(user, function(err) {
     		if (err) res.send(err);
-        if (req.wantsJSON) {
-          return res.json(true);
-        } else {
-    		  return res.redirect("/");
-        }
+        //Update user with new token.
+        var token = jwt.encode(user.id, secret);
+        User.update({id: user.id}, {access_token: token}).exec(function(err, users) {
+          if (req.wantsJSON) {
+            return res.json(users[0]);
+          } else {
+      		  return res.redirect("/");
+          }
+        });
   		});
   	}) (req, res);
 	},

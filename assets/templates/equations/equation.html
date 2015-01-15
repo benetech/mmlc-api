@@ -1,18 +1,16 @@
-<h2>Equation</h2>
-<p><strong>Math:</strong> <%= equation.get("math") %></p>
-<p><strong>Math Type:</strong> <%= equation.get("mathType") %></p>
-<p><strong>ID:</strong> <a href="#/equation/<%= equation.get("id") %>"><%= equation.get("id") %></a></p>
-<h2>Components</h2>
-<% _.each(equation.get("components"), function(component) { %>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3><%= component.format %><span class="pull-right"><a href="/component/<%= component.id %>" target="_blank">Download <%= component.format %></a></span></h3>
-        </div>
-        <div class="panel-body" id="output-text">
-            <%= component.source %>
-        </div>
+<h1><a href="#/equation/<%= equation.get("id") %>">Equation</a></h1>
+<form class="form-inline">
+    <div class="form-group">
+        <label for="equationMath"><%= equation.get("mathType") %>:</label>
+        <textarea id="equationMath" class="form-control"><%= equation.get("math") %></textarea>
     </div>
-<% }); %>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary" id="updateEquation">Update</button>
+    </div>
+</form>
+<div class="clearfix"></div>
+<div id="components">
+</div>
 <h2>Feedback</h2>
 <div class="panel panel-default">
     <div class="panel-heading"><h3>Comments</h3></div>
