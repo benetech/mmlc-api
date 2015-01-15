@@ -21,25 +21,30 @@
     <table class="table table-striped" id="resultsTable">
     <thead>
         <tr>
+            <th class="info">Equation ID</th>
             <th class="info">Input Math Type</th>
             <th class="info">Input Math</th>
             <th class="info">Output</th>
+            <th class="info">Text Description</th>
             <th class="info">Send Feedback</th>
         </tr>
     </thead>
     <tbody>
     <% _.each(equations, function(equation) { %>
         <tr>
+            <td><a href="#/equation/<%=equation.get("id")%>"><%=equation.get("id")%></td>
             <td><%= equation.get("mathType") %></td>
             <td><%= equation.get("math") %></td>
             <td>
                 <% if (typeof(equation.get("components"))  != "undefined" && equation.get("components").length > 0) { 
-                    _.each(equation.get("components"), function(component) { %>
-                        <%= component.source %>
-                <%   });
-                } %>
+                    var notDescription = equation.get("components").reject(function(component){ return component.get("format") == "description"; }); %>
+                    <%= notDescription.length > 0 ? notDescription[0].get("source") : "" %>
+            <%    } %>
             </td>
-            <td><a href="/equation/<%= equation.get("id") %>" data-toggle="modal" data-target="mmlcModal" data-model="<%= equation.get("id") %>" class="feedback">Submit Feedback</a></td>
+            <td>
+                <% var description = equation.get("components").findWhere({format: "description"}); %>
+                    <%= typeof(description) != "undefined" ? description.get("source") : "" %></td>
+            <td><a href="/equation/<%= equation.get("id") %>" data-toggle="modal" data-target="mmlcModal" data-model="<%= equation.get("id") %>" class="feedback"><span class="glyphicon glyphicon-comment" aria-hidden="true" title="Submit Feedback"></span></a></td>
         </tr>
     <% }); %>
     </tbody>

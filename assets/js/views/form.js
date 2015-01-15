@@ -102,7 +102,6 @@ define([
       }
       equation.save(null, {
         success: function(model, response, options) {
-          console.log(App.router);
           var equationView = new EquationView();
           equationView.model = new Equation(response);
           $("#main-content").html(equationView.render().el);
@@ -111,6 +110,7 @@ define([
           }, 500);
         },
         error: function(model, response, options) {
+          console.log(response);
           formView.$(".errorMessage").text("There was an error converting your math: " + response);
           setTimeout(function() {
             formView.$(".errorMessage").attr('tabindex', '-1').focus();
