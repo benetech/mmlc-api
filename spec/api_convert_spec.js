@@ -19,7 +19,7 @@ var base_url = 'https://api.staging.mathmlcloud.org';
 //var base_url = 'http://104.40.56.172'; // mathmlcloud.azure-api.net
 
 // This is the key for QAadmin@benetech.org
-var subscription_key = 'caeb604dc5fd49a6b077493b7acad583';
+var subscription_key = '2e334169c85749f8a33072663e214369';
 
 // Live data
 var equation_id = '54946d0b96934481106fd7df';

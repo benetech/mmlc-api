@@ -95,7 +95,7 @@ module.exports = {
                                             if (window.document.getElementById(equation.inputID) != null) {
                                                 var domEquation = window.document.getElementById(equation.inputID);
                                                 domEquation.setAttribute("id", dbEquation.id);
-                                                var comment = window.document.createComment("http://mathml-cloud.cloudapp.net/equation/" + dbEquation.id);
+                                                var comment = window.document.createComment("https://mathmlcloud.org/equation/" + dbEquation.id);
                                                 var parent = domEquation.parentElement;
                                                 parent.insertBefore(comment, domEquation);
                                             }
