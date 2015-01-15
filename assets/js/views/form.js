@@ -97,7 +97,7 @@ define([
         png: formView.$("input[name=png]").prop("checked"),
         description: formView.$("input[name=description]").prop("checked")
       });
-      if (App.user != "") {
+      if (typeof(App.user) != "undefined") {
         equation.set({access_token: App.user.get("access_token")});
       }
       equation.save(null, {
