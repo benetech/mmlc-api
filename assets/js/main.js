@@ -28,7 +28,8 @@ require.config({
       deps: ["underscore", "backbone", "jquery"],
       exports: "validation"
     }
-  }
+  },
+  urlArgs: "bust=" + (new Date()).getTime()
 });
 
 
