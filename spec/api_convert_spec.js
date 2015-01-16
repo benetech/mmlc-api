@@ -52,13 +52,14 @@ describe("MathML Cloud API features", function() {
 					comments : 'Testing API call',
 					equation : json.id,
 				})
+				.toss();
 		})
 		.toss();
 
 	//---- POST /equation
 	frisby.create("Convert ASCII math")
 		.post(base_url + '/equation', {
-			mathType : 'AsciiMath', 
+			mathType : 'AsciiMath',
 			math : 'a^2+b^2=c^2',
 			description : 'true',
 			svg : 'true'
@@ -72,35 +73,37 @@ describe("MathML Cloud API features", function() {
 		.afterJSON(function(json) {
 			//---- GET /equation/{id}
 			frisby.create("Get equation")
-			.get(base_url + '/equation/' + json.id)
-			.expectStatus(200)
-			.expectHeaderContains("content-type", "application/json")
-			.expectJSON("components.?", {
-				format : "svg",
-			})
+				.get(base_url + '/equation/' + json.id)
+				.expectStatus(200)
+				.expectHeaderContains("content-type", "application/json")
+				.expectJSON("components.?", {
+					format : "svg",
+				})
+				.toss();
 		})
 		.afterJSON(function(json) {
 			//---- GET /component/{id}
 			frisby.create("Get component")
-				.get(base_url + '/component/' + json.components[0].id)
+				.get(base_url + '/component/' + json.components[1].id)
 				.expectStatus(200)
 				.expectHeaderContains("content-type", "text/html")
 				.expectBodyContains('a squared plus b squared equals c squared')
+				.toss();
 		})
 		.toss();
-	
-	//---- POST /equation/svg
-	// frisby.create("Convert ASCII math to SVG")
-	// 	.post(base_url + '/equation/svg', {
-	// 		mathType : 'AsciiMath',
-	// 		math : 'a^2+b^2=c^2',
-	// 		description : 'true',
-	// 	})
-	// 	.expectStatus(200)
-	// 	.expectHeaderContains("content-type", "image/svg+xml")
-	// 	.toss();
-	//
 
+	// //---- POST /equation/svg
+	// // frisby.create("Convert ASCII math to SVG")
+	// // 	.post(base_url + '/equation/svg', {
+	// // 		mathType : 'AsciiMath',
+	// // 		math : 'a^2+b^2=c^2',
+	// // 		description : 'true',
+	// // 	})
+	// // 	.expectStatus(200)
+	// // 	.expectHeaderContains("content-type", "image/svg+xml")
+	// // 	.toss();
+	// //
+	//
 	// Set up the HTML5 file posting
 	var html5Path = path.resolve(__dirname, './data/sample-math.html');
 	var form = new FormData();
@@ -138,6 +141,7 @@ describe("MathML Cloud API features", function() {
 					filename : "sample-math.html",
 					outputFormat : "svg",
 				})
+				.toss();
 		})
 		.afterJSON(function(json) {
 			//---- GET /html5/{id}/output
@@ -145,7 +149,7 @@ describe("MathML Cloud API features", function() {
 				.get(base_url + '/html5/' + json.id + '/output')
 				.expectStatus(200)
 				.expectHeaderContains("content-type", "text/html")
+				.toss();
 		})
 		.toss();
-
 });
