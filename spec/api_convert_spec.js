@@ -24,13 +24,6 @@ describe("MathML Cloud API features", function() {
 	  }
 	});
 
-	// //---- GET /html5/{id}/source
-	// frisby.create("Get HTML5 source")
-	// 	.get(base_url + '/html5/' + html5_id + '/source')
-	// 	.expectStatus(200)
-	// 	.expectHeaderContains("content-type", "text/html")
-	// 	.toss();
-	
 	//---- POST /feedback
 	// First create an equation that can be given feedback
 	frisby.create("Set up equation for feedback")
@@ -92,18 +85,6 @@ describe("MathML Cloud API features", function() {
 		})
 		.toss();
 
-	// //---- POST /equation/svg
-	// // frisby.create("Convert ASCII math to SVG")
-	// // 	.post(base_url + '/equation/svg', {
-	// // 		mathType : 'AsciiMath',
-	// // 		math : 'a^2+b^2=c^2',
-	// // 		description : 'true',
-	// // 	})
-	// // 	.expectStatus(200)
-	// // 	.expectHeaderContains("content-type", "image/svg+xml")
-	// // 	.toss();
-	// //
-	//
 	// Set up the HTML5 file posting
 	var html5Path = path.resolve(__dirname, './data/sample-math.html');
 	var form = new FormData();
@@ -147,6 +128,14 @@ describe("MathML Cloud API features", function() {
 			//---- GET /html5/{id}/output
 			frisby.create("Get HTML5 output")
 				.get(base_url + '/html5/' + json.id + '/output')
+				.expectStatus(200)
+				.expectHeaderContains("content-type", "text/html")
+				.toss();
+		})
+		.afterJSON(function(json) {
+			//---- GET /html5/{id}/source
+			frisby.create("Get HTML5 source")
+				.get(base_url + '/html5/' + json.id + '/source')
 				.expectStatus(200)
 				.expectHeaderContains("content-type", "text/html")
 				.toss();
