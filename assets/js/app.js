@@ -24,27 +24,23 @@ define([
         app.user = new User(data);
       }
     });
-    //From here on out, go through API.
-    $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
-      options.url = app.API + options.url;
-    });
 
-    //Get csrf token.
-    var csrf = new Csrf();
-    csrf.fetch({
-      success: function() {
-        $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
-          options.xhrFields = {
-            withCredentials: true
-          };
-          jqXHR.setRequestHeader('X-CSRF-Token', csrf.get('_csrf'));
-          options.url = app.API + options.url;
-        });
-        // Pass in our Router module and call it's initialize function
-        Router.initialize();
+    //From here on out, go through API (except for auth).
+    $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
+      if (options.url.indexOf("/auth") != 0) {
+        jqXHR.setRequestHeader('ocp-apim-subscription-key', "2e334169c85749f8a33072663e214369");
+        options.url = app.API + options.url;
+        options.crossDomain = {
+          crossDomain: true
+        };
+        options.async = {
+          async: true
+        }
       }
     });
-
+    // Pass in our Router module and call it's initialize function
+    Router.initialize();
+    
     //initialize validation.
     validation.configure({
       forceUpdate: true,
