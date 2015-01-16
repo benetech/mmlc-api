@@ -23,10 +23,7 @@ module.exports = {
 
 	create: function(req, res) {
 		User.create(req.body).then(function (user) {
-        	req.logIn(user, function(err) {
-	    		if (err) res.send(err);
-		        return res.json(user);
-	  		});
+        	return AuthService.logIn(req, res, user);
         }).catch(function(e) {
         	return res.badRequest(e);
         });

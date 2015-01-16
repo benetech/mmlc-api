@@ -52,6 +52,7 @@ define([
           } else {
             App.user = new User(data);
             navbar.render();
+            $("#homePageWelcome").hide();
           }
         }
       });

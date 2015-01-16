@@ -6,22 +6,24 @@ define([
   'bootstrap',
   'js/views/equation.js',
   '/js/views/html5.js',
+  'js/views/sign_up.js',
   'js/models/equation.js',
   'js/models/html5.js',
   'text!/templates/form.html'
-], function($, _, Backbone, Bootstrap, EquationView, Html5View, Equation, Html5, formTemplate) {
+], function($, _, Backbone, Bootstrap, EquationView, Html5View, SignUpView, Equation, Html5, formTemplate) {
   var FormView = Backbone.View.extend({
 
     el: $('#main-content'),
 
     events: {
       "submit #mml-editor": "submitConversionForm",
-      "click input[name=conversionType]": "toggleFormSection"
+      "click input[name=conversionType]": "toggleFormSection",
+      "click .register": "showRegisterModal"
     },
 
     render: function() {
       var formView = this;
-      var compiledTemplate = _.template(formTemplate);
+      var compiledTemplate = _.template(formTemplate)({user: App.user});
       formView.$el.html(compiledTemplate);
       return this;
     },
@@ -130,6 +132,16 @@ define([
       $("." + enable).prop("disabled", false);
       $("." + disable).prop("disabled", true);
 
+    },
+
+    showRegisterModal: function(e) {
+      e.preventDefault();
+      var signUpView = new SignUpView();
+      signUpView.render();
+      $("#mmlcModal").modal('show');
+      $("#mmlcModal").on('hidden.bs.modal', function (e) {
+        App.navBar.render();
+      });
     }
   });
   // Our module now returns our view

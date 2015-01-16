@@ -56,7 +56,7 @@ define([
         success: function(model, response, options) {
           var updatedEquation = new Equation(response);
           var componentsView = new ComponentsView();
-          componentsView.collection = new ComponentsCollection(updatedEquation.get("components"));
+          componentsView.collection = updatedEquation.get("components");
           equationView.$("#components").html(componentsView.render().el);
           setTimeout(function() {
             equationView.$("h2:first").attr('tabindex', '-1').focus();
