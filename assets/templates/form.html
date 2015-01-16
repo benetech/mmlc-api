@@ -8,7 +8,7 @@
             If you are new to MathMLCloud, we also encourage you to <a href="/user/login" class="register">register for an account</a> so that you can access your user activity logs and learn about key project updates as they arise. 
         </p>
     </div>
-    <form id="mml-editor" method="post" action="/equation/svg" class="form-horizontal form">
+    <form id="mml-editor" method="post" action="/equation/svg" class="form">
         <div class="form-group row">
             <label class="col-sm-3 control-label">
                 <input type="radio" name="conversionType" id="singleEquation" value="singleEquation" checked>
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="form-group row" id="outputOptions">
-            <span class="col-sm-3 control-label"><strong>Component Formats:</strong></span>
+            <div class="col-sm-3 control-label"><strong><span class="pull-right">Component Formats:</span></strong></div>
             <div class="col-sm-9">
                 <label class="checkbox-inline">
                   <input type="checkbox" id="svg" name="svg" value="true" checked class="singleEquation">SVG
@@ -55,7 +55,7 @@
         </div>
         <fieldset>
         <div class="form-group">
-            <legend class="col-sm-3 control-label">Replace Equations With:</legend>
+            <legend class="col-sm-3 control-label"><span class="pull-right">Replace Equations With:</span></legend>
             <div class="col-sm-9">
                 <label class="radio-inline">
                   <input type="radio" name="outputFormat" value="svg" class="multipleEquations" checked disabled>SVG
