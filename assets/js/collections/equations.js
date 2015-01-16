@@ -10,7 +10,7 @@ define([
         this.offset = options.offset;
     },
     url: function() {
-        return '/myEquations?offset=' + this.offset;
+        return '/myEquations?offset=' + this.offset + '&access_token=' + App.user.get("access_token");
     },
     model: Equation,
   });
