@@ -33,6 +33,7 @@ define([
     initializeNav: function() {
       var navBar = new NavBarView();
       navBar.render();   
+      App.navBar = navBar;
     }
   });
 

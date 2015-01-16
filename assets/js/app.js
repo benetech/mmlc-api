@@ -13,6 +13,7 @@ define([
   //var API = "https://api.staging.mathmlcloud.org";
   var API = "";
   var user;
+  var navBar;
 
   var initialize = function() {
     var app = this;
@@ -65,7 +66,8 @@ define([
   return App = {
     initialize: initialize,
     user: user,
-    API: API
+    API: API,
+    navBar: navBar
   };
 });
 

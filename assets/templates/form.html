@@ -1,5 +1,13 @@
 <div id="equation-form">
-    <h1>Conversion Form</h1>
+    <h1>Welcome to MathMLCloud!</h1>
+    <div id="homePageWelcome" <% if (typeof(user) != "undefined") { %>style="display: none;"<% } %>>
+        <p>
+            This tool is powered by <a href="http://benetech.org" target="_blank">Benetech.</a> To learn more about this project, visit <a href="#/about">About MMLC.</a>
+        </p>
+        <p>
+            If you are new to MathMLCloud, we also encourage you to <a href="/user/login" class="register">register for an account</a> so that you can access your user activity logs and learn about key project updates as they arise. 
+        </p>
+    </div>
     <form id="mml-editor" method="post" action="/equation/svg" class="form-horizontal form">
         <div class="form-group row">
             <label class="col-sm-3 control-label">
