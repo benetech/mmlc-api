@@ -54,8 +54,7 @@ describe("MathML Cloud API features", function() {
 		.post(base_url + '/equation', {
 			mathType : 'AsciiMath',
 			math : 'a^2+b^2=c^2',
-			description : 'true',
-			svg : 'true'
+			description : 'true'
 		})
 		.expectStatus(200)
 		.expectHeaderContains("content-type", "application/json")
@@ -70,14 +69,14 @@ describe("MathML Cloud API features", function() {
 				.expectStatus(200)
 				.expectHeaderContains("content-type", "application/json")
 				.expectJSON("components.?", {
-					format : "svg",
+					format : "description",
 				})
 				.toss();
 		})
 		.afterJSON(function(json) {
 			//---- GET /component/{id}
 			frisby.create("Get component")
-				.get(base_url + '/component/' + json.components[1].id)
+				.get(base_url + '/component/' + json.components[0].id)
 				.expectStatus(200)
 				.expectHeaderContains("content-type", "text/html")
 				.expectBodyContains('a squared plus b squared equals c squared')
