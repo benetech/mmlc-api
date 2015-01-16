@@ -48,7 +48,9 @@ define([
       e.preventDefault();
       if (this.model.isValid(true)) {
         //create user.
-        signUp.model.save(null, {success: function() { 
+        signUp.model.save(null, {success: function(model, response, options) { 
+          App.user = new User(response);
+          $("#homePageWelcome").hide();
           $('#mmlcModal').modal('hide');
         }});
       } else {
