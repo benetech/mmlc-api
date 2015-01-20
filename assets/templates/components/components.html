@@ -13,10 +13,12 @@
             <tr>
                 <td><%= component.get("format") %></td>
                 <td><%= component.get("source") %></td>
-                <td>
+                <td class="col-md-6">
                     <textarea class="form-control"><%= component.get("source") %></textarea>
                 </td>
-                <td><a href="/component/<%= component.get("id") %>" target="_blank">Download <%= component.get("format") %></a></td>
+                <td>
+                    <a href="/component/<%= component.get("id") %>" title="Download <%= component.get("format") %>"><span class="glyphicon glyphicon-download" aria-hidden="true" title="Submit Feedback"></span></a>
+                </td>
             </tr>
         <% }); %>
     </tbody>
