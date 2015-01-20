@@ -75,12 +75,12 @@ module.exports.routes = {
     action: 'png'
   },
 
-  '/login': {
+  'GET /login': {
     controller: 'AuthController',
     action: 'login'
   },
 
-  '/logout': {
+  'GET /logout': {
     controller: 'AuthController',
     action: 'logout'
   },
@@ -88,6 +88,11 @@ module.exports.routes = {
   '/loggedInUser': {
     controller: 'AuthController',
     action: 'loggedInUser'
+  },
+
+  'POST /login': {
+    controller: 'AuthController',
+    action: 'process'
   },
 
   'post /feedback': {

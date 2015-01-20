@@ -61,7 +61,7 @@ define([
     logOutUser: function(e) {
       var navbar = this;
       e.preventDefault();
-      $.get("/auth/logout", function(data) {
+      $.get("/logout", function(data) {
         if(data == "logout successful") {
           delete App.user;
           navbar.render();
