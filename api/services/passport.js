@@ -55,10 +55,7 @@ passport.deserializeUser(function (id, done) {
 });
  
 // Use the LocalStrategy within Passport.
-// Strategies in passport require a `verify` function, which accept
-// credentials (in this case, a username and password), and invoke a callback
-// with a user object.
-passport.use(new LocalStrategy(
+passport.use('local', new LocalStrategy(
   function (username, password, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
@@ -99,8 +96,7 @@ passport.use('bearer', new BearerStrategy(
     process.nextTick(function () {
       // Find the user by token. If there is no user with the given token, set
       // the user to `false` to indicate failure. Otherwise, return the
-      // authenticated `user`. Note that in a production-ready application, one
-      // would want to validate the token for authenticity.
+      // authenticated `user`. 
       findByToken(token, function(err, user) {
         if (err) { return done(err); }
         if (!user) { return done(null, false); }

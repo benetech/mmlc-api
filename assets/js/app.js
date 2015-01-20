@@ -24,15 +24,13 @@ define([
       }
       //From here on out, go through API (except for auth).
       $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
-        if (options.url.indexOf("/auth") != 0) {
-          jqXHR.setRequestHeader('ocp-apim-subscription-key', "2e334169c85749f8a33072663e214369");
-          options.url = app.API + options.url;
-          options.crossDomain = {
-            crossDomain: true
-          };
-          options.async = {
-            async: true
-          }
+        jqXHR.setRequestHeader('ocp-apim-subscription-key', "2e334169c85749f8a33072663e214369");
+        options.url = app.API + options.url;
+        options.crossDomain = {
+          crossDomain: true
+        };
+        options.async = {
+          async: true
         }
       });
       // Pass in our Router module and call it's initialize function

@@ -22,11 +22,16 @@ module.exports = {
 	},
 
 	create: function(req, res) {
-		User.create(req.body).then(function (user) {
-        	return AuthService.logIn(req, res, user);
-        }).catch(function(e) {
-        	return res.badRequest(e);
-        });
+		//make sure a user with this username/password doesn't already exist.
+		User.findOne({username: req.param("username")}).exec(function(err, user) {
+			if (user) return res.badRequest("User already exists");
+			User.create(req.body).then(function (user) {
+	        	return AuthService.logIn(req, res, user);
+	        }).catch(function(e) {
+	        	return res.badRequest(e);
+	        });
+		});
+		
 	}
 };
 
