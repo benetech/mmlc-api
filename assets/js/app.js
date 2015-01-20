@@ -10,8 +10,6 @@ define([
   'js/models/user.js'
 ], function($, _, Backbone, Bootstrap, Router, validation, Csrf, User) {
 
-  var API = "https://api.staging.mathmlcloud.org";
-  //var API = "";
   var user;
   var navBar;
 
@@ -25,7 +23,22 @@ define([
       //From here on out, go through API (except for auth).
       $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
         jqXHR.setRequestHeader('ocp-apim-subscription-key', "2e334169c85749f8a33072663e214369");
-        options.url = app.API + options.url;
+        var api = "";
+        switch(document.location.hostname) {
+          case ("localhost"): 
+            api = "http://localhost:1337";
+            break;
+          case("staging.mathmlcloud.org"):
+            api = "https://api.staging.mathmlcloud.org";
+            break;
+          case("mathmlcloud.org"):
+            api = "https://api.mathmlcloud.org";
+            break;
+          default:
+            //do nothing/
+            break;
+        }
+        options.url = api + options.url;
         options.crossDomain = {
           crossDomain: true
         };
@@ -64,7 +77,6 @@ define([
   return App = {
     initialize: initialize,
     user: user,
-    API: API,
     navBar: navBar
   };
 });
