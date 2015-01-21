@@ -31,6 +31,8 @@ define([
     submitConversionForm: function(e) {
       e.preventDefault();
       var formView = this;
+      formView.$("#go").hide();
+      formView.$(".spinner").show();
       var conversionType = formView.$("input[name=conversionType]:checked");
       if (conversionType.attr("id") == "singleEquation") {
         formView.convertEquation(e);
@@ -69,9 +71,7 @@ define([
           formView.$(".errorMessage").attr('tabindex', '-1').focus();
         }, 500);
       }).success(function(data) {
-        var html5View = new Html5View();
-        html5View.model = new Html5(data);
-        formView.$("#results").html(html5View.render().el);
+        App.router.navigate('#/html5/' + data.id, {trigger: true});
       }).always(function() {
         $("#go").prop("value", "Upload File");
       });
@@ -104,15 +104,9 @@ define([
       }
       equation.save(null, {
         success: function(model, response, options) {
-          var equationView = new EquationView();
-          equationView.model = new Equation(response);
-          $("#main-content").html(equationView.render().el);
-          setTimeout(function() {
-            formView.$("h2:first").attr('tabindex', '-1').focus();
-          }, 500);
+          App.router.navigate('#/equation/' + response.id, {trigger: true});
         },
         error: function(model, response, options) {
-          console.log(response);
           formView.$(".errorMessage").text("There was an error converting your math: " + response);
           setTimeout(function() {
             formView.$(".errorMessage").attr('tabindex', '-1').focus();

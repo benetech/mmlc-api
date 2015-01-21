@@ -16,7 +16,8 @@
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
   'styles/bootstrap.min.css',
-  'styles/mmlc.css'
+  'styles/mmlc.css',
+  'styles/pace.css'
 ];
 
 

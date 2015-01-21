@@ -9,7 +9,8 @@ require.config({
     backbone: 'libs/backbone/backbone-min',
     bootstrap: 'libs/bootstrap/bootstrap.min',
     stickit: 'libs/backbone/backbone.stickit.min',
-    validation: 'libs/backbone/backbone-validation-amd-min'
+    validation: 'libs/backbone/backbone-validation-amd-min',
+    pace: 'libs/pace'
   },
   shim: {
     "backbone": {
