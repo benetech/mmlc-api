@@ -24,7 +24,7 @@ module.exports = {
 	create: function(req, res) {
 		//make sure a user with this username/password doesn't already exist.
 		User.findOne({username: req.param("username")}).exec(function(err, user) {
-			if (user) return res.badRequest("User already exists");
+			if (user) return res.badRequest("A user with that email address already exists.");
 			User.create(req.body).then(function (user) {
 	        	return AuthService.logIn(req, res, user);
 	        }).catch(function(e) {

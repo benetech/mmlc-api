@@ -11,6 +11,8 @@ module.exports = {
 	*/
 	upload: function  (req, res) {
 		//We need to know what kind of output you want.
+        console.log("Output format: " + req.param('outputFormat'));
+        console.log("Body: " + req.body);
 		if (typeof(req.param('outputFormat')) == "undefined" || !req.param('outputFormat') in ['svg', 'png', 'description', 'mml']) {
 			return res.badRequest("Please specify output format.");	
 		}
