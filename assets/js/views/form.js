@@ -31,8 +31,7 @@ define([
     submitConversionForm: function(e) {
       e.preventDefault();
       var formView = this;
-      formView.$("#go").hide();
-      formView.$(".spinner").show();
+      formView.$("#go").val("Processing...");
       var conversionType = formView.$("input[name=conversionType]:checked");
       if (conversionType.attr("id") == "singleEquation") {
         formView.convertEquation(e);
@@ -45,8 +44,7 @@ define([
       var formView = this;
       if ($("#html5").val() == "") {
         alert ("Please select a HTML5 file to upload.");
-        formView.$("#go").show();
-        formView.$(".spinner").hide();
+        formView.$("#go").val("Process");
         return false;
       }
       formView.$(".errorMessage").html("");
@@ -66,8 +64,7 @@ define([
         type: 'POST'
       }).fail(function(jqXHR, textStatus, errorThrown) {
         formView.$(".errorMessage").text("There was an error converting your math: " + jqXHR.responseText);
-        formView.$("#go").show();
-        formView.$(".spinner").hide();
+        formView.$("#go").val("Process");
         setTimeout(function() {
           formView.$(".errorMessage").attr('tabindex', '-1').focus();
         }, 500);
@@ -110,6 +107,7 @@ define([
           setTimeout(function() {
             formView.$(".errorMessage").attr('tabindex', '-1').focus();
           }, 500);
+          formView.$("#go").val("Process");
         }
       });
     },

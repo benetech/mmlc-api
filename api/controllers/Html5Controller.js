@@ -11,9 +11,8 @@ module.exports = {
 	*/
 	upload: function  (req, res) {
 		//We need to know what kind of output you want.
-        console.log("Output format: " + req.param('outputFormat'));
-        console.log("Body: " + req.body);
-		if (typeof(req.param('outputFormat')) == "undefined" || !req.param('outputFormat') in ['svg', 'png', 'description', 'mml']) {
+        var outputFormat = req.body.outputFormat;
+		if (typeof(outputFormat) == "undefined" || !outputFormat in ['svg', 'png', 'description', 'mml']) {
 			return res.badRequest("Please specify output format.");	
 		}
 		var options = {};
@@ -39,7 +38,7 @@ module.exports = {
             Html5.create({
             			source: fs.readFileSync(html5.fd, {encoding: "utf8"}), 
             			filename: html5.filename, 
-            			outputFormat: req.param('outputFormat'),
+            			outputFormat: outputFormat,
             			status: 'accepted',
                         submittedBy: req.user,
                         ip_address: ip}).exec(function(err, dbHtml5) {

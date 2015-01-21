@@ -52,8 +52,7 @@ define([
     updateEquation: function(e) {
       e.preventDefault();
       var equationView = this;
-      equationView.$("#updateEquation").hide();
-      equationView.$(".spinner").show();
+      equationView.$("#updateEquation").html("Updating...");
       equationView.model.save({math: equationView.$("#equationMath").val()}, {
         success: function(model, response, options) {
           var updatedEquation = new Equation(response);
@@ -63,16 +62,14 @@ define([
           setTimeout(function() {
             equationView.$("h2:first").attr('tabindex', '-1').focus();
           }, 500);
-          equationView.$("#updateEquation").show();
-          equationView.$(".spinner").hide();
+          equationView.$("#updateEquation").html("Update");
         },
         error: function(model, response, options) {
           equationView.$(".errorMessage").text("There was an error converting your math: " + response);
           setTimeout(function() {
             equationView.$(".errorMessage").attr('tabindex', '-1').focus();
           }, 500);
-          equationView.$("#updateEquation").show();
-          equationView.$(".spinner").hide();
+          equationView.$("#updateEquation").html("Update");
         }
       });
     }
