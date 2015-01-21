@@ -16,7 +16,7 @@ define([
   var router;
 
   var initialize = function() {
-    pace.start({ajax: {trackMethods: ['GET', 'POST', 'PUT', 'DELETE']}, restartOnRequestAfter: 0, minTime: 250});
+    pace.start({document: false, ajax: {trackMethods: ['GET', 'POST', 'PUT', 'DELETE']}, restartOnRequestAfter: 250, minTime: 250});
     var app = this;
     //See if we have a logged in user.
     $.get("/loggedInUser").done(function(data) {

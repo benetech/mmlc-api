@@ -97,7 +97,6 @@ define([
     Backbone.history.start();
     Backbone.history.on("all", function (route, router) {
       $("#results").html("");
-      pace.restart();
     });
     return app_router;
   };

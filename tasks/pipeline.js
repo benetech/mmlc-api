@@ -17,7 +17,7 @@
 var cssFilesToInject = [
   'styles/bootstrap.min.css',
   'styles/mmlc.css',
-  'styles/pace.css'
+  'styles/loading.css'
 ];
 
 
