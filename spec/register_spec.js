@@ -78,7 +78,7 @@ describe("Register", function() {
     
     //Test dupe user.
     var dupeUsername = randomUsername() + "@benetech.org";
-    frisby.create("Valid User")
+    frisby.create("User with " + dupeUsername + " -- Valid")
         .post(base_url + '/user', {
             username : dupeUsername,
             password : '123456',

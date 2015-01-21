@@ -5,15 +5,18 @@ define([
   'backbone',
   'bootstrap',
   'router', 
+  'pace',
   'validation',
   'js/models/csrf.js',
   'js/models/user.js'
-], function($, _, Backbone, Bootstrap, Router, validation, Csrf, User) {
+], function($, _, Backbone, Bootstrap, Router, pace, validation, Csrf, User) {
 
   var user;
   var navBar;
+  var router;
 
   var initialize = function() {
+    pace.start({ajax: {trackMethods: ['GET', 'POST', 'PUT', 'DELETE']}, restartOnRequestAfter: 0, minTime: 250});
     var app = this;
     //See if we have a logged in user.
     $.get("/loggedInUser").done(function(data) {
@@ -47,7 +50,7 @@ define([
         }
       });
       // Pass in our Router module and call it's initialize function
-      Router.initialize();
+      app.router = Router.initialize();
     });
 
     
@@ -72,12 +75,15 @@ define([
         group.find('.help-block').html(error).removeClass('hidden');
       }
     });
+
+
   }
 
   return App = {
     initialize: initialize,
     user: user,
-    navBar: navBar
+    navBar: navBar,
+    router: router
   };
 });
 

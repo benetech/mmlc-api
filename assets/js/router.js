@@ -3,6 +3,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'pace',
   'js/views/form.js',
   'js/views/nav_bar.js',
   'js/views/equation.js',
@@ -14,7 +15,7 @@ define([
   'js/collections/html5s.js',
   'js/views/html5_uploads.js',
   'js/views/about.js'
-], function($, _, Backbone, FormView, NavBarView, EquationView, EquationsView, Html5View, Equation, Html5, EquationCollection, Html5Collection, Html5UploadsView, AboutView){
+], function($, _, Backbone, pace, FormView, NavBarView, EquationView, EquationsView, Html5View, Equation, Html5, EquationCollection, Html5Collection, Html5UploadsView, AboutView){
   var AppRouter = Backbone.Router.extend({
     routes: {
       // Define some URL routes
@@ -84,16 +85,21 @@ define([
       });
     });
 	
-	app_router.on('route:showAbout', function() {
-		var aboutView = new AboutView();
-		$("#main-content").html(aboutView.render().el);
-	});
+  	app_router.on('route:showAbout', function() {
+  		var aboutView = new AboutView();
+  		$("#main-content").html(aboutView.render().el);
+  	});
 
     app_router.on('route:defaultAction', function(actions){
       var formView = new FormView();
       formView.render();
     });
     Backbone.history.start();
+    Backbone.history.on("all", function (route, router) {
+      $("#results").html("");
+      pace.restart();
+    });
+    return app_router;
   };
   return {
     initialize: initialize
