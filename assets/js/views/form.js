@@ -57,23 +57,23 @@ define([
         data.append("access_token", App.user.get("access_token"));
       }
       data.append("html5", formView.$("#html5")[0].files[0], formView.$("#html5")[0].files[0].name);
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/html5', true, null, null, null, true, true);
-      xhr.onload = function () {
-        //202 == accepted.
-        if (xhr.status === 202) {
-          var html5 = JSON.parse(xhr.response);
-          App.router.navigate('#/html5/' + html5.id, {trigger: true});
-        } else {
-          formView.$(".errorMessage").text("There was an error converting your math: " + xhr.responseText);
-          formView.$("#go").show();
-          formView.$(".spinner").hide();
-          setTimeout(function() {
-            formView.$(".errorMessage").attr('tabindex', '-1').focus();
-          }, 500);
-        }
-      };
-      xhr.send(data);
+      $.ajax({
+        url: '/html5',
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        type: 'POST'
+      }).fail(function(jqXHR, textStatus, errorThrown) {
+        formView.$(".errorMessage").text("There was an error converting your math: " + jqXHR.responseText);
+        formView.$("#go").show();
+        formView.$(".spinner").hide();
+        setTimeout(function() {
+          formView.$(".errorMessage").attr('tabindex', '-1').focus();
+        }, 500);
+      }).success(function(data) {
+        App.router.navigate('#/html5/' + data.id, {trigger: true});
+      });
     },
 
     convertEquation: function(e) {
