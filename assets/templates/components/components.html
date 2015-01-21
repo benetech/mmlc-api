@@ -17,7 +17,7 @@
                     <textarea class="form-control"><%= component.get("source") %></textarea>
                 </td>
                 <td>
-                    <a href="/component/<%= component.get("id") %>" title="Download <%= component.get("format") %>"><span class="glyphicon glyphicon-download" aria-hidden="true" title="Submit Feedback"></span></a>
+                    <a href="/component/<%= component.get("id") %>" title="Download <%= component.get("format") %>"><span class="glyphicon glyphicon-download" aria-hidden="true" title="Download <%= component.get("format") %>"></span></a>
                 </td>
             </tr>
         <% }); %>
