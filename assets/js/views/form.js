@@ -45,18 +45,20 @@ define([
       var formView = this;
       if ($("#html5").val() == "") {
         alert ("Please select a HTML5 file to upload.");
+        formView.$("#go").show();
+        formView.$(".spinner").hide();
         return false;
       }
       formView.$(".errorMessage").html("");
       $("#results").html("");
       var data = new FormData();
       data.append("outputFormat", $("input[name='outputFormat']:checked").val());
-      if (App.user != "") {
+      if (typeof(App.user) != "undefined") {
         data.append("access_token", App.user.get("access_token"));
       }
-      data.append("html5", $("#html5")[0].files[0], $("#html5")[0].files[0].name);
+      data.append("html5", formView.$("#html5")[0].files[0], formView.$("#html5")[0].files[0].name);
       var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/html5', true);
+      xhr.open('POST', '/html5', true, null, null, null, true, true);
       xhr.onload = function () {
         //202 == accepted.
         if (xhr.status === 202) {

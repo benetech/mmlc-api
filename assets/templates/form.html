@@ -46,17 +46,9 @@
         <div class="form-group row">
             <label class="col-sm-3 control-label">
                 <input type="radio" name="conversionType" id="multipleEquations" value="multipleEquations">
-                Convert Multiple Equations:
+                Convert Multiple Equations To:
             </label>
-            <div class="col-sm-9">
-                <label for="html5" class="sr-only">HTML5 File</label>
-                <input type="file" id="html5" name="html5" class="multipleEquations" disabled accept="text/html"/>
-            </div>
-        </div>
-        <fieldset>
-        <div class="form-group">
-            <legend class="col-sm-3 control-label"><span class="pull-right">Replace Equations With:</span></legend>
-            <div class="col-sm-9">
+            <div class="col-sm-3">
                 <label class="radio-inline">
                   <input type="radio" name="outputFormat" value="svg" class="multipleEquations" checked disabled>SVG
                 </label>
@@ -68,7 +60,10 @@
                 </label>
             </div>
         </div>
-        </fieldset>
+        <div class="form-group-row">
+            <label class="col-sm-3 control-label" for="mml-input"><span class="sr-only">Html5 File</span></label>
+            <input type="file" id="html5" name="html5" class="multipleEquations" disabled accept="text/html"/>
+        </div>
         <div class="form-group">
             <input type="submit" id="go" value="Process" class="btn btn-primary pull-right"/>
             <img src="images/load.gif" style="display: none;" class="spinner pull-right" alt="Please wait while we process your equation(s)"/>
