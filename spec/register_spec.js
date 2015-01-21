@@ -35,20 +35,6 @@ describe("Register", function() {
             organization: "Benetech"
         })
         .toss();
-    frisby.create("Valid User with organization")
-        .post(base_url + '/user', {
-            username : randomUsername() + "@benetech.org",
-            password : '123456',
-            firstName: 'Spec',
-            lastName: "W'Organization",
-            termsOfService: true,
-            organization: "Benetech"
-        })
-        .expectStatus(200)
-        .expectJSON( {
-            organization: "Benetech"
-        })
-        .toss();
     frisby.create("Valid User with organization types")
         .post(base_url + '/user', {
             username : randomUsername() + "@benetech.org",
