@@ -3,10 +3,12 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'bootstrap',
   'text!/templates/html5s/html5.html',
   'js/collections/html5_equations.js',
-  '/js/views/equations.js'
-], function($, _, Backbone, html5Template, Html5EquationCollection, EquationsView) {
+  '/js/views/equations.js',
+  'js/views/warnUser.js'
+], function($, _, Backbone, bootstrap, html5Template, Html5EquationCollection, EquationsView, WarnUserView) {
   var Html5View = Backbone.View.extend({
     //div.
     tagName:  "div",
@@ -34,6 +36,7 @@ define([
           }
         });
       }
+      $("a").on("click", {html5View: html5View}, html5View.warnUser);
       return this;
     },
 
@@ -48,6 +51,22 @@ define([
           }
         });
       }, 5000);
+    },
+
+    warnUser: function(event) {
+      var html5View = event.data.html5View;
+      if (typeof(App.user) == "undefined" && ["accepted", "processing"].indexOf(html5View.model.get("status")) !== -1) {
+        event.preventDefault();
+        var continueTo = $(event.currentTarget).attr("href");
+        console.log(continueTo);
+        var warnUserView = new WarnUserView();
+        warnUserView.render();
+        warnUserView.$("#continue").attr("href", continueTo);
+        $("#mmlcModal").modal('show');
+        return false;
+      } else {
+        return true;
+      }
     }
     
   });
