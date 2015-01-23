@@ -36,7 +36,7 @@ define([
           }
         });
       }
-      $("a").on("click", {html5View: html5View}, html5View.warnUser);
+      $("a:not(#registerLink)").on("click", {html5View: html5View}, html5View.warnUser);
       App.router.on("route", function(route, params) {
         if (typeof(html5View.timerId) != "undefined") clearTimeout(html5View.timerId);
       });
@@ -67,7 +67,7 @@ define([
         $("#mmlcModal").modal('show');
         warnUserView.$("#continue").on("click", function(e) {
           //Unbind warning.
-          $("a").off("click", html5View.warnUser);  
+          $("a:not(#registerLink)").off("click", html5View.warnUser);  
         });
         return false;
       } else {
