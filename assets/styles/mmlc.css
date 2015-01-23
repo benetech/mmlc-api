@@ -23,11 +23,6 @@ div.output {
 	margin-bottom: 0.25em;
 }
 
-#processing {
-	text-align: center;
-	display: none;
-}
-
 .form-signin {
   max-width: 330px;
   padding: 15px;

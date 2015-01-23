@@ -25,6 +25,7 @@ define([
       if (html5View.model.get("status") == "accepted" || html5View.model.get("status") == "processing") {
         html5View.doPoll();
       } else if (html5View.model.get("status") == "completed") {
+        html5View.$("#processing").hide();
         //get equations.
         var equationsView = new EquationsView();
         equationsView.collection = new Html5EquationCollection([], { id: html5View.model.get("id") });
