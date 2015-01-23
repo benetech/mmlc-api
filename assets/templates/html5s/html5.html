@@ -17,6 +17,9 @@
 <% if (typeof(html5.get("comments")) != "undefined") { %>
     <p class="error"><strong>Errors:</strong> <%= html5.get("comments") %></p>
 <% } %>
+<% if (["accepted", "processing"].indexOf(html5.get("status")) !== -1) { console.log("hi"); %>
+<div id="processing" class="text-center"><img src="/images/ajax-loader.gif" alt="Processing..." /></div>    
+<% } %>
 <div id="equations">
     
 </div>
