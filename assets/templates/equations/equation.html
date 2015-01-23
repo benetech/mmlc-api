@@ -1,12 +1,17 @@
 <h1><a href="#/equation/<%= equation.get("id") %>">Equation</a></h1>
-<form class="form-inline">
-    <div class="form-group">
-        <label for="equationMath"><%= equation.get("mathType") %>:</label>
-        <textarea id="equationMath" class="form-control"><%= equation.get("math") %></textarea>
+<form class="form-horizontal">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label for="equationMath" class="control-label col-sm-3"><%= equation.get("mathType") %>:</label>
+            <div class="col-sm-9"><textarea id="equationMath" class="form-control"><%= equation.get("math") %></textarea></div>
+        </div>
     </div>
-    <div class="form-group">
-        <img src="images/load.gif" style="display: none;" class="spinner" alt="Please wait while we process your equation(s)"/>
-        <button type="submit" class="btn btn-primary" id="updateEquation">Update</button>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <img src="images/load.gif" style="display: none;" class="spinner" alt="Please wait while we process your equation(s)"/>
+            <button type="submit" class="btn btn-primary" id="updateEquation">Update</button>
+            <a href="#/"><button type="button" class="btn btn-default">Start Over</button></a>
+        </div>
     </div>
 </form>
 <div class="clearfix"></div>
@@ -38,8 +43,7 @@
 <% if (typeof(equation.get("html5")) != "undefined" && typeof(equation.get("html5").output) != "undefined") { 
     var preview = equation.get("html5").output.split("<body")[1].split(">").slice(1).join(">").split("</body>")[0];
 %>
-    <h2><a href="#/html5/<%= equation.get("html5").id %>">Html5 Preview</a></h2>
-    <div id="preview">
+    <div id="preview" style="display: none;">
         <%= preview %>
     </div>
 <% } %>
