@@ -90,10 +90,10 @@ define([
       equation.set({
         math: formView.$("textarea[name=math]").val(),
         mathType: formView.$("input[name=mathType]:checked").val(),
-        svg: formView.$("input[name=svg]").prop("checked"),
-        mml: formView.$("input[name=mml]").prop("checked"),
-        png: formView.$("input[name=png]").prop("checked"),
-        description: formView.$("input[name=description]").prop("checked")
+        svg: true,
+        mml: true,
+        png: true,
+        description: true
       });
       if (typeof(App.user) != "undefined") {
         equation.set({access_token: App.user.get("access_token")});

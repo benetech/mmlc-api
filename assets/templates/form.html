@@ -1,5 +1,5 @@
 <div id="equation-form">
-    <h1>Welcome to MathMLCloud!</h1>
+    <h1>Welcome to MathML Cloud!</h1>
     <div id="homePageWelcome" <% if (typeof(user) != "undefined") { %>style="display: none;"<% } %>>
         <p>
             This tool is powered by <a href="http://benetech.org" target="_blank">Benetech.</a> To learn more about this project, visit <a href="#/about">About MMLC.</a>
@@ -8,7 +8,7 @@
             If you are new to MathMLCloud, we also encourage you to <a href="/user/login" class="register">register for an account</a> so that you can access your user activity logs and learn about key project updates as they arise. 
         </p>
     </div>
-    <form id="mml-editor" method="post" action="/equation/svg" class="form">
+    <form id="mml-editor" method="post" action="/equation/svg" class="form spacer">
         <div class="form-group row">
             <label class="col-sm-3 control-label">
                 <input type="radio" name="conversionType" id="singleEquation" value="singleEquation" checked>
@@ -24,23 +24,6 @@
             <label class="col-sm-3 control-label" for="mml-input"><span class="sr-only">Equation</span></label>
             <div class="col-sm-9">
                 <textarea id="mml-input" name="math" class="form-control singleEquation" placeholder="Enter Equation"></textarea>
-            </div>
-        </div>
-        <div class="form-group row" id="outputOptions">
-            <div class="col-sm-3 control-label"><strong><span class="pull-right">Component Formats:</span></strong></div>
-            <div class="col-sm-9">
-                <label class="checkbox-inline">
-                  <input type="checkbox" id="svg" name="svg" value="true" checked class="singleEquation">SVG
-                </label>
-                <label class="checkbox-inline">
-                  <input type="checkbox" id="mml" name="mml" value="mathml" class="singleEquation" checked>MathML
-                </label>
-                <label class="checkbox-inline">
-                  <input type="checkbox" id="png" name="png" value="true" class="singleEquation" checked>PNG Image
-                </label>
-                <label class="checkbox-inline">
-                  <input type="checkbox" id="description" name="description" value="true" class="singleEquation" checked>Text Description
-                </label>
             </div>
         </div>
         <div class="form-group row">

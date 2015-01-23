@@ -37,6 +37,9 @@ define([
         });
       }
       $("a").on("click", {html5View: html5View}, html5View.warnUser);
+      App.router.on("route", function(route, params) {
+        if (typeof(html5View.timerId) != "undefined") clearTimeout(html5View.timerId);
+      });
       return this;
     },
 
@@ -58,11 +61,14 @@ define([
       if (typeof(App.user) == "undefined" && ["accepted", "processing"].indexOf(html5View.model.get("status")) !== -1) {
         event.preventDefault();
         var continueTo = $(event.currentTarget).attr("href");
-        console.log(continueTo);
         var warnUserView = new WarnUserView();
         warnUserView.render();
         warnUserView.$("#continue").attr("href", continueTo);
         $("#mmlcModal").modal('show');
+        warnUserView.$("#continue").on("click", function(e) {
+          //Unbind warning.
+          $("a").off("click", html5View.warnUser);  
+        });
         return false;
       } else {
         return true;
