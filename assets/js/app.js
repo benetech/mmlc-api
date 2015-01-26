@@ -25,13 +25,13 @@ define([
       }
       //From here on out, go through API (except for auth).
       $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
-        jqXHR.setRequestHeader('ocp-apim-subscription-key', "2e334169c85749f8a33072663e214369");
         var api = "";
         switch(document.location.hostname) {
           case ("localhost"): 
             api = "http://localhost:1337";
             break;
           case("staging.mathmlcloud.org"):
+            jqXHR.setRequestHeader('ocp-apim-subscription-key', "2e334169c85749f8a33072663e214369");
             api = "https://api.staging.mathmlcloud.org";
             break;
           case("mathmlcloud.org"):
