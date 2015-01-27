@@ -47,7 +47,7 @@ module.exports.cors = {
   *                                                                          *
   ***************************************************************************/
 
-  origin: 'https://staging.mathmlcloud.org, http://mathmlcloud.org, http://localhost:1337',
+  origin: 'https://staging.mathmlcloud.org,https://mathmlcloud.org,http://localhost:1337',
   //origin: '*',
 
   /***************************************************************************
@@ -74,6 +74,6 @@ module.exports.cors = {
   *                                                                          *
   ***************************************************************************/
 
-  // headers: 'content-type'
+  headers: 'content-type,ocp-apim-subscription-key,accept'
 
 };
