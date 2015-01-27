@@ -42,12 +42,7 @@ define([
             break;
         }
         options.url = api + options.url;
-        options.crossDomain = {
-          crossDomain: true
-        };
-        options.async = {
-          async: true
-        }
+        options.crossDomain = true;
       });
       // Pass in our Router module and call it's initialize function
       app.router = Router.initialize();
