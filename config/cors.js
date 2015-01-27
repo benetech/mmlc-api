@@ -74,6 +74,6 @@ module.exports.cors = {
   *                                                                          *
   ***************************************************************************/
 
-  headers: 'content-type,ocp-apim-subscription-key,accept'
+  headers: 'content-type,ocp-apim-subscription-key,accept,origin,x-requested-with'
 
 };
