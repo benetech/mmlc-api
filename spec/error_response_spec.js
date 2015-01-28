@@ -27,6 +27,7 @@ describe("MathML Cloud Error Responses", function() {
 	  }
 	});
 
+    //---- Invalid file upload
 	var invalid_form = create_form('./data/sample-math.zip', 'svg');
 	
 	frisby.create("Invalid file upload type")
@@ -48,19 +49,21 @@ describe("MathML Cloud Error Responses", function() {
 		})
 		.toss();
 	
+    //---- Requesting response in something other than JSON
 	frisby.create("Unsupported media type")
         .get('/equation/12345', {
             headers: {
                 "Accept": "application/xml"
             }
         })
-        .expectStatus(400)
+        .expectStatus(415)
         .expectJSON({
             errorCode: "41",
             message: "Unsupported media type request. Only JSON is supported."
         })
 		.toss();
 	
+    //---- Using an unsupported HTTP method
 	frisby.create("HTTP method not supported")
         .put('/equation/12345')
         .expectStatus(400)
@@ -71,6 +74,7 @@ describe("MathML Cloud Error Responses", function() {
         .expectHeader('Allows', 'GET')
 		.toss();
 	
+    //---- Using an unsupported math input type
 	frisby.create("Unsupported math type")
 		.post('/equation', {
 			mathType : 'English', 
@@ -85,15 +89,17 @@ describe("MathML Cloud Error Responses", function() {
         })
 		.toss();
 	
+    //---- Asking for an unknown equation
 	frisby.create("Equation ID not found")
         .get('/equation/12345')
-        .expectStatus(400)
+        .expectStatus(404)
         .expectJSON({
             errorCode: "30",
             message: "MathML ID not found."
         })
 		.toss();
 
+    //---- Uploading a file with bad HTML
     var invalid_html = create_form('./data/invalid-html-math.html', 'svg');
 
     frisby.create("Invalid HTML")
@@ -115,6 +121,7 @@ describe("MathML Cloud Error Responses", function() {
             })
         .toss();
 
+    //---- Uploading a file encoded other than UTF-8
     var invalid_encoding = create_form('./data/invalid-encoding-math.html', 'svg');
 
     frisby.create("Unsupported encoding")
@@ -136,9 +143,10 @@ describe("MathML Cloud Error Responses", function() {
             })
         .toss();
 	
+    //---- Asking for an unsupported output format
     var invalid_output = create_form('./data/sample-math.html', 'jpg');
 
-    frisby.create("Unsupported encoding")
+    frisby.create("Unsupported output format")
             .post('/html5',
                 invalid_output,
                 {
