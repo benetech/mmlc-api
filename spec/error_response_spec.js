@@ -1,4 +1,7 @@
 var frisby = require('frisby');
+var fs = require('fs');
+var path = require('path');
+var FormData = require('form-data');
 
 var base_url = 'http://localhost:1337';
 
@@ -12,7 +15,32 @@ describe("MathML Cloud Error Responses", function() {
 	  }
 	});
 
+	// Set up the HTML5 file posting
+	var html5Path = path.resolve(__dirname, './data/sample-math.zip');
+	var form = new FormData();
+	form.append('outputFormat', 'svg');
+	form.append('html5', fs.createReadStream(html5Path), {
+		// we need to set the knownLength so we can call  form.getLengthSync()
+		knownLength: fs.statSync(html5Path).size
+	});
+	
 	frisby.create("Invalid file upload type")
+		.post('/html5',
+			form,
+			{
+			    json: false,
+			    headers: {
+			      'content-type': 'multipart/form-data; boundary=' + form.getBoundary(),
+			      'content-length': form.getLengthSync()
+			    },
+			}
+		)
+		.expectStatus(400)
+		.expectHeaderContains("content-type", "application/json")
+		.expectJSON({
+			errorCode: "24",
+			message: "Only HTML files are supported."
+		})
 		.toss();
 	
 	frisby.create("Unsupported media type")
