@@ -3,7 +3,6 @@
  *
  * TODO:
  * - test variety of output formats
- * - test failure conditions
  */
 var frisby = require('frisby');
 var fs = require('fs');
