@@ -50,22 +50,36 @@ describe("MathML Cloud Error Responses", function() {
 		.toss();
 	
     //---- Requesting response in something other than JSON
-	frisby.create("Unsupported media type")
-        .get('/equation/12345', {
-            headers: {
-                "Accept": "application/xml"
-            }
-        })
-        .expectStatus(415)
-        .expectJSON({
-            errorCode: "41",
-            message: "Unsupported media type request. Only JSON is supported."
+	frisby.create("Set up equation for test")
+		.post('/equation', {
+			mathType : 'AsciiMath', 
+			math : 'a^2+b^2=c^2',
+			svg : 'true'
+		})
+        .afterJSON(function(json) {
+            frisby.create("Unsupported media type")
+                .get('/equation/' + json.id, {
+                    headers: {
+                        "Accept": "application/xml"
+                    }
+                })
+                .expectStatus(415)
+                .expectJSON({
+                    errorCode: "41",
+                    message: "Unsupported media type request. Only JSON is supported."
+                })
+                .toss();
         })
 		.toss();
 	
     //---- Using an unsupported HTTP method
 	frisby.create("HTTP method not supported")
-        .put('/equation/12345')
+		.put('/equation', {
+			mathType : 'AsciiMath', 
+			math : 'a^2+b^2=c^2',
+			description : 'true',
+			svg : 'true'
+		})
         .expectStatus(400)
         .expectJSON({
             errorCode: "40",
@@ -103,66 +117,66 @@ describe("MathML Cloud Error Responses", function() {
     var invalid_html = create_form('./data/invalid-html-math.html', 'svg');
 
     frisby.create("Invalid HTML")
-            .post('/html5',
-                invalid_html,
-                {
-                    json: false,
-                    headers: {
-                      'content-type': 'multipart/form-data; boundary=' + invalid_html.getBoundary(),
-                      'content-length': invalid_html.getLengthSync()
-                    },
-                }
-            )
-            .expectStatus(400)
-            .expectHeaderContains("content-type", "application/json")
-            .expectJSON({
-                errorCode: "23",
-                message: "Invalid HTML."
-            })
+        .post('/html5',
+            invalid_html,
+            {
+                json: false,
+                headers: {
+                  'content-type': 'multipart/form-data; boundary=' + invalid_html.getBoundary(),
+                  'content-length': invalid_html.getLengthSync()
+                },
+            }
+        )
+        .expectStatus(400)
+        .expectHeaderContains("content-type", "application/json")
+        .expectJSON({
+            errorCode: "23",
+            message: "Invalid HTML."
+        })
         .toss();
 
     //---- Uploading a file encoded other than UTF-8
     var invalid_encoding = create_form('./data/invalid-encoding-math.html', 'svg');
 
     frisby.create("Unsupported encoding")
-            .post('/html5',
-                invalid_encoding,
-                {
-                    json: false,
-                    headers: {
-                      'content-type': 'multipart/form-data; boundary=' + invalid_encoding.getBoundary(),
-                      'content-length': invalid_encoding.getLengthSync()
-                    },
-                }
-            )
-            .expectStatus(400)
-            .expectHeaderContains("content-type", "application/json")
-            .expectJSON({
-                errorCode: "22",
-                message: "Unsupported text encoding. Must be UTF-8."
-            })
+        .post('/html5',
+            invalid_encoding,
+            {
+                json: false,
+                headers: {
+                  'content-type': 'multipart/form-data; boundary=' + invalid_encoding.getBoundary(),
+                  'content-length': invalid_encoding.getLengthSync()
+                },
+            }
+        )
+        .expectStatus(400)
+        .expectHeaderContains("content-type", "application/json")
+        .expectJSON({
+            errorCode: "22",
+            message: "Unsupported text encoding. Must be UTF-8."
+        })
         .toss();
 	
     //---- Asking for an unsupported output format
     var invalid_output = create_form('./data/sample-math.html', 'jpg');
 
     frisby.create("Unsupported output format")
-            .post('/html5',
-                invalid_output,
-                {
-                    json: false,
-                    headers: {
-                      'content-type': 'multipart/form-data; boundary=' + invalid_output.getBoundary(),
-                      'content-length': invalid_output.getLengthSync()
-                    },
-                }
-            )
-            .expectStatus(400)
-            .expectHeaderContains("content-type", "application/json")
-            .expectJSON({
-                errorCode: "21",
-                message: "Unsupported output format requested. Must be one of svg, png, description, mml."
-            })
+        .post('/html5',
+            invalid_output,
+            {
+                json: false,
+                headers: {
+                  'content-type': 'multipart/form-data; boundary=' + invalid_output.getBoundary(),
+                  'content-length': invalid_output.getLengthSync()
+                },
+            }
+        )
+        .expectStatus(400)
+        .expectHeaderContains("content-type", "application/json")
+        .expectJSON({
+            errorCode: "21",
+            message: "Unsupported output format requested. Must be one of svg, png, description, mml."
+        })
         .toss();
 
 });
