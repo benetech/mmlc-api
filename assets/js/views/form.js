@@ -13,10 +13,10 @@ define([
 ], function($, _, Backbone, Bootstrap, EquationView, Html5View, SignUpView, Equation, Html5, formTemplate) {
   var FormView = Backbone.View.extend({
 
-    el: $('#main-content'),
+    tagName:  "div",
 
     events: {
-      "submit #mml-editor": "submitConversionForm",
+      "submit .mml-editor": "submitConversionForm",
       "click input[name=conversionType]": "toggleFormSection",
       "click .register": "showRegisterModal"
     },

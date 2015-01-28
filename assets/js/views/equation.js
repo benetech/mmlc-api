@@ -13,7 +13,7 @@ define([
 
     events: {
       "submit .commentsForm": "submitComments",
-      "click #updateEquation": "updateEquation"
+      "click .updateEquation": "updateEquation"
     },
 
     //div.
@@ -53,6 +53,7 @@ define([
       e.preventDefault();
       var equationView = this;
       equationView.$("#updateEquation").html("Updating...");
+      console.log(equationView.model);
       equationView.model.save({math: equationView.$("#equationMath").val()}, {
         success: function(model, response, options) {
           var updatedEquation = new Equation(response);
