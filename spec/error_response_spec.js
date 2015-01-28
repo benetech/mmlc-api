@@ -136,4 +136,25 @@ describe("MathML Cloud Error Responses", function() {
             })
         .toss();
 	
+    var invalid_output = create_form('./data/sample-math.html', 'jpg');
+
+    frisby.create("Unsupported encoding")
+            .post('/html5',
+                invalid_output,
+                {
+                    json: false,
+                    headers: {
+                      'content-type': 'multipart/form-data; boundary=' + invalid_output.getBoundary(),
+                      'content-length': invalid_output.getLengthSync()
+                    },
+                }
+            )
+            .expectStatus(400)
+            .expectHeaderContains("content-type", "application/json")
+            .expectJSON({
+                errorCode: "21",
+                message: "Unsupported output format requested. Must be one of svg, png, description, mml."
+            })
+        .toss();
+
 });
