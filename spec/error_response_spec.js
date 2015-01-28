@@ -9,7 +9,7 @@ describe("MathML Cloud Error Responses", function() {
 	// Global setup for all tests
 	frisby.globalSetup({
 	  request: {
-	    headers:{'Accept': 'application/json'},
+	    headers:{'Accept': 'application/json', 'Content-Type': 'json'},
 	    inspectOnFailure: true,
         baseUri: base_url
 	  }
@@ -39,7 +39,7 @@ describe("MathML Cloud Error Responses", function() {
 		.expectHeaderContains("content-type", "application/json")
 		.expectJSON({
 			errorCode: "24",
-			message: "Only HTML files are supported."
+			message: "Only HTML5 files are supported."
 		})
 		.toss();
 	

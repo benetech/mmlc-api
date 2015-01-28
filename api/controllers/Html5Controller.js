@@ -4,6 +4,11 @@
  * @description :: Server-side logic for managing Equations
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
+var error_responses = {
+	"mising_format" : { errorCode: "21", message: "Please specify output format."},
+	"missing_file" : { errorCode: "24", message: "Please specify HTML5 file."},
+	"invalid_format" : { errorCode: "24", message: "Only HTML5 files are supported."}
+};
 module.exports = {
 	
 	/**
@@ -13,7 +18,7 @@ module.exports = {
 		//We need to know what kind of output you want.
         var outputFormat = req.body.outputFormat;
 		if (typeof(outputFormat) == "undefined" || !outputFormat in ['svg', 'png', 'description', 'mml']) {
-			return res.badRequest("Please specify output format.");	
+			return res.badRequest(error_responses["missing_format"]);	
 		}
 		var options = {};
 		req.file('html5').upload(function (err, files) {
@@ -23,13 +28,13 @@ module.exports = {
 			  	return res.badRequest(err);
 		    }
 			if (typeof(files[0]) == "undefined") {
-				return res.badRequest("Please specify HTML5 file.");
+				return res.badRequest(error_responses["missing_file"]);
 			} 
             var html5 = files[0];
             var fs = require("fs");
             var path = require("path");
             if (path.extname(html5.filename) != ".html") {
-                return res.badRequest("Only html files are supported.");
+                return res.badRequest(error_responses["invalid_format"]);
             }
 	        
 
