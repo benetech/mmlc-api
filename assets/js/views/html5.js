@@ -18,20 +18,25 @@ define([
       var html5View = this;
       var compiledTemplate = _.template(html5Template)({html5: html5View.model});
       html5View.$el.html(compiledTemplate);
-      setTimeout(function() {
-        html5View.$("h2:first").attr('tabindex', '-1').focus();
-      }, 500);
-      if (typeof(html5View.timerId) != "undefined") clearTimeout(html5View.timerId);
+      if (typeof(html5View.model.get("output")) != "undefined") {
+        var output = $(html5View.model.get("output"));
+        var glyphs = output.find("#MathJax_SVG_glyphs").parent();
+        html5View.$("#glyphs").append(glyphs);
+      }
+      if (typeof(html5View.timerId) != "undefined") {
+        clearInterval(html5View.timerId);
+      }
       if (html5View.model.get("status") == "accepted" || html5View.model.get("status") == "processing") {
         html5View.doPoll();
       } else if (html5View.model.get("status") == "completed") {
         html5View.$("#processing").hide();
         //get equations.
-        var equationsView = new EquationsView();
-        equationsView.collection = new Html5EquationCollection([], { id: html5View.model.get("id") });
+        var equationsView = new EquationsView({
+          el: html5View.$('#equations'), 
+          collection: new Html5EquationCollection([], { id: html5View.model.get("id") })
+        });
         equationsView.collection.fetch({
-          success: function(collection) {
-            equationsView.$el = html5View.$('#equations');
+          success: function(collection, response, options) {
             equationsView.render();
             equationsView.delegateEvents();
           }

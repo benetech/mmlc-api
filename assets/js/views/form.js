@@ -63,7 +63,9 @@ define([
         processData: false,
         type: 'POST'
       }).fail(function(jqXHR, textStatus, errorThrown) {
-        formView.$(".errorMessage").text("There was an error converting your math: " + jqXHR.responseText);
+        var errResponse = $.parseJSON(jqXHR.responseText);
+        var errMsg = errResponse.message ? errResponse.message : jqXHR.responseText;
+        formView.$(".errorMessage").text("There was an error converting your math: " + errMsg);
         formView.$("#go").val("Process");
         setTimeout(function() {
           formView.$(".errorMessage").attr('tabindex', '-1').focus();

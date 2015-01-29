@@ -1,3 +1,4 @@
+<div id="glyphs" style="display: none;"></div>
 <h2>
     <% if (html5.get("status") == "processing" || html5.get("status") == "accepted") { %>
         Please wait while we process your 
@@ -11,22 +12,15 @@
     <li>
         <strong>Download:</strong>
         <a href="/html5/<%= html5.get("id") %>/source"><span class="sr-only">Download</span> original file</a>
-        | <a href="/html5/<%= html5.get("id") %>/output"><span class="sr-only">Download</span> output file</a>
+        <% if (typeof(html5.get("output")) != "undefined") { %>
+            | <a href="/html5/<%= html5.get("id") %>/output"><span class="sr-only">Download</span> output file</a>
+        <% } %>
     </li>
 </ul>
 <% if (typeof(html5.get("comments")) != "undefined") { %>
     <p class="error"><strong>Errors:</strong> <%= html5.get("comments") %></p>
 <% } %>
-<% if (["accepted", "processing"].indexOf(html5.get("status")) !== -1) { console.log("hi"); %>
+<% if (["accepted", "processing"].indexOf(html5.get("status")) !== -1) { %>
 <div id="processing" class="text-center"><img src="/images/ajax-loader.gif" alt="Processing..." /></div>    
 <% } %>
-<div id="equations">
-    
-</div>
-<% if (typeof(html5.get("output")) != "undefined") { 
-    var preview = html5.get("output").split("<body")[1].split(">").slice(1).join(">").split("</body>")[0];
-%> 
-    <div id="preview" style="display: none;">
-        <%= preview %>
-    </div>
-<% } %>
+<div id="equations"></div>
