@@ -153,7 +153,7 @@ module.exports = {
 				console.log(err);
 				return res.badRequest(err);
 			} else if (typeof(equation) == "undefined") {
-				res.notFound();
+				res.notFound({ errorCode: "30", message: "Equation not found: " + equationId });
 			} else {
 				if (req.wantsJSON) {
 					return res.json(equation); 

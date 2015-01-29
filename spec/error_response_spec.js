@@ -109,7 +109,7 @@ describe("MathML Cloud Error Responses", function() {
         .expectStatus(404)
         .expectJSON({
             errorCode: "30",
-            message: "MathML ID not found."
+            message: "Equation not found: 12345"
         })
 		.toss();
 
