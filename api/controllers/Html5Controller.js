@@ -4,15 +4,12 @@
  * @description :: Server-side logic for managing Equations
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-<<<<<<< HEAD
 var waterfall = require('async-waterfall');
-=======
 var error_responses = {
 	"mising_format" : { errorCode: "21", message: "Please specify output format."},
 	"missing_file" : { errorCode: "24", message: "Please specify HTML5 file."},
 	"invalid_format" : { errorCode: "24", message: "Only HTML5 files are supported."}
 };
->>>>>>> upstream/master
 module.exports = {
 	
 	/**
