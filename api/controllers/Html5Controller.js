@@ -77,7 +77,7 @@ module.exports = {
                     return res.redirect("#/html5/" + html5.id);
                 }
 			} else {
-				res.notFound();
+				res.notFound({ errorCode: "30", message: "HTML file not found: " + html5Id });
 			}
 		});
 	},

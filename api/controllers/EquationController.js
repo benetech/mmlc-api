@@ -49,7 +49,7 @@ module.exports = {
 		Equation.findOne({id: req.param("id")}).populate("components").exec(function(err, equation) {
 			if (err) return res.badRequest("Equation Not Found");
 			if(typeof(equation) == "undefined") {
-				return res.notFound();
+				return res.notFound({ errorCode: "30", message: "Equation not found: " + equationId });
 			}
 			var options = {};
 			options.math = req.param('math');

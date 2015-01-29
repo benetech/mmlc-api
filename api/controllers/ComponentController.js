@@ -32,6 +32,7 @@ module.exports = {
               		break;
               	default:
               		//Er, this would be a problem.
+					res.notFound({ errorCode: "30", message: "Component not found: " + componentId });
 			}
 		});
   	}
