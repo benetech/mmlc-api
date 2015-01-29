@@ -1,23 +1,4 @@
-<h1 class="page-header">Html5 Uploads</h1>
 <% if (typeof html5Uploads != 'undefined' && html5Uploads.length > 0) { %>
-<%
-    var limit = 10;
-    var pages = Math.ceil(html5Uploads.length/10);
-    var currentPage = 1;
-    var next = 1 + limit; 
-    var back = 1 - limit;
-%>
-<% if (html5Uploads.length > 10) { %>
-    <nav>
-      <ul class="pagination">
-        <% for (var i = 1; i <= pages; i++) { 
-            var skip = (i-1)*limit; 
-            var active = i == currentPage; %>
-            <li <%= active ? "class=active" : "" %>><a href="#/uploads/<%=skip%>" class="page" data-type="html5"><%= i %></a></li>
-        <% } %>
-      </ul>
-    </nav>
-<% } %>
 <div id="html5Results">
     <table class="table table-striped" id="resultsTable">
         <thead>

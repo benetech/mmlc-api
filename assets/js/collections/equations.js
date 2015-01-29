@@ -3,16 +3,27 @@
 define([
   'underscore',
   'backbone',
+  'paginator',
   '/js/models/equation.js'
-], function(_, Backbone, Equation){
-  var EquationCollection = Backbone.Collection.extend({
-    initialize: function(models, options) {
-        this.offset = options.offset;
-    },
-    url: function() {
-        return '/myEquations?offset=' + this.offset + '&access_token=' + App.user.get("access_token");
-    },
+], function(_, Backbone, paginator, Equation){
+  var EquationCollection = Backbone.PageableCollection.extend({
     model: Equation,
+    url: function() {
+      return '/myEquations?access_token=' + App.user.get("access_token");
+    },
+
+    state: {
+      pageSize: 10
+    },
+
+    parseState: function (resp, queryParams, state, options) {
+      return {totalRecords: resp.numEquations};
+    },
+
+    // get the actual records
+    parseRecords: function (resp, options) {
+      return resp.equations;
+    }
   });
   return EquationCollection;
 });

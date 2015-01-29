@@ -10,10 +10,6 @@ define([
 
     //div.
     tagName:  "div",
-
-    events: {
-      "click .page": "paginate"
-    },
     
     render: function() {
       var compiledTemplate = _.template(html5UploadsTemplate)({html5Uploads: this.collection.models});

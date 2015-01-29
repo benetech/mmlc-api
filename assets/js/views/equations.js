@@ -37,7 +37,6 @@ define([
           $("#mmlcModal").modal('show');
         }
       });
-      
     }
     
   });
