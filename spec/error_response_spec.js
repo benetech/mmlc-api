@@ -98,8 +98,7 @@ describe("MathML Cloud Error Responses", function() {
 		})
         .expectStatus(400)
         .expectJSON({
-            errorCode: "20",
-            message: "Unsupported math type specified. Must be one of AsciiMath, LaTeX or MathML."
+            error: "E_VALIDATION",
         })
 		.toss();
 	
@@ -174,8 +173,7 @@ describe("MathML Cloud Error Responses", function() {
         .expectStatus(400)
         .expectHeaderContains("content-type", "application/json")
         .expectJSON({
-            errorCode: "21",
-            message: "Unsupported output format requested. Must be one of svg, png, description, mml."
+            error: "E_VALIDATION",
         })
         .toss();
 
