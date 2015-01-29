@@ -4,7 +4,7 @@
  * @description :: Server-side logic for managing Equations
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-
+var waterfall = require('async-waterfall');
 module.exports = {
 	
 	/** 
@@ -165,14 +165,25 @@ module.exports = {
 	},
 
 	myEquations: function(req, res) {
-		var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
-		Equation.find({ submittedBy: req.user.id, skip: offset, limit: 10, sort: 'createdAt DESC' }).populate('components').exec(function(err, equations) {
+		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
+		
+		waterfall([
+			function (callback) {
+				Equation.count({submittedBy: req.user.id}).exec(function(err, numEquations) {
+					callback(err, numEquations);
+				});
+			},
+			function (numEquations, callback) {
+				Equation.find({submittedBy: req.user.id, sort: 'createdAt DESC' }).paginate({page: page, limit: limit}).populate('components').exec(function(err, equations) {
+					callback(err, numEquations, equations);
+				});
+			}
+		], function (err, numEquations, equations) {
 			if (err) return res.badRequest(err);
-			res.json(equations);
+			return res.json({"equations": equations, "numEquations": numEquations});
 		});
-	},
-
-	
+	}
 	
 };
 

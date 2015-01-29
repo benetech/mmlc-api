@@ -4,6 +4,7 @@
  * @description :: Server-side logic for managing Equations
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
+var waterfall = require('async-waterfall');
 var error_responses = {
 	"mising_format" : { errorCode: "21", message: "Please specify output format."},
 	"missing_file" : { errorCode: "24", message: "Please specify HTML5 file."},
@@ -99,10 +100,23 @@ module.exports = {
 	},
 
     myUploads: function(req, res) {
-        var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
-        Html5.find({ submittedBy: req.user.id, skip: offset, limit: 10, sort: 'createdAt DESC' }).populate("equations").exec(function(err, html5) {
+        var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
+        var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
+        
+        waterfall([
+            function (callback) {
+                Html5.count({submittedBy: req.user.id}).exec(function(err, numHtml5s) {
+                    callback(err, numHtml5s);
+                });
+            },
+            function (numHtml5s, callback) {
+                Html5.find({ submittedBy: req.user.id, sort: 'createdAt DESC' }).paginate({page: page, limit: limit}).populate("equations").exec(function(err, html5s) {
+                    callback(err, numHtml5s, html5s);
+                });
+            }
+        ], function (err, numHtml5s, html5s) {
             if (err) return res.badRequest(err);
-            res.json(html5);
+            return res.json({"html5s": html5s, "numHtml5s": numHtml5s});
         });
     }
 	
