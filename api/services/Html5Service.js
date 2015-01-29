@@ -7,7 +7,7 @@ module.exports = {
 			if (err) 
 				return res.badRequest(err);
 			if (typeof(html5) == "undefined") 
-				return res.notFound({ errorCode: "30", message: "HTML file not found: ", html5Id });
+				return res.notFound({ errorCode: "30", message: "HTML file not found: " + html5Id });
 			res.attachment(html5.filename);
           	res.end(source ? html5.source : html5.output, 'UTF-8');
 		});
