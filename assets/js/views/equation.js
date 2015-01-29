@@ -52,8 +52,7 @@ define([
     updateEquation: function(e) {
       e.preventDefault();
       var equationView = this;
-      equationView.$("#updateEquation").html("Updating...");
-      console.log(equationView.model);
+      equationView.$(".updateEquation").html("Updating...");
       equationView.model.save({math: equationView.$("#equationMath").val()}, {
         success: function(model, response, options) {
           var updatedEquation = new Equation(response);
