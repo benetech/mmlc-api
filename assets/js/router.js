@@ -7,15 +7,16 @@ define([
   'js/views/form.js',
   'js/views/nav_bar.js',
   'js/views/equation.js',
-  'js/views/equations.js',
+  'js/views/my_equations.js',
+  'js/views/my_uploads.js',
   'js/views/html5.js',
   'js/models/equation.js',
   'js/models/html5.js',
   'js/collections/equations.js',
   'js/collections/html5s.js',
-  'js/views/html5_uploads.js',
-  'js/views/about.js'
-], function($, _, Backbone, pace, FormView, NavBarView, EquationView, EquationsView, Html5View, Equation, Html5, EquationCollection, Html5Collection, Html5UploadsView, AboutView){
+  'js/views/about.js',
+  'js/views/main_content.js'
+], function($, _, Backbone, pace, FormView, NavBarView, EquationView, MyEquationsView, MyUploadsView, Html5View, Equation, Html5, EquationCollection, Html5Collection, AboutView, MainContentView){
   var AppRouter = Backbone.Router.extend({
     routes: {
       // Define some URL routes
@@ -31,16 +32,20 @@ define([
       '*actions': 'defaultAction'
     },
 
-    initializeNav: function() {
+    initialize: function() {
+      //One instance of the nav bar.
       var navBar = new NavBarView();
       navBar.render();   
       App.navBar = navBar;
+
+      //Keep track of where we are.
+      this.mainContentView = new MainContentView();
     }
   });
 
   var initialize = function(){
     var app_router = new AppRouter;
-    app_router.initializeNav();
+    app_router.initialize();
 
     app_router.on('route:showEquation', function(id) {
       var equationView = new EquationView();
@@ -48,7 +53,7 @@ define([
       equation.fetch({
         success: function(model, response, options) {
           equationView.model = new Equation(response);
-          $("#main-content").html(equationView.render().el)
+          app_router.mainContentView.showView(equationView);
         }
       });
     });
@@ -58,41 +63,46 @@ define([
       html5View.model = new Html5({id: id});
       html5View.model.fetch({
         success: function() {
-          $("#main-content").html(html5View.render().el)
+          app_router.mainContentView.showView(html5View);
         }
       });
     });
 
-    app_router.on('route:showEquations', function(offset) {
-      var skip = offset ? offset : 0;
-      var equationsView = new EquationsView();
-      equationsView.collection = new EquationCollection([], {offset: skip});
-      equationsView.collection.fetch({
-        success: function() {
-          $("#main-content").html(equationsView.render().el);   
-        }
-      });
+    app_router.on('route:showEquations', function(page) {
+      if (typeof(App.user) != "undefined") {
+        var equationsView = new MyEquationsView();
+        equationsView.collection = new EquationCollection();
+        equationsView.collection.fetch({
+          success: function(collection, response, options) {
+            app_router.mainContentView.showView(equationsView);  
+          }
+        });
+      } else {
+        app_router.navigate('#/', {trigger: true});
+      }
     });
 
-    app_router.on('route:showUploads', function(offset){
-      var skip = offset ? offset : 0;
-      var uploadsView = new Html5UploadsView();
-      uploadsView.collection = new Html5Collection([], {offset: skip});
-      uploadsView.collection.fetch({
-        success: function() {
-          $("#main-content").html(uploadsView.render().el);    
-        }
-      });
+    app_router.on('route:showUploads', function(page){
+      if (typeof(App.user) != "undefined") {
+        var uploadsView = new MyUploadsView();
+        uploadsView.collection = new Html5Collection();
+        uploadsView.collection.fetch({
+          success: function(collection, response, options) {
+            app_router.mainContentView.showView(uploadsView);
+          }
+        });
+      } else {
+        app_router.navigate('#/', {trigger: true});
+      }
     });
 	
   	app_router.on('route:showAbout', function() {
   		var aboutView = new AboutView();
-  		$("#main-content").html(aboutView.render().el);
+  		app_router.mainContentView.showView(aboutView);
   	});
 
     app_router.on('route:defaultAction', function(actions){
-      var formView = new FormView();
-      formView.render();
+      app_router.mainContentView.showView(new FormView());
     });
     Backbone.history.start();
     Backbone.history.on("all", function (route, router) {

@@ -10,6 +10,7 @@ require.config({
     bootstrap: 'libs/bootstrap/bootstrap.min',
     stickit: 'libs/backbone/backbone.stickit.min',
     validation: 'libs/backbone/backbone-validation-amd-min',
+    paginator: 'libs/backbone/backbone.paginator.min',
     pace: 'libs/pace'
   },
   shim: {
@@ -28,6 +29,10 @@ require.config({
     "validation": {
       deps: ["underscore", "backbone", "jquery"],
       exports: "validation"
+    },
+    "paginator": {
+      deps: ["underscore", "backbone"],
+      exports: "paginator"
     }
   },
   urlArgs: "bust=" + (new Date()).getTime()

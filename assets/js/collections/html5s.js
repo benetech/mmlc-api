@@ -3,16 +3,27 @@
 define([
   'underscore',
   'backbone',
+  'paginator',
   '/js/models/html5.js'
-], function(_, Backbone, Html5){
-  var Html5Collection = Backbone.Collection.extend({
-    initialize: function(models, options) {
-        this.offset = options.offset;
-    },
-    url: function() {
-        return '/myUploads?offset=' + this.offset + '&access_token=' + App.user.get("access_token");
-    },
+], function(_, Backbone, paginator, Html5){
+  var Html5Collection = Backbone.PageableCollection.extend({
     model: Html5,
+    url: function() {
+      return '/myUploads?access_token=' + App.user.get("access_token");
+    },
+
+    state: {
+      pageSize: 10
+    },
+
+    parseState: function (resp, queryParams, state, options) {
+      return {totalRecords: resp.numHtml5s};
+    },
+
+    // get the actual records
+    parseRecords: function (resp, options) {
+      return resp.html5s;
+    }
   });
   return Html5Collection;
 });

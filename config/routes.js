@@ -55,7 +55,7 @@ module.exports.routes = {
     action: 'convert'
   },
 
-  'put /equation:id': {
+  'put /equation/:id': {
     controller: 'EquationController',
     action: 'update'
   },
