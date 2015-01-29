@@ -73,6 +73,8 @@ describe("MathML Cloud Error Responses", function() {
 		.toss();
 	
     //---- Using an unsupported HTTP method
+    // Sails doesn't provide an easy way to detect these, and just returns
+    // a 404 when a match isn't found in routes.js
 	frisby.create("HTTP method not supported")
 		.put('/equation', {
 			mathType : 'AsciiMath', 
@@ -80,12 +82,7 @@ describe("MathML Cloud Error Responses", function() {
 			description : 'true',
 			svg : 'true'
 		})
-        .expectStatus(400)
-        .expectJSON({
-            errorCode: "40",
-            message: "HTTP method not supported. See 'Allows' header for possible values."
-        })
-        .expectHeader('Allows', 'GET')
+        .expectStatus(404)
 		.toss();
 	
     //---- Using an unsupported math input type
