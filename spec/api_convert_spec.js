@@ -3,10 +3,8 @@
  *
  * TODO:
  * - test variety of output formats
- * - test failure conditions
  */
-// With Frisby installed globally, we need the full path to find it
-var frisby = require('/usr/local/lib/node_modules/frisby');
+var frisby = require('frisby');
 var fs = require('fs');
 var path = require('path');
 var FormData = require('form-data');
@@ -20,14 +18,15 @@ describe("MathML Cloud API features", function() {
 	frisby.globalSetup({
 	  request: {
 	    headers:{'Accept': 'application/json'},
-	    inspectOnFailure: true
+	    inspectOnFailure: true,
+        baseUri: base_url
 	  }
 	});
 
 	//---- POST /feedback
 	// First create an equation that can be given feedback
 	frisby.create("Set up equation for feedback")
-		.post(base_url + '/equation', {
+		.post('/equation', {
 			mathType : 'AsciiMath', 
 			math : 'a^2+b^2=c^2',
 			description : 'true',
@@ -35,7 +34,7 @@ describe("MathML Cloud API features", function() {
 		})
 		.afterJSON(function(json) {
 			frisby.create("Post feedback")
-				.post(base_url + '/feedback', {
+				.post('/feedback', {
 					equation : json.id,
 					comments : 'Testing API call',
 				})
@@ -51,7 +50,7 @@ describe("MathML Cloud API features", function() {
 
 	//---- POST /equation
 	frisby.create("Convert ASCII math")
-		.post(base_url + '/equation', {
+		.post('/equation', {
 			mathType : 'AsciiMath',
 			math : 'a^2+b^2=c^2',
 			description : 'true'
@@ -65,7 +64,7 @@ describe("MathML Cloud API features", function() {
 		.afterJSON(function(json) {
 			//---- GET /equation/{id}
 			frisby.create("Get equation")
-				.get(base_url + '/equation/' + json.id)
+				.get('/equation/' + json.id)
 				.expectStatus(200)
 				.expectHeaderContains("content-type", "application/json")
 				.expectJSON("components.?", {
@@ -76,7 +75,7 @@ describe("MathML Cloud API features", function() {
 		.afterJSON(function(json) {
 			//---- GET /component/{id}
 			frisby.create("Get component")
-				.get(base_url + '/component/' + json.components[0].id)
+				.get('/component/' + json.components[0].id)
 				.expectStatus(200)
 				.expectHeaderContains("content-type", "text/html")
 				.expectBodyContains('a squared plus b squared equals c squared')
@@ -95,7 +94,7 @@ describe("MathML Cloud API features", function() {
 
 	//---- POST /html5
 	frisby.create("Post HTML5")
-		.post(base_url + '/html5',
+		.post('/html5',
 			form,
 			{
 			    json: false,
@@ -114,7 +113,7 @@ describe("MathML Cloud API features", function() {
 		.afterJSON(function(json) {
 			//---- GET /html5/{id}
 			frisby.create("Get HTML5 resource")
-				.get(base_url + '/html5/' + json.id)
+				.get('/html5/' + json.id)
 				.expectStatus(200)
 				.expectHeaderContains("content-type", "application/json")
 				.expectJSON( {
@@ -126,7 +125,7 @@ describe("MathML Cloud API features", function() {
 		.afterJSON(function(json) {
 			//---- GET /html5/{id}/output
 			frisby.create("Get HTML5 output")
-				.get(base_url + '/html5/' + json.id + '/output')
+				.get('/html5/' + json.id + '/output')
 				.expectStatus(200)
 				.expectHeaderContains("content-type", "text/html")
 				.toss();
@@ -134,7 +133,7 @@ describe("MathML Cloud API features", function() {
 		.afterJSON(function(json) {
 			//---- GET /html5/{id}/source
 			frisby.create("Get HTML5 source")
-				.get(base_url + '/html5/' + json.id + '/source')
+				.get('/html5/' + json.id + '/source')
 				.expectStatus(200)
 				.expectHeaderContains("content-type", "text/html")
 				.toss();
