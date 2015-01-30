@@ -190,7 +190,11 @@ module.exports.routes = {
   'get /myUploads': {
     controller: 'Html5Controller',
     action: 'myUploads'
-  }
+  },
 
+  'get /myFeedback': {
+    controller: 'FeedbackController',
+    action: 'myFeedback'
+  }
   
 };

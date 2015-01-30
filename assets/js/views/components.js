@@ -12,7 +12,7 @@ define([
     tagName:  "div",
     
     render: function() {
-      var compiledTemplate = _.template(componentsTemplate)({components: this.collection.models});
+      var compiledTemplate = _.template(componentsTemplate)({components: this.collection});
       this.$el.html(compiledTemplate);
       return this;
     }
