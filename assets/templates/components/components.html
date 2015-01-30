@@ -9,17 +9,21 @@
         </tr>
     </thead>
     <tbody>
-        <% _.each(components, function(component) { %>
-            <tr>
-                <td><%= component.get("format") %></td>
-                <td><%= component.get("source") %></td>
-                <td class="col-md-6">
-                    <textarea class="form-control"><%= component.get("source") %></textarea>
-                </td>
-                <td>
-                    <a href="/component/<%= component.get("id") %>" title="Download <%= component.get("format") %>"><span class="glyphicon glyphicon-download" aria-hidden="true" title="Download <%= component.get("format") %>"></span></a>
-                </td>
-            </tr>
+        <% var formats = ['description', 'png', 'svg', 'mml']; %>
+        <% _.each(formats, function(format) { 
+            var component = components.findWhere({format: format});
+            if (typeof(component) != "undefined") { %>
+                <tr>
+                    <td><%= component.get("format") %></td>
+                    <td><%= component.get("source") %></td>
+                    <td class="col-md-6">
+                        <textarea class="form-control"><%= component.get("source") %></textarea>
+                    </td>
+                    <td>
+                        <a href="/component/<%= component.get("id") %>" title="Download <%= component.get("format") %>"><span class="glyphicon glyphicon-download" aria-hidden="true" title="Download <%= component.get("format") %>"></span></a>
+                    </td>
+                </tr>
+            <% } %>
         <% }); %>
     </tbody>
 </table>

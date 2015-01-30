@@ -48,7 +48,6 @@ define([
 
   var initialize = function(){
     var app_router = new AppRouter;
-    app_router.initialize();
 
     app_router.on('route:showEquation', function(id) {
       var equationView = new EquationView();
