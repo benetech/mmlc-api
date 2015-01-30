@@ -23,8 +23,9 @@ define([
     render: function() {
       var compiledTemplate = _.template(equationTemplate)({equation: this.model});
       this.$el.html(compiledTemplate);
-      console.log(this.model.get("components"));
-      var componentsView = new ComponentsView({el: this.$('#components'), collection: this.model.get("components")});
+      var componentsView = new ComponentsView();
+      componentsView.$el = this.$('#components');
+      componentsView.collection = this.model.get("components");
       componentsView.render();
       componentsView.delegateEvents();
       return this;
@@ -34,27 +35,17 @@ define([
       var feedbackView = this;
       e.preventDefault();
       var feedback = new Feedback();
-      feedback.set({
-        comments: feedbackView.$("textarea[name=comments]").val(),
-        equation: feedbackView.$("input[name=equation]").val()
-      });
-      if (feedbackView.$("input[name=components]:checked").length > 0) {
-        var components = [];
-        $.each(feedbackView.$("input[name=components]:checked"), function(index, component) {
-          components.push($(component).val());
-        });
-        feedback.set({components: components});
-      }
-      if (typeof(App.user) != "undefined") {
-        feedback.set({access_token: App.user.get("access_token")});
-      }
-      feedback.save(null, {
-        success: function(model, response, options) {
-          feedbackView.$("#commentsMessaging").html("Thank you for your feedback!");
-          setTimeout(function() {
-            $("#commentsMessaging").attr('tabindex', '-1').focus();
-          }, 500);
-        }
+
+      var url = "/feedback?" + feedbackView.$('.commentsForm').serialize(); 
+      $.ajax({
+        type: "POST",
+        url: url,
+        dataType: 'json'
+      }).done(function(data) {
+        $("#commentsMessaging").html("Thank you for your feedback!");
+        setTimeout(function() {
+          $("#commentsMessaging").attr('tabindex', '-1').focus();
+        }, 500);
       });
     },
 
@@ -71,14 +62,14 @@ define([
           setTimeout(function() {
             equationView.$("h2:first").attr('tabindex', '-1').focus();
           }, 500);
-          equationView.$("#updateEquation").html("Update");
+          equationView.$(".updateEquation").html("Update");
         },
         error: function(model, response, options) {
           equationView.$(".errorMessage").text("There was an error converting your math: " + response);
           setTimeout(function() {
             equationView.$(".errorMessage").attr('tabindex', '-1').focus();
           }, 500);
-          equationView.$("#updateEquation").html("Update");
+          equationView.$(".updateEquation").html("Update");
         }
       });
     }
