@@ -51,6 +51,7 @@ module.exports.policies = {
   },
 
   FeedbackController: {
+    "myFeedback": ["authenticate", "authenticated"],
     "create": "authenticate",
     "*": true
   }
