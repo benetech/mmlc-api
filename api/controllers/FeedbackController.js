@@ -13,7 +13,7 @@ module.exports = {
 			comments: req.param('comments'),
 			submittedBy: req.user
 		}).exec(function(err, feedback) {
-			if (typeof req.param('components') != "undefined") {
+			if (typeof req.param('components') != "undefined" && req.param('components').length > 0) {
 				var components = typeof req.param('components') == 'string' ? [req.param('components')] : req.param('components'); 
 				components.forEach(function(component,index) {
 					feedback.components.add(component);

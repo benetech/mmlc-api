@@ -7,15 +7,14 @@ define([
   'text!/templates/equations/my_equations.html',
   'text!/templates/equations/equations.html',
   'text!/templates/pagination.html',
-  'js/views/equation.js',
   'js/views/equations.js',
-  'js/views/pagination.js',
-  'js/models/equation.js'
-], function($, _, Backbone, bootstrap, myEquationsTemplate, equationsTemplate, paginationTemplate, EquationView, EquationsView, PaginationView, Equation) {
+  'js/views/pagination.js'
+], function($, _, Backbone, bootstrap, myEquationsTemplate, equationsTemplate, paginationTemplate, EquationsView, PaginationView) {
   var MyEquationsView = Backbone.View.extend({
 
     //div.
     tagName:  "div",
+
     
     render: function() {
       var compiledTemplate = _.template(myEquationsTemplate);
