@@ -1,0 +1,34 @@
+<% if (typeof feedback != 'undefined' && feedback.length > 0) { %>
+    <table class="table table-striped" id="resultsTable">
+    <thead>
+        <tr>
+            <th class="info">Equation ID</th>
+            <th class="info text-center">Components</th>
+            <th class="info">Comments</th>
+            <th class="info">Date Submitted</th>
+        </tr>
+    </thead>
+    <tbody>
+    <% _.each(feedback, function(f) { %>
+        <tr>
+            <td><a href="#/equation/<%=f.get("equation").id%>" class="equation"><%=f.get("equation").id%></td>
+            <td>
+                <% if (typeof(f.get("components"))  != "undefined" && f.get("components").length > 0) { %>
+                    <dl class="dl-horizontal">
+                    <% _.each(f.get("components").models, function(component) { %>
+                        <dt><%= component.get("format") %></dt>
+                        <dd><%= component.get("source") %></dt>
+                    <% }); %>
+                    </dl>
+            <%    } %>
+            </td>
+            <td><%= f.get("comments") %></td>
+            <td><%= moment(f.get("createdAt")).format('MMMM DD, YYYY') %></td>
+        </tr>
+    <% }); %>
+    </tbody>
+    </table>
+<% } else { %>
+<p>You have not submitted any feedback for any equations.</p> 
+<% } %>
+

@@ -11,7 +11,8 @@ require.config({
     stickit: 'libs/backbone/backbone.stickit.min',
     validation: 'libs/backbone/backbone-validation-amd-min',
     paginator: 'libs/backbone/backbone.paginator.min',
-    pace: 'libs/pace'
+    pace: 'libs/pace',
+    moment: 'libs/moment'
   },
   shim: {
     "backbone": {

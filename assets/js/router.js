@@ -9,20 +9,23 @@ define([
   'js/views/equation.js',
   'js/views/my_equations.js',
   'js/views/my_uploads.js',
+  'js/views/my_feedback.js',
   'js/views/html5.js',
   'js/models/equation.js',
   'js/models/html5.js',
   'js/collections/equations.js',
   'js/collections/html5s.js',
+  'js/collections/feedback.js',
   'js/views/about.js',
   'js/views/main_content.js'
-], function($, _, Backbone, pace, FormView, NavBarView, EquationView, MyEquationsView, MyUploadsView, Html5View, Equation, Html5, EquationCollection, Html5Collection, AboutView, MainContentView){
+], function($, _, Backbone, pace, FormView, NavBarView, EquationView, MyEquationsView, MyUploadsView, MyFeedbackView, Html5View, Equation, Html5, EquationCollection, Html5Collection, FeedbackCollection, AboutView, MainContentView){
   var AppRouter = Backbone.Router.extend({
     routes: {
       // Define some URL routes
       'equation/:id': 'showEquation',
       'equations/:offset': 'showEquations',
       'equations': 'showEquations',
+      'feedback': 'showFeedback',
       'uploads': 'showUploads',
       'uploads/:offset': 'showUploads',
       'html5/:id': 'showHtml5',
@@ -45,7 +48,6 @@ define([
 
   var initialize = function(){
     var app_router = new AppRouter;
-    app_router.initialize();
 
     app_router.on('route:showEquation', function(id) {
       var equationView = new EquationView();
@@ -89,6 +91,19 @@ define([
         uploadsView.collection.fetch({
           success: function(collection, response, options) {
             app_router.mainContentView.showView(uploadsView);
+          }
+        });
+      } else {
+        app_router.navigate('#/', {trigger: true});
+      }
+    });
+
+    app_router.on('route:showFeedback', function(page){
+      if (typeof(App.user) != "undefined") {
+        var feedbackView = new MyFeedbackView({collection: new FeedbackCollection()});
+        feedbackView.collection.fetch({
+          success: function(collection, response, options) {
+            app_router.mainContentView.showView(feedbackView);
           }
         });
       } else {

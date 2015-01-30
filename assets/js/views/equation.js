@@ -23,9 +23,8 @@ define([
     render: function() {
       var compiledTemplate = _.template(equationTemplate)({equation: this.model});
       this.$el.html(compiledTemplate);
-      var componentsView = new ComponentsView();
-      componentsView.$el = this.$('#components');
-      componentsView.collection = this.model.get("components");
+      console.log(this.model.get("components"));
+      var componentsView = new ComponentsView({el: this.$('#components'), collection: this.model.get("components")});
       componentsView.render();
       componentsView.delegateEvents();
       return this;

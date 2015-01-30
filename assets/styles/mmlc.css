@@ -1,10 +1,30 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
 body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
   padding-top: 50px;
   padding-bottom: 20px;
 }
 
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #fcfcfc;
+  padding: 1.5em;
+  border-top: 1px solid #333;
+}
+
+
 .spacer {
-    margin-top: 40px; /* define margin as you see fit */
+    margin-top: 40px; 
 }
 
 legend {
