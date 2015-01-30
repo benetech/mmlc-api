@@ -105,7 +105,8 @@ define([
           App.router.navigate('#/equation/' + response.id, {trigger: true});
         },
         error: function(model, response, options) {
-          formView.$(".errorMessage").text("There was an error converting your math: " + response);
+			var message = response.responseJSON.message || "Unknown";
+			formView.$(".errorMessage").text("There was an error converting your math: " + message);
           setTimeout(function() {
             formView.$(".errorMessage").attr('tabindex', '-1').focus();
           }, 500);
