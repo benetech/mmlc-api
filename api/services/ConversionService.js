@@ -17,7 +17,7 @@ module.exports = {
                     if (options.speakText) EquationService.createComponent("description", data.speakText, equation.id);
                     //Look up equation so that we have all created info.
                     Equation.findOne(equation.id).populate('components').exec(function(err, newEquation) {
-                        newEquation.cloudUrl = "http://" + host + "/equation/" + equation.id;
+                        newEquation.cloudUrl = "https://" + host + "/equation/" + equation.id;
                         return done(null, newEquation);
                     });
                 });
