@@ -2,17 +2,24 @@
 <form class="form-horizontal">
     <div class="col-sm-6">
         <div class="form-group">
-            <label for="equationMath" class="control-label col-sm-3"><%= equation.get("mathType") %>:</label>
-            <div class="col-sm-9"><textarea id="equationMath" class="form-control"><%= equation.get("math") %></textarea></div>
+            <% if (typeof(readOnly) == "undefined" || !readOnly) { %>
+                <label for="equationMath" class="control-label col-sm-3"><%= equation.get("mathType") %>:</label>
+                <div class="col-sm-9"><textarea id="equationMath" class="form-control"><%= equation.get("math") %></textarea></div>
+            <% } else { %>
+                <span class="col-sm-3 control-label"><strong><%= equation.get("mathType") %>:</strong></span>
+                <span class="form-control-static col-sm-9"><%= equation.get("math") %></span>
+            <% } %>
         </div>
     </div>
-    <div class="col-sm-6">
-        <div class="form-group">
-            <img src="images/load.gif" style="display: none;" class="spinner" alt="Please wait while we process your equation(s)"/>
-            <button type="submit" class="btn btn-primary updateEquation">Update</button>
-            <a href="#/"><button type="button" class="btn btn-primary">Start Over</button></a>
+    <% if (typeof(readOnly) == "undefined" || !readOnly) { %>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <img src="images/load.gif" style="display: none;" class="spinner" alt="Please wait while we process your equation(s)"/>
+                <button type="submit" class="btn btn-primary updateEquation">Update</button>
+                <a href="#/"><button type="button" class="btn btn-primary">Start Over</button></a>
+            </div>
         </div>
-    </div>
+    <% } %>
 </form>
 <div class="clearfix"></div>
 <div id="components">
