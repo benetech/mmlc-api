@@ -2,13 +2,10 @@
 <form class="form-horizontal">
     <div class="col-sm-6">
         <div class="form-group">
-            <% if (typeof(readOnly) == "undefined" || !readOnly) { %>
-                <label for="equationMath" class="control-label col-sm-3"><%= equation.get("mathType") %>:</label>
-                <div class="col-sm-9"><textarea id="equationMath" class="form-control"><%= equation.get("math") %></textarea></div>
-            <% } else { %>
-                <span class="col-sm-3 control-label"><strong><%= equation.get("mathType") %>:</strong></span>
-                <span class="form-control-static col-sm-9"><%= equation.get("math") %></span>
-            <% } %>
+            <label for="equationMath" class="control-label col-sm-3"><%= equation.get("mathType") %>:</label>
+            <div class="col-sm-9">
+                <textarea id="equationMath" class="form-control" <%= (typeof(readOnly) != "undefined" && readOnly) ? "disabled" : "" %>><%= equation.get("math") %></textarea>
+            </div>
         </div>
     </div>
     <% if (typeof(readOnly) == "undefined" || !readOnly) { %>

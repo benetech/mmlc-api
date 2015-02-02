@@ -23,7 +23,6 @@ define([
     render: function() {
       var compiledTemplate = _.template(equationTemplate)({equation: this.model, readOnly: this.readOnly});
       this.$el.html(compiledTemplate);
-      console.log(this.model.get("components"));
       var componentsView = new ComponentsView({el: this.$('#components'), collection: this.model.get("components")});
       componentsView.render();
       componentsView.delegateEvents();
