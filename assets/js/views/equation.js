@@ -21,11 +21,9 @@ define([
     
     // Render the equation.
     render: function() {
-      var compiledTemplate = _.template(equationTemplate)({equation: this.model});
+      var compiledTemplate = _.template(equationTemplate)({equation: this.model, readOnly: this.readOnly});
       this.$el.html(compiledTemplate);
-      var componentsView = new ComponentsView();
-      componentsView.$el = this.$('#components');
-      componentsView.collection = this.model.get("components");
+      var componentsView = new ComponentsView({el: this.$('#components'), collection: this.model.get("components")});
       componentsView.render();
       componentsView.delegateEvents();
       return this;

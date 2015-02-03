@@ -31,6 +31,7 @@ define([
       equation.fetch({
         success: function(model, response, options) {
           equationView.model = new Equation(response);
+          equationView.readOnly = true;
           $("#mmlcModalBody").html(equationView.render().el);
           $("#mmlcModalLabel").html("Submit Feedback");
           equationView.render();
