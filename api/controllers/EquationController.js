@@ -23,7 +23,8 @@ module.exports = {
 		options.speakText = req.param('description');
 
 		//Do some basic checking on mathml input.
-		if (options.format == "MathML" && !options.math.indexOf("<math") == 0) return res.badRequest("MathML must start with <math");
+		if (options.format == "MathML" && !options.math.indexOf("<math") == 0) 
+			return res.badRequest({ errorCode: "23", message: "MathML must start with <math" });
 
 		//Create db record first so that we can make use of waterline's
 		//validation rules.
@@ -39,7 +40,7 @@ module.exports = {
 			  	return res.badRequest(err);
 		    } 
 		    ConversionService.convertEquation(options, equation, req.headers.host, function(err, newEquation) {
-		    	if (err) return res.badRequest("Error converting equation.");
+		    	if (err) return res.serverError("Error converting equation.");
 		    	return res.json(newEquation);	
 		    });
 		});
@@ -47,7 +48,7 @@ module.exports = {
 
 	update: function(req, res) {
 		Equation.findOne({id: req.param("id")}).populate("components").exec(function(err, equation) {
-			if (err) return res.badRequest("Equation Not Found");
+			if (err) return res.serverError("Equation Not Found");
 			if(typeof(equation) == "undefined") {
 				return res.notFound({ errorCode: "30", message: "Equation not found: " + equationId });
 			}
@@ -75,7 +76,7 @@ module.exports = {
 			});
 			Equation.update({id: equation.id}, {math: req.param("math")}).exec(function(err, equations) {
 				ConversionService.convertEquation(options, equations[0], req.headers.host, function(err, newEquation) {
-			    	if (err) return res.badRequest("Error converting equation.");
+			    	if (err) return res.serverError("Error converting equation.");
 			    	return res.json(newEquation);	
 			    });
 			});
@@ -151,7 +152,7 @@ module.exports = {
 		Equation.findOne({ id: equationId }).populate('components').populate('html5').exec(function (err, equation) {
 			if (err) {
 				console.log(err);
-				return res.badRequest(err);
+				return res.serverError(err);
 			} else if (typeof(equation) == "undefined") {
 				res.notFound({ errorCode: "30", message: "Equation not found: " + equationId });
 			} else {
@@ -180,7 +181,7 @@ module.exports = {
 				});
 			}
 		], function (err, numEquations, equations) {
-			if (err) return res.badRequest(err);
+			if (err) return res.serverError(err);
 			return res.json({"equations": equations, "numEquations": numEquations});
 		});
 	}

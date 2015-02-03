@@ -12,9 +12,10 @@ module.exports = {
 	*/
 	download: function  (req, res) {
 		var componentId = req.param("id");
-		if (typeof(componentId) == "undefined") return res.badRequest("Component Id Required.");
+		if (typeof(componentId) == "undefined") 
+			return res.badRequest({ errorCode: "25", mesage: "Component Id Required." });
 		Component.findOne({id: componentId}).populate('equation').exec(function(err, component) {
-			if (err) return res.badRequest("There was an error loading this component.");
+			if (err) return res.serviceError("There was an error loading this component.");
 			switch(component.format) {
 				case 'svg':
 					res.attachment(component.id + ".svg");

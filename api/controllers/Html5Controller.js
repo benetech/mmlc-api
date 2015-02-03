@@ -6,7 +6,7 @@
  */
 var waterfall = require('async-waterfall');
 var error_responses = {
-	"mising_format" : { errorCode: "21", message: "Please specify output format."},
+	"missing_format" : { errorCode: "21", message: "Please specify output format."},
 	"missing_file" : { errorCode: "24", message: "Please specify HTML5 file."},
 	"invalid_format" : { errorCode: "24", message: "Only HTML5 files are supported."}
 };
@@ -17,7 +17,8 @@ module.exports = {
 	*/
 	upload: function  (req, res) {
 		//We need to know what kind of output you want.
-        var outputFormat = req.body.outputFormat;
+        var outputFormat = req.body.outputFormat || req.query.outputFormat;
+		console.log("*** outputFormat = ", outputFormat);
 		if (typeof(outputFormat) == "undefined" || !outputFormat in ['svg', 'png', 'description', 'mml']) {
 			return res.badRequest(error_responses["missing_format"]);	
 		}
@@ -26,7 +27,7 @@ module.exports = {
 			
             if (err) {
 	        	console.log(err);
-			  	return res.badRequest(err);
+			  	return res.serverError(err);
 		    }
 			if (typeof(files[0]) == "undefined") {
 				return res.badRequest(error_responses["missing_file"]);
@@ -56,7 +57,7 @@ module.exports = {
                 QueueService.submitHTML5ConversionJob(dbHtml5, function(err) {
                 	if (typeof(err) != "undefined") {
                 		console.log(err);
-                		return res.badRequest(err);
+                		return res.serverError(err);
                 	}
                 	res.accepted(dbHtml5);	
                 });
@@ -69,7 +70,7 @@ module.exports = {
 		Html5.findOne({ id: html5Id }).exec(function (err, html5) {
 			if (err) {
 				console.log(err);
-				return res.badRequest(err);
+				return res.serverError(err);
 			} 
 			if (typeof(html5) != "undefined") {
                 if (req.wantsJSON) {
@@ -86,7 +87,7 @@ module.exports = {
 	equations: function(req, res) {
 		var html5Id = req.param('id');
 		Equation.find({ html5: html5Id }).populate('components').exec(function(err, equations) {	
-			if (err) return res.badRequest(err);
+			if (err) return res.serverError(err);
 			res.json(equations);
 		});
 	},
@@ -115,7 +116,7 @@ module.exports = {
                 });
             }
         ], function (err, numHtml5s, html5s) {
-            if (err) return res.badRequest(err);
+            if (err) return res.serverError(err);
             return res.json({"html5s": html5s, "numHtml5s": numHtml5s});
         });
     }
