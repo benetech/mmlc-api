@@ -12,6 +12,13 @@ var FormData = require('form-data');
 // Local testing
 var base_url = 'http://localhost:1337';
 
+//User for records.
+var user = {};
+
+var randomUsername = function() {
+    return Math.random() * (100 - 0);
+}
+
 describe("MathML Cloud API features", function() {
 	
 	// Global setup for all tests
@@ -23,6 +30,26 @@ describe("MathML Cloud API features", function() {
 	  }
 	});
 
+	//---- POST /user
+	frisby.create("Valid User")
+        .post('/user', {
+            username : randomUsername() + "@benetech.org",
+            password : '123456',
+            firstName: 'Spec',
+            lastName: 'Valid',
+            termsOfService: true
+        }).
+        afterJSON(function(json) {
+        	//---- GET /myFeedback
+		    //Verify that the newly created user has no feedback.
+		    frisby.create("Get My feedback for user with no feedback")
+		    	.get("/myFeedback?access_token=" + json.access_token)
+		    	.expectStatus(200)
+		    	.expectJSON({})
+		    	.toss();
+		})
+        .toss();
+
 	//---- POST /feedback
 	// First create an equation that can be given feedback
 	frisby.create("Set up equation for feedback")
@@ -32,19 +59,43 @@ describe("MathML Cloud API features", function() {
 			description : 'true',
 			svg : 'true'
 		})
-		.afterJSON(function(json) {
-			frisby.create("Post feedback")
-				.post('/feedback', {
-					equation : json.id,
-					comments : 'Testing API call',
-				})
-				.expectStatus(200)
-				.expectHeaderContains("content-type", "application/json")
-				.expectJSON({
-					comments : 'Testing API call',
-					equation : json.id,
-				})
+		//Then, create a user feedback is from.
+		.afterJSON(function(equation) {
+			frisby.create("Valid User for feedback")
+			.post('/user', {
+            	username : randomUsername() + "@benetech.org",
+            	password : '123456',
+            	firstName: 'Spec',
+            	lastName: 'Valid',
+            	termsOfService: true
+        	})
+        	.afterJSON(function(user) {
+				frisby.create("Post feedback")
+					.post('/feedback', {
+						equation : equation.id,
+						comments : 'Testing API call',
+						access_token: user.access_token
+					})
+					.expectStatus(200)
+					.expectHeaderContains("content-type", "application/json")
+					.expectJSON({
+						comments : 'Testing API call',
+						equation : equation.id,
+					})
+					.afterJSON(function(json) {
+						//Verify we have some feedback for the user.
+						frisby.create("Feedback for user")
+						.get('/myFeedback?access_token=' + user.access_token)
+						.expectStatus(200)
+						.expectJSONTypes('feedback.?', {
+							components: Array,
+							equation: Object,
+							submittedBy: String
+						})
+						.toss()
+					})
 				.toss();
+			}).toss()
 		})
 		.toss();
 
