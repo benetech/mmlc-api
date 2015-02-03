@@ -51,7 +51,6 @@ define([
       $("#results").html("");
       var data = new FormData();
 	  var outputFormat = $("input[name='outputFormat']:checked").val();
-//      data.append("outputFormat", outputFormat);
       if (typeof(App.user) != "undefined") {
         data.append("access_token", App.user.get("access_token"));
       }
