@@ -6,7 +6,7 @@
  */
 var waterfall = require('async-waterfall');
 var error_responses = {
-	"mising_format" : { errorCode: "21", message: "Please specify output format."},
+	"missing_format" : { errorCode: "21", message: "Please specify output format."},
 	"missing_file" : { errorCode: "24", message: "Please specify HTML5 file."},
 	"invalid_format" : { errorCode: "24", message: "Only HTML5 files are supported."}
 };
@@ -17,7 +17,8 @@ module.exports = {
 	*/
 	upload: function  (req, res) {
 		//We need to know what kind of output you want.
-        var outputFormat = req.body.outputFormat;
+        var outputFormat = req.body.outputFormat || req.query.outputFormat;
+		console.log("*** outputFormat = ", outputFormat);
 		if (typeof(outputFormat) == "undefined" || !outputFormat in ['svg', 'png', 'description', 'mml']) {
 			return res.badRequest(error_responses["missing_format"]);	
 		}

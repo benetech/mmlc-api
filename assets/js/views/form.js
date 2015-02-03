@@ -50,11 +50,12 @@ define([
       formView.$(".errorMessage").html("");
       $("#results").html("");
       var data = new FormData();
-      data.append("outputFormat", $("input[name='outputFormat']:checked").val());
+	  var outputFormat = $("input[name='outputFormat']:checked").val();
+//      data.append("outputFormat", outputFormat);
       if (typeof(App.user) != "undefined") {
         data.append("access_token", App.user.get("access_token"));
       }
-      data.append("html5", formView.$("#html5")[0].files[0], formView.$("#html5")[0].files[0].name);
+      data.append("html5?outputformat=" + outputFormat, formView.$("#html5")[0].files[0], formView.$("#html5")[0].files[0].name);
       $.ajax({
         url: '/html5',
         data: data,
