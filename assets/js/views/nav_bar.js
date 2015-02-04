@@ -20,7 +20,7 @@ define([
     },
     
     //div.
-    el:  $("#optionalNav"),
+    el:  $("#navbar"),
 
     setFocusOnH1: function() {
 

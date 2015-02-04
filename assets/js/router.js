@@ -17,8 +17,9 @@ define([
   'js/collections/html5s.js',
   'js/collections/feedback.js',
   'js/views/about.js',
-  'js/views/main_content.js'
-], function($, _, Backbone, pace, FormView, NavBarView, EquationView, MyEquationsView, MyUploadsView, MyFeedbackView, Html5View, Equation, Html5, EquationCollection, Html5Collection, FeedbackCollection, AboutView, MainContentView){
+  'js/views/main_content.js',
+  'js/views/forgot_password.js'
+], function($, _, Backbone, pace, FormView, NavBarView, EquationView, MyEquationsView, MyUploadsView, MyFeedbackView, Html5View, Equation, Html5, EquationCollection, Html5Collection, FeedbackCollection, AboutView, MainContentView, ForgotPasswordView){
   var AppRouter = Backbone.Router.extend({
     routes: {
       // Define some URL routes
@@ -30,6 +31,7 @@ define([
       'uploads/:offset': 'showUploads',
       'html5/:id': 'showHtml5',
       'about': 'showAbout',
+      'forgotPassword': 'showForgotPassword',
 
       // Default
       '*actions': 'defaultAction'
@@ -115,6 +117,11 @@ define([
   		var aboutView = new AboutView();
   		app_router.mainContentView.showView(aboutView);
   	});
+
+    app_router.on('route:showForgotPassword', function() {
+      var forgotPasswordView = new ForgotPasswordView();
+      app_router.mainContentView.showView(forgotPasswordView);
+    });
 
     app_router.on('route:defaultAction', function(actions){
       app_router.mainContentView.showView(new FormView());
