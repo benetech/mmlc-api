@@ -55,7 +55,7 @@ define([
             $('#mmlcModal').modal('hide');
           },
           error: function(model, response, options) {
-            signUp.$(".errorMessage").text(response.responseText);
+            signUp.$(".errorMessage").text(response.responseJSON.message);
             setTimeout(function() {
               signUp.$(".errorMessage").attr('tabindex', '-1').focus();
             }, 500);

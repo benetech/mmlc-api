@@ -26,7 +26,7 @@ define([
         $.post("/forgotPassword?username=" + forgotPasswordView.$("#username").val(), function(data) {
             forgotPasswordView.$("#forgotPassword").html(data.message);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            forgotPasswordView.$("#emailError").html(jqXHR.responseText);
+            forgotPasswordView.$("#emailError").html(jqXHR.responseJSON.message);
             setTimeout(function() {
               forgotPasswordView.$("#emailError").attr('tabindex', '-1').focus();
             }, 250);

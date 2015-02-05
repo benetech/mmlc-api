@@ -39,8 +39,7 @@ define([
             changePasswordView.$("#changePassword").html(response.message);
           },
           error: function(model, response, options) {
-            console.log(response);
-            changePasswordView.$("#emailError").html(response.responseText);
+            changePasswordView.$("#emailError").html(response.responseJSON.message);
             setTimeout(function() {
               changePasswordView.$("#emailError").attr('tabindex', '-1').focus();
             }, 250);
