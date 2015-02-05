@@ -13,12 +13,15 @@ define([
   'js/views/html5.js',
   'js/models/equation.js',
   'js/models/html5.js',
+  'js/models/change_password.js',
   'js/collections/equations.js',
   'js/collections/html5s.js',
   'js/collections/feedback.js',
   'js/views/about.js',
-  'js/views/main_content.js'
-], function($, _, Backbone, pace, FormView, NavBarView, EquationView, MyEquationsView, MyUploadsView, MyFeedbackView, Html5View, Equation, Html5, EquationCollection, Html5Collection, FeedbackCollection, AboutView, MainContentView){
+  'js/views/main_content.js',
+  'js/views/forgot_password.js',
+  'js/views/change_password.js'
+], function($, _, Backbone, pace, FormView, NavBarView, EquationView, MyEquationsView, MyUploadsView, MyFeedbackView, Html5View, Equation, Html5, ChangePassword, EquationCollection, Html5Collection, FeedbackCollection, AboutView, MainContentView, ForgotPasswordView, ChangePasswordView){
   var AppRouter = Backbone.Router.extend({
     routes: {
       // Define some URL routes
@@ -30,6 +33,8 @@ define([
       'uploads/:offset': 'showUploads',
       'html5/:id': 'showHtml5',
       'about': 'showAbout',
+      'forgotPassword': 'showForgotPassword',
+      'changePassword?token=:token&username=:username': 'showChangePassword',
 
       // Default
       '*actions': 'defaultAction'
@@ -115,6 +120,17 @@ define([
   		var aboutView = new AboutView();
   		app_router.mainContentView.showView(aboutView);
   	});
+
+    app_router.on('route:showForgotPassword', function() {
+      var forgotPasswordView = new ForgotPasswordView();
+      app_router.mainContentView.showView(forgotPasswordView);
+    });
+
+    app_router.on('route:showChangePassword', function(token, username) {
+      var changePasswordView = new ChangePasswordView();
+      changePasswordView.model = new ChangePassword({token: token, username: username});
+      app_router.mainContentView.showView(changePasswordView);
+    });
 
     app_router.on('route:defaultAction', function(actions){
       app_router.mainContentView.showView(new FormView());
