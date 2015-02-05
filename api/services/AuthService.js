@@ -20,7 +20,7 @@ module.exports = {
       ForgotPassword.create({user: user, token: AuthService.getToken(user)}).exec(function(err, forgotPassword) {
         var emailContent = "<p>Dear " + user.firstName + ",</p>";
         emailContent += "<p>You requested to reset your MathML Cloud password. Click the change password link below when you're ready to reset your password:</p>";
-        var fpLink = "https:" + req.headers.host + "/changePassword?token=" + forgotPassword.token;
+        var fpLink = "https:" + req.headers.host + "/changePassword?token=" + forgotPassword.token + "&username=" + user.username;
         emailContent += "<p><a href='" + fpLink + "'>Change Password</a></p>";
         emailContent += "<p>Thank you,<br>The MathML Cloud Team</p>"
         EmailService.send({

@@ -195,6 +195,21 @@ module.exports.routes = {
   'get /myFeedback': {
     controller: 'FeedbackController',
     action: 'myFeedback'
+  },
+
+  'post /forgotPassword': {
+    controller: 'UserController',
+    action: 'sendForgotPassword'
+  },
+
+  'get /changePassword': {
+    controller: 'UserController',
+    action: 'showChangePasswordForm'
+  },
+
+  'post /changePassword': {
+    controller: 'UserController',
+    action: 'changePassword'
   }
   
 };

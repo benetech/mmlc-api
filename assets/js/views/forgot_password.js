@@ -1,4 +1,4 @@
-//List of feedback.
+//Show forgot password form.
 define([
   'jquery',
   'underscore',
@@ -19,16 +19,13 @@ define([
       return this;
     },
 
-    submitForm(e) {
+    submitForm: function(e) {
       e.preventDefault();
       var forgotPasswordView = this;
       if (forgotPasswordView.$("#username").val() != "") {
-        $.post("/user/forgotPassword?username=" + forgotPasswordView.$("#username").val(), function(data) {
+        $.post("/forgotPassword?username=" + forgotPasswordView.$("#username").val(), function(data) {
             forgotPasswordView.$("#forgotPassword").html(data.message);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            console.log(textStatus);
-            console.log(errorThrown);
-            console.log(jqXHR.responseText);
             forgotPasswordView.$("#emailError").html(jqXHR.responseText);
             setTimeout(function() {
               forgotPasswordView.$("#emailError").attr('tabindex', '-1').focus();

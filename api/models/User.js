@@ -63,17 +63,30 @@ module.exports = {
   },
  
   beforeCreate: function(user, cb) {
-    bcrypt.genSalt(10, function(err, salt) {
-      bcrypt.hash(user.password, salt, function(err, hash) {
-        if (err) {
-          console.log(err);
-          cb(err);
-        }else{
-          user.password = hash;
-          cb(null, user);
-        }
+    User.generateSalt(user, cb);  
+  },
+
+  beforeUpdate: function(user, cb) {
+    User.generateSalt(user, cb);
+  },
+
+  generateSalt: function(user, cb) {
+    if (user.password) {
+      bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(user.password, salt, function(err, hash) {
+          if (err) {
+            console.log(err);
+            cb(err);
+          } else{
+            user.password = hash;
+            cb(null, user);
+          }
+        });
       });
-    });
+    } else {
+      cb(null, user);
+    }
+    
   }
 };
 
