@@ -14,14 +14,13 @@ define([
   'js/models/equation.js',
   'js/models/html5.js',
   'js/models/change_password.js',
-  'js/collections/equations.js',
   'js/collections/html5s.js',
   'js/collections/feedback.js',
   'js/views/about.js',
   'js/views/main_content.js',
   'js/views/forgot_password.js',
   'js/views/change_password.js'
-], function($, _, Backbone, pace, FormView, NavBarView, EquationView, MyEquationsView, MyUploadsView, MyFeedbackView, Html5View, Equation, Html5, ChangePassword, EquationCollection, Html5Collection, FeedbackCollection, AboutView, MainContentView, ForgotPasswordView, ChangePasswordView){
+], function($, _, Backbone, pace, FormView, NavBarView, EquationView, MyEquationsView, MyUploadsView, MyFeedbackView, Html5View, Equation, Html5, ChangePassword, Html5Collection, FeedbackCollection, AboutView, MainContentView, ForgotPasswordView, ChangePasswordView){
   var AppRouter = Backbone.Router.extend({
     routes: {
       // Define some URL routes
@@ -77,13 +76,7 @@ define([
 
     app_router.on('route:showEquations', function(page) {
       if (typeof(App.user) != "undefined") {
-        var equationsView = new MyEquationsView();
-        equationsView.collection = new EquationCollection();
-        equationsView.collection.fetch({
-          success: function(collection, response, options) {
-            app_router.mainContentView.showView(equationsView);  
-          }
-        });
+        app_router.mainContentView.showView(new MyEquationsView());  
       } else {
         app_router.navigate('#/', {trigger: true});
       }
@@ -91,13 +84,7 @@ define([
 
     app_router.on('route:showUploads', function(page){
       if (typeof(App.user) != "undefined") {
-        var uploadsView = new MyUploadsView();
-        uploadsView.collection = new Html5Collection();
-        uploadsView.collection.fetch({
-          success: function(collection, response, options) {
-            app_router.mainContentView.showView(uploadsView);
-          }
-        });
+        app_router.mainContentView.showView(new MyUploadsView());
       } else {
         app_router.navigate('#/', {trigger: true});
       }
