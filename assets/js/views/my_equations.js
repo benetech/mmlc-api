@@ -8,8 +8,9 @@ define([
   'text!/templates/equations/equations.html',
   'text!/templates/pagination.html',
   'js/views/equations.js',
-  'js/views/pagination.js'
-], function($, _, Backbone, bootstrap, myEquationsTemplate, equationsTemplate, paginationTemplate, EquationsView, PaginationView) {
+  'js/views/pagination.js',
+  'js/collections/equations.js'
+], function($, _, Backbone, bootstrap, myEquationsTemplate, equationsTemplate, paginationTemplate, EquationsView, PaginationView, EquationCollection) {
   var MyEquationsView = Backbone.View.extend({
 
     //div.
@@ -17,21 +18,26 @@ define([
 
     
     render: function() {
+      var myEquationsView = this;
       var compiledTemplate = _.template(myEquationsTemplate);
-      this.$el.html(compiledTemplate);
+      myEquationsView.$el.html(compiledTemplate);
+      myEquationsView.collection = new EquationCollection();
 
-      //Add equations.
-      this.renderEquations();
+      myEquationsView.collection.fetch({
+        success: function(collection, response, options) {
+          //Add equations.
+          myEquationsView.renderEquations();
 
-      //Add pagination.
-      var paginationView = new PaginationView({collection: this.collection, el: this.$('#pagination')});
-      paginationView.render();
-      paginationView.delegateEvents();
+          //Add pagination.
+          var paginationView = new PaginationView({collection: myEquationsView.collection, el: myEquationsView.$('#pagination')});
+          paginationView.render();
+          paginationView.delegateEvents();
 
-      //Listen for a change to the collection from pagination.
-      this.listenTo(this.collection, 'reset', this.renderEquations);
-
-      return this;
+          //Listen for a change to the collection from pagination.
+          myEquationsView.listenTo(myEquationsView.collection, 'reset', myEquationsView.renderEquations);  
+        }
+      });
+      return myEquationsView;
     },
 
     renderEquations: function() {
