@@ -41,7 +41,7 @@ cd ..
 /etc/init.d/redis_6379 start
 
 # Install Node.JS packages.
-npm -g -y install sails azure-cli forever
+npm -g -y install sails@0.10.5 azure-cli forever
 npm -y install --no-bin-links
 
 # Install mathjax dependency.
