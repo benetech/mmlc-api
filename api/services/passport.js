@@ -1,5 +1,4 @@
 var passport = require('passport'), 
-  LocalStrategy = require('passport-local').Strategy, 
   bcrypt = require('bcrypt'),
   BearerStrategy = require('passport-http-bearer').Strategy;
 
@@ -38,24 +37,8 @@ function findByToken(token, fn) {
     }
   });
 }
- 
-// Passport session setup.
-// To support persistent login sessions, Passport needs to be able to
-// serialize users into and deserialize users out of the session. Typically,
-// this will be as simple as storing the user ID when serializing, and finding
-// the user by ID when deserializing.
-passport.serializeUser(function (user, done) {
-  done(null, user.id);
-});
- 
-passport.deserializeUser(function (id, done) {
-  findById(id, function (err, user) {
-    done(err, user);
-  });
-});
- 
-// Use the LocalStrategy within Passport.
-passport.use('local', new LocalStrategy(
+
+passport.use('bearer', new BearerStrategy(
   function (username, password, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
@@ -87,10 +70,8 @@ passport.use('local', new LocalStrategy(
         });
       })
     });
-  }
-));
+  },
 
-passport.use('bearer', new BearerStrategy(
   function(token, done) {
     // asynchronous validation, for effect...
     process.nextTick(function () {
