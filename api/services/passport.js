@@ -1,17 +1,7 @@
 var passport = require('passport'), 
+  LocalStrategy = require('passport-local').Strategy, 
   bcrypt = require('bcrypt'),
   BearerStrategy = require('passport-http-bearer').Strategy;
-
-//helper functions
-function findById(id, fn) {
-  User.findOne(id).exec(function (err, user) {
-    if (err) {
-      return fn(null, null);
-    } else {
-      return fn(null, user);
-    }
-  });
-}
  
 function findByUsername(u, fn) {
   User.findOne({
@@ -37,8 +27,9 @@ function findByToken(token, fn) {
     }
   });
 }
-
-passport.use('bearer', new BearerStrategy(
+ 
+// Use the LocalStrategy within Passport.
+passport.use('local', new LocalStrategy(
   function (username, password, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
@@ -70,8 +61,10 @@ passport.use('bearer', new BearerStrategy(
         });
       })
     });
-  },
+  }
+));
 
+passport.use('bearer', new BearerStrategy(
   function(token, done) {
     // asynchronous validation, for effect...
     process.nextTick(function () {

@@ -46,23 +46,22 @@ define([
       e.preventDefault();
       var submitForm = $(e.currentTarget);
       $.post($(submitForm).attr("action"), {username: $("#username").val(), password: $("#password").val()}, function(data) {
-        if (data) {
-          if (typeof(data.message) != "undefined") {
-            alert(data.message);
-          } else {
-            App.user = new User(data);
-            navbar.render();
-            $("#homePageWelcome").hide();
-          }
-        }
+        App.user = new User(data);
+        navbar.render();
+        $("#homePageWelcome").hide();
+      })
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        var errResponse = $.parseJSON(jqXHR.responseText);
+        var errMsg = errResponse.message ? errResponse.message : jqXHR.responseText;
+        alert(errMsg);
       });
     },
 
     logOutUser: function(e) {
       var navbar = this;
       e.preventDefault();
-      $.get("/logout", function(data) {
-        if(data == "logout successful") {
+      $.get("/logout?access_token=" + App.user.get("access_token"), function(data) {
+        if(data.message == "logout successful") {
           delete App.user;
           navbar.render();
           var formView = new FormView();

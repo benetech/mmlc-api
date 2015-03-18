@@ -6,7 +6,7 @@ var error_responses = {
 };
 var passport = require('passport');
 module.exports = function (req, res, ok) {
-    if (typeof(req.param("access_token")) != "undefined") {
+    if (typeof(req.param("access_token")) != "undefined" && req.param("access_token").length > 0) {
         passport.authenticate('bearer', {session: false}, function(err, user, info) {
             if (err) return ok(err);
             if (user) {

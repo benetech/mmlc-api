@@ -59,7 +59,7 @@ describe("Register", function() {
             organization: "Benetech",
             organizationTypes: ["K-12 Education", "Post-Secondary Education"]
         })
-        .expectStatus(400)
+        .expectStatus(500)
         .toss();
     
     //Test dupe user.
