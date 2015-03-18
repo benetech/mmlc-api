@@ -35,7 +35,6 @@ module.exports = {
 	        	return res.serverError(e);
 	        });
 		});
-		
 	},
 
 	sendForgotPassword: function(req, res) {

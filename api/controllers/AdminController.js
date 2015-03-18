@@ -53,7 +53,7 @@ module.exports = {
 			}
 		], function(err, numFeedback, feedback, numEquations, equations, numUsers, users, numHtml5, html5) {
 			if (err) return res.badRequest(err);
-			return res.view({
+			return res.json({
 				"numFeedback": numFeedback, 
 				"numEquations": numEquations, 
 				"feedback": feedback, 
@@ -81,7 +81,7 @@ module.exports = {
 				}
 			], function(err, equation, feedback) {
 				if (err) return res.badRequest(err);
-				return res.view({"equation": equation, "feedback": feedback});
+				return res.json({"equation": equation, "feedback": feedback});
 			});
 		} else {
 			return res.badRequest('ID is required.');
@@ -103,7 +103,7 @@ module.exports = {
 			}
 		], function(err, num, offset, equations) {
 			if (err) return res.badRequest(err);
-			return res.view({"equations": equations, "numEquations": num, "offset": offset});
+			return res.json({"equations": equations, "numEquations": num, "offset": offset});
 
 		});
 	},
@@ -123,7 +123,7 @@ module.exports = {
 			}
 		], function (err, num, offset, feedback) {
 			if (err) return res.badRequest(err);
-			return res.view({"feedback": feedback, "numFeedback": num, "offset": offset});
+			return res.json({"feedback": feedback, "numFeedback": num, "offset": offset});
 		});
 	},
 
@@ -142,7 +142,7 @@ module.exports = {
 			}
 		], function (err, num, offset, html5) {
 			if (err) return res.badRequest(err);
-			return res.view({"html5": html5, "numHtml5": num, "offset": offset});
+			return res.json({"html5": html5, "numHtml5": num, "offset": offset});
 		});
 	},
 
@@ -161,7 +161,7 @@ module.exports = {
 			}
 		], function (err, html5, equations) {
 			if (err) return res.badRequest(err);
-			return res.view({"html5": html5, equations: equations});
+			return res.json({"html5": html5, equations: equations});
 		});
 	},
 
@@ -180,7 +180,7 @@ module.exports = {
 			}
 		], function (err, num, offset, users) {
 			if (err) return res.badRequest(err);
-			return res.view({"users": users, "numUsers": num, "offset": offset});
+			return res.json({"users": users, "numUsers": num, "offset": offset});
 		});
 	},
 

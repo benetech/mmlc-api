@@ -7,11 +7,7 @@ module.exports = {
             //Update user with new token.
             var token = AuthService.getToken(user);
             User.update({id: user.id}, {access_token: token}).exec(function(err, users) {
-              if (req.wantsJSON) {
-                return res.json(users[0]);
-              } else {
-                  return res.redirect("/");
-              }
+              return res.json(users[0]);
             });
         });
     },

@@ -50,6 +50,11 @@ module.exports.routes = {
     action: 'signUp'
   },
 
+  'post /user': {
+    controller: 'UserController',
+    action: 'create'
+  },
+
   'post /equation': {
     controller: 'EquationController',
     action: 'convert'

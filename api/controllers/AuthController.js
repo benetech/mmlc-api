@@ -12,7 +12,7 @@ module.exports = {
 	},
 
 	process: function(req, res) {
-  	passport.authenticate('local', function(err, user, info) {
+  	passport.authenticate('bearer', function(err, user, info) {
   		if ((err) || (!user)) {
     		return res.send({
     			message: 'login failed'
