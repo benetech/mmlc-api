@@ -14,13 +14,15 @@ define([
   'js/models/equation.js',
   'js/models/html5.js',
   'js/models/change_password.js',
+  'js/models/admin_dashboard.js',
   'js/collections/html5s.js',
   'js/collections/feedback.js',
   'js/views/about.js',
+  'js/views/admin.js',
   'js/views/main_content.js',
   'js/views/forgot_password.js',
   'js/views/change_password.js'
-], function($, _, Backbone, pace, FormView, NavBarView, EquationView, MyEquationsView, MyUploadsView, MyFeedbackView, Html5View, Equation, Html5, ChangePassword, Html5Collection, FeedbackCollection, AboutView, MainContentView, ForgotPasswordView, ChangePasswordView){
+], function($, _, Backbone, pace, FormView, NavBarView, EquationView, MyEquationsView, MyUploadsView, MyFeedbackView, Html5View, Equation, Html5, ChangePassword, AdminDashboard, Html5Collection, FeedbackCollection, AboutView, AdminView, MainContentView, ForgotPasswordView, ChangePasswordView){
   var AppRouter = Backbone.Router.extend({
     routes: {
       // Define some URL routes
@@ -34,6 +36,7 @@ define([
       'about': 'showAbout',
       'forgotPassword': 'showForgotPassword',
       'changePassword?token=:token&username=:username': 'showChangePassword',
+      'admin': 'showAdmin',
 
       // Default
       '*actions': 'defaultAction'
@@ -107,6 +110,19 @@ define([
   		var aboutView = new AboutView();
   		app_router.mainContentView.showView(aboutView);
   	});
+
+    app_router.on('route:showAdmin', function() {
+      if (typeof(App.user) != "undefined" && App.user.get("role") == "admin") {
+        var adminView = new AdminView({model: new AdminDashboard()});
+        adminView.model.fetch({
+          success: function(model, response, options) {
+            app_router.mainContentView.showView(adminView);
+          }
+        });
+      } else {
+        app_router.navigate('#/', {trigger: true});
+      }
+    });
 
     app_router.on('route:showForgotPassword', function() {
       var forgotPasswordView = new ForgotPasswordView();

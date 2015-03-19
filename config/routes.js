@@ -45,9 +45,10 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  'get /signUp': {
+  
+  'post /user': {
     controller: 'UserController',
-    action: 'signUp'
+    action: 'create'
   },
 
   'post /equation': {

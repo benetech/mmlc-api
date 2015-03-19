@@ -21,10 +21,6 @@ module.exports = {
 		});
 	},
 
-	signUp: function(req, res) {
-		res.view();
-	},
-
 	create: function(req, res) {
 		//make sure a user with this username/password doesn't already exist.
 		User.findOne({username: req.param("username")}).exec(function(err, user) {
@@ -35,7 +31,6 @@ module.exports = {
 	        	return res.serverError(e);
 	        });
 		});
-		
 	},
 
 	sendForgotPassword: function(req, res) {
@@ -76,5 +71,6 @@ module.exports = {
     		return res.serverError(err);
 		});
   	}
+
 };
 

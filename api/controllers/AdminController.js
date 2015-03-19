@@ -9,7 +9,6 @@ module.exports = {
 
 	/** Allow admins a quick overview of MMLC. */
 	index: function(req, res) {
-		var limit = 10;
 		waterfall([
 			function (callback) {
 				Feedback.count(function (err, numFeedback) {
@@ -17,51 +16,27 @@ module.exports = {
 				});
 			},
 			function (numFeedback, callback) {
-				Feedback.find({ skip: 0, limit: limit, sort: 'createdAt DESC' }).populate('equation').populate('components').populate('submittedBy').exec(function(err, feedback) {
-					callback(err, numFeedback, feedback);
-				});
-			},
-			function (numFeedback, feedback, callback) {
 				Equation.count(function(err, numEquations) {
-					callback(err, numFeedback, feedback, numEquations);
+					callback(err, numFeedback, numEquations);
 				});
 			},
-			function (numFeedback, feedback, numEquations, callback) {
-				Equation.find({ skip: 0, limit: limit, sort: 'createdAt DESC' }).populate('components').populate('submittedBy').exec(function(err, equations) {
-					callback(err, numFeedback, feedback, numEquations, equations);
-				});
-			},
-			function (numFeedback, feedback, numEquations, equations, callback) {
+			function (numFeedback, numEquations, callback) {
 				User.count(function(err, numUsers) {
-					callback(err, numFeedback, feedback, numEquations, equations, numUsers);
+					callback(err, numFeedback, numEquations, numUsers);
 				});
 			},
-			function (numFeedback, feedback, numEquations, equations, numUsers, callback) {
-				User.find({ skip: 0, limit: limit, sort: 'createdAt DESC' }).exec(function(err, users) {
-					callback(err, numFeedback, feedback, numEquations, equations, numUsers, users);
-				});
-			},
-			function (numFeedback, feedback, numEquations, equations, numUsers, users, callback) {
+			function (numFeedback, numEquations, numUsers, callback) {
 				Html5.count(function(err, numHtml5){
-					callback(err, numFeedback, feedback, numEquations, equations, numUsers, users, numHtml5);
-				});
-			},
-			function (numFeedback, feedback, numEquations, equations, numUsers, users, numHtml5, callback) {
-				Html5.find({ skip: 0, limit: limit, sort: 'createdAt DESC' }).populate("equations").populate('submittedBy').exec(function(err, html5) {
-					callback(err, numFeedback, feedback, numEquations, equations, numUsers, users, numHtml5, html5);
+					callback(err, numFeedback, numEquations, numUsers, numHtml5);
 				});
 			}
-		], function(err, numFeedback, feedback, numEquations, equations, numUsers, users, numHtml5, html5) {
+		], function(err, numFeedback, numEquations, numUsers, numHtml5) {
 			if (err) return res.badRequest(err);
-			return res.view({
+			return res.json({
 				"numFeedback": numFeedback, 
 				"numEquations": numEquations, 
-				"feedback": feedback, 
-				"equations": equations,
 				"numUsers": numUsers,
-				"users": users,
-				"numHtml5": numHtml5,
-				"html5": html5
+				"numHtml5": numHtml5
 			});
 		});
 	},
@@ -81,7 +56,7 @@ module.exports = {
 				}
 			], function(err, equation, feedback) {
 				if (err) return res.badRequest(err);
-				return res.view({"equation": equation, "feedback": feedback});
+				return res.json({"equation": equation, "feedback": feedback});
 			});
 		} else {
 			return res.badRequest('ID is required.');
@@ -89,26 +64,28 @@ module.exports = {
 	},
 
 	equations: function(req, res) {
+		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
 		waterfall([
 			function (callback) {
-				Equation.count(function (err, num) {
+				Equation.count({submittedBy: {'!': null}}).exec(function (err, num) {
 					callback(err, num);
 				});
 			},
 			function(num, callback) {
-				var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
-				Equation.find({ skip: offset, limit: 10, sort: 'createdAt DESC' }).populate('submittedBy').exec(function(err, equations) {
-					callback(err, num, offset, equations);
+				Equation.find({sort: 'createdAt DESC', submittedBy: {'!': null} }).paginate({page: page, limit: limit}).populate('submittedBy').populate('components').exec(function(err, equations) {
+					callback(err, num, equations);
 				});
 			}
-		], function(err, num, offset, equations) {
+		], function(err, num, equations) {
 			if (err) return res.badRequest(err);
-			return res.view({"equations": equations, "numEquations": num, "offset": offset});
-
+			return res.json({"equations": equations, "numEquations": num});
 		});
 	},
 
 	feedback: function (req, res) {
+		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
 		waterfall([
 			function(callback) {
 				Feedback.count(function (err, num) {
@@ -116,18 +93,19 @@ module.exports = {
 				});
 			},
 			function (num, callback) {
-				var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
-    			Feedback.find({ skip: offset, limit: 10, sort: 'createdAt DESC' }).populate('submittedBy').populate('components').populate('equation').exec(function(err, feedback) {	
-    				callback(err, num, offset, feedback);
+    			Feedback.find({sort: 'createdAt DESC' }).paginate({page: page, limit: limit}).populate('submittedBy').populate('components').populate('equation').exec(function(err, feedback) {	
+    				callback(err, num, feedback);
     			});
 			}
-		], function (err, num, offset, feedback) {
+		], function (err, num, feedback) {
 			if (err) return res.badRequest(err);
-			return res.view({"feedback": feedback, "numFeedback": num, "offset": offset});
+			return res.json({"feedback": feedback, "numFeedback": num});
 		});
 	},
 
 	html5uploads: function (req, res) {
+		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
 		waterfall([
 			function(callback) {
 				Html5.count(function (err, num) {
@@ -135,14 +113,13 @@ module.exports = {
 				});
 			},
 			function (num, callback) {
-				var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
-    			Html5.find({ skip: offset, limit: 10, sort: 'createdAt DESC' }).populate('submittedBy').populate('equations').exec(function(err, html5) {	
-    				callback(err, num, offset, html5);
+    			Html5.find({sort: 'createdAt DESC' }).paginate({page: page, limit: limit}).populate('submittedBy').populate('equations').exec(function(err, html5s) {	
+    				callback(err, num, html5s);
     			});
 			}
-		], function (err, num, offset, html5) {
+		], function (err, num, html5s) {
 			if (err) return res.badRequest(err);
-			return res.view({"html5": html5, "numHtml5": num, "offset": offset});
+			return res.json({"html5s": html5s, "numHtml5": num});
 		});
 	},
 
@@ -161,11 +138,13 @@ module.exports = {
 			}
 		], function (err, html5, equations) {
 			if (err) return res.badRequest(err);
-			return res.view({"html5": html5, equations: equations});
+			return res.json({"html5": html5, equations: equations});
 		});
 	},
 
 	users: function (req, res) {
+		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
 		waterfall([
 			function(callback) {
 				User.count(function (err, num) {
@@ -173,17 +152,15 @@ module.exports = {
 				});
 			},
 			function (num, callback) {
-				var offset = typeof req.param('offset') != 'undefined' ? req.param('offset') : 0;
-    			User.find({ skip: offset, limit: 10, sort: 'createdAt DESC' }).exec(function(err, users) {	
-    				callback(err, num, offset, users);
+    			User.find({sort: 'createdAt DESC' }).paginate({page: page, limit: limit}).exec(function(err, users) {	
+    				callback(err, num, users);
     			});
 			}
-		], function (err, num, offset, users) {
+		], function (err, num, users) {
 			if (err) return res.badRequest(err);
-			return res.view({"users": users, "numUsers": num, "offset": offset});
+			return res.json({"users": users, "numUsers": num});
 		});
-	},
-
+	}
 
 };
 
