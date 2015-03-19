@@ -1,0 +1,31 @@
+<% if (typeof users != 'undefined' && users.length > 0) { %>
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="info">User ID</th>
+            <th class="info">Username</th>
+            <th class="info">First Name</th>
+            <th class="info">Last Name</th>
+            <th class="info">Organization</th>
+            <th class="info">Organization Affiliations</th>
+            <th class="info">Date</th>
+        </tr>
+    </thead>
+    <tbody>
+    <% _.each(users, function (u) { %>
+        <tr>
+            <td><%= u.get("id") %></td>
+            <td><%= u.get("username") %></td>
+            <td><%= u.get("firstName") %></td>
+            <td><%= u.get("lastName") %></td>
+            <td><%= typeof(u.get("organization")) != "undefined" ? u.get("organization") : "N/A"%></td>
+            <td><%= typeof(u.get("organizationTypes")) != "undefined" ? u.get("organizationTypes") : "N/A" %></td>
+            <td><%= u.get("createdAt") %></td>
+        </tr>
+    <% }) %>
+    </tbody>
+    </table>
+<% } else { %>
+<p>No users.</p> 
+<% } %>
+

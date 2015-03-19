@@ -15,7 +15,7 @@ module.exports = function (req, res, ok) {
                     return ok();
                 });
             } else {
-                return res.badRequest("Invalid token.");
+                return res.badRequest({message: "Invalid token."});
             }
         })(req, res);
     } else {

@@ -1,0 +1,50 @@
+<h1>MathML Cloud Admin</h1>
+
+    <div role="tabpanel">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#dashboard" aria-controls="dashboard" data-toggle="tab" class="tab">Dashboard</a></li>
+        <li role="presentation"><a href="#feedback" aria-controls="feedback" data-toggle="tab" class="tab">Feedback</a></li>
+        <li role="presentation"><a href="#equations" aria-controls="equations" data-toggle="tab" class="tab">Equations</a></li>
+        <li role="presentation"><a href="#users" aria-controls="users" data-toggle="tab" class="tab">Users</a></li>
+        <li role="presentation"><a href="#html5" aria-controls="html5" data-toggle="tab" class="tab">HTML5 Uploads</a></li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="dashboard">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <span class="badge"><%= dashboard.get("numEquations") %></span>Total Equations
+            </li>
+            <li class="list-group-item">
+              <span class="badge"><%= dashboard.get("numFeedback") %></span>Total Comments
+            </li>
+            <li class="list-group-item">
+              <span class="badge"><%= dashboard.get("numUsers") %></span>Total Users
+            </li>
+            <li class="list-group-item">
+              <span class="badge"><%= dashboard.get("numHtml5") %></span>Total HTML5 Uploads
+            </li>
+          </ul>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="feedback">
+          <div class="pagination"></div>
+          <div class="results"></div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="equations">
+          <div class="pagination"></div>
+          <div class="results"></div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="users">
+          <div class="pagination"></div>
+          <div class="results"></div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="html5">
+          <div class="pagination"></div>
+          <div class="results"></div>  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
