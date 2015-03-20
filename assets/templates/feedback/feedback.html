@@ -3,6 +3,9 @@
     <thead>
         <tr>
             <th class="info">Equation ID</th>
+            <% if (typeof($("#isAdmin")) != "undefined" && $("#isAdmin").val() == "true") { %>
+                <th class="info">Submitted By</th>
+            <% } %>
             <th class="info text-center">Components</th>
             <th class="info">Comments</th>
             <th class="info">Date Submitted</th>
@@ -12,6 +15,13 @@
     <% _.each(feedback, function(f) { %>
         <tr>
             <td><a href="#/equation/<%=f.get("equation").id%>" class="equation"><%=f.get("equation").id%></td>
+            <% if (typeof($("#isAdmin")) != "undefined" && $("#isAdmin").val() == "true") { %>
+                <td>
+                    <% if (typeof(f.get("submittedBy")) != "undefined") { %>
+                        <%= f.get("submittedBy").username %>
+                    <% } %>
+                </td>
+            <% } %>
             <td>
                 <% if (typeof(f.get("components"))  != "undefined" && f.get("components").length > 0) { %>
                     <dl class="dl-horizontal">

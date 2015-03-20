@@ -3,6 +3,9 @@
     <thead>
         <tr>
             <th class="info">Equation ID</th>
+            <% if (typeof($("#isAdmin")) != "undefined" && $("#isAdmin").val() == "true") { %>
+                <th class="info">Submitted By</th>
+            <% } %>
             <th class="info">Input Math Type</th>
             <th class="info">Output</th>
             <th class="info">Text Description</th>
@@ -13,6 +16,13 @@
     <% _.each(equations, function(equation) { %>
         <tr>
             <td><a href="#/equation/<%=equation.get("id")%>"><%=equation.get("id")%></td>
+            <% if (typeof($("#isAdmin")) != "undefined" && $("#isAdmin").val() == "true") { %>
+                <td>
+                    <% if (typeof(equation.get("submittedBy")) != "undefined") { %>
+                        <%= equation.get("submittedBy").username %>
+                    <% } %>
+                </td>
+            <% } %>
             <td><%= equation.get("mathType") %></td>
             <td>
                 <% if (typeof(equation.get("components"))  != "undefined" && equation.get("components").length > 0) { 

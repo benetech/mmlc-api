@@ -1,10 +1,12 @@
-<% console.log(html5Uploads) %>
 <% if (typeof html5Uploads != 'undefined' && html5Uploads.length > 0) { %>
 <div id="html5Results">
     <table class="table table-striped" id="resultsTable">
         <thead>
             <tr>
                 <th class="info">Upload ID</th>
+                <% if (typeof($("#isAdmin")) != "undefined" && $("#isAdmin").val() == "true") { %>
+                    <th class="info">Submitted By</th>
+                <% } %>
                 <th class="info">File Name</th>
                 <th class="info">Number of Equations</th>
                 <th class="info">Output Format</th>
@@ -16,6 +18,13 @@
         <% _.each(html5Uploads, function (h) { %>
             <tr>
                 <td><a href="#/html5/<%=h.get("id")%>"><%= h.get("id") %></a></td>
+                <% if (typeof($("#isAdmin")) != "undefined" && $("#isAdmin").val() == "true") { %>
+                    <td>
+                        <% if (typeof(h.get("submittedBy")) != "undefined") { %>
+                            <%= h.get("submittedBy").username %>
+                        <% } %>
+                    </td>
+                <% } %>
                 <td><%= h.get("filename") %></td>
                 <td><%= h.get("equations").length %></td>
                 <td><%= h.get("outputFormat") %></td>

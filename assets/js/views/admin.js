@@ -109,7 +109,6 @@ define([
         this.uploadsView.remove();
       }
       //Add uploads
-      console.log(this.uploads);
       this.uploadsView = new UploadsView({collection: this.uploads});
       this.$("#html5 .results").html(this.uploadsView.render().el);
       this.uploadsView.delegateEvents();
