@@ -38,7 +38,7 @@ module.exports.policies = {
 	},
 
   AdminController: {
-    "*": "isAdmin"
+    "*": ["authenticate", "isAdmin"]
   },
 
   EquationController: {

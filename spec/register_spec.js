@@ -1,5 +1,5 @@
 // With Frisby installed globally, we need the full path to find it
-var frisby = require('/usr/local/lib/node_modules/frisby');
+var frisby = require('frisby');
 
 // Local testing
 var base_url = 'http://localhost:1337';
@@ -59,7 +59,7 @@ describe("Register", function() {
             organization: "Benetech",
             organizationTypes: ["K-12 Education", "Post-Secondary Education"]
         })
-        .expectStatus(400)
+        .expectStatus(500)
         .toss();
     
     //Test dupe user.
