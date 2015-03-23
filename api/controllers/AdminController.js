@@ -113,7 +113,7 @@ module.exports = {
 				});
 			},
 			function (num, callback) {
-    			Html5.find({sort: 'createdAt DESC' }).paginate({page: page, limit: limit}).populate('submittedBy').populate('equations').exec(function(err, html5s) {	
+    			Html5.find({sort: 'createdAt DESC' }, {fields: ["id", "createdAt", "equations", "outputFormat", "filename", "submittedBy"]}).paginate({page: page, limit: limit}).populate('submittedBy').populate('equations').exec(function(err, html5s) {	
     				callback(err, num, html5s);
     			});
 			}
