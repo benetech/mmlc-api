@@ -58,7 +58,7 @@ module.exports = function forbidden (data, options) {
       }
       // Otherwise, if this was a more serious error, log to the console with the details.
       else {
-        sails.log.warn('res.unautorized() :: When attempting to render error page view, an error occured (sending JSON instead).  Details: ', err);
+        sails.log.warn('res.unauthorized() :: When attempting to render error page view, an error occured (sending JSON instead).  Details: ', err);
       }
       return res.jsonx(data);
     }
