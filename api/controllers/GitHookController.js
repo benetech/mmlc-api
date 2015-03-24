@@ -21,7 +21,7 @@ module.exports = {
 					output += data;
 				});
 				git.on('close', function (code) {
-					output += 'Git exited with code ' + code;
+					output += 'Git exited with code ' + code + "\n";
 					if (code == 0) {
 						
 						//do any installs.
@@ -62,7 +62,7 @@ module.exports = {
 				});
 				git.on('close', function (code) {
 					output += 'Git exited with code ' + code;
-					res.json(output);
+					res.send(output);
 				});
 			}
 		});
