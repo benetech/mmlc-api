@@ -8,7 +8,7 @@ module.exports = {
         } else if (typeof(payload_body) == "undefined") {
             callback("Payload body not set.");
         } else {
-            var signature = crypto.createHmac('sha1', process.env.SECRET_TOKEN).update(payload_body.toString()).digest('hex');
+            var signature = 'sha1=' + crypto.createHmac('sha1', process.env.SECRET_TOKEN).update(payload_body.toString()).digest('hex');
             if (compare(signature, header_signature)) {
                 callback(null);
             } else {

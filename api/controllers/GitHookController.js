@@ -8,7 +8,7 @@ var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
 module.exports = {
 	push: function(req, res) {
-		GitHookService.verify_signature(req.body, req.headers['X-Hub-Signature'], function(err) {
+		GitHookService.verify_signature(req.body, req.headers['x-hub-signature'], function(err) {
 			if (err != null) {
 				return res.badRequest(err);
 			} else {
