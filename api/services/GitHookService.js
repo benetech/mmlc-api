@@ -6,11 +6,12 @@ module.exports = {
         if (typeof(process.env.SECRET_TOKEN) == "undefined") {
             callback("Please set the SECRET_TOKEN.");
         } else {
-            var signature = 'sha1=' + crypto.createHmac('sha1', process.env.SECRET_TOKEN);
+            var hmac = crypto.createHmac("sha1", process.env.SECRET_TOKEN);
             req.on("data", function(data) {
-                signature.update(data).digest('hex');
+                hmac.update(data).digest('hex');
             });
             req.on("end", function() {
+                var signature = 'sha1=' + hmac.digest("hex");
                 console.log(signature);
                 console.log(req.headers['x-hub-signature']);
                 if (compare(signature, req.headers['x-hub-signature'])) {
@@ -18,6 +19,9 @@ module.exports = {
                 } else {
                     callback("Signatures didn't match!");
                 }
+            });
+            req.on("error", function(err) {
+                return callback(err);
             });
         }
     }
