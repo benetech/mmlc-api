@@ -5,8 +5,6 @@ module.exports = {
     verify_signature: function(req, callback) {
         if (typeof(process.env.SECRET_TOKEN) == "undefined") {
             callback("Please set the SECRET_TOKEN.");
-        } else if (typeof(payload_body) == "undefined") {
-            callback("Payload body not set.");
         } else {
             var signature = 'sha1=' + crypto.createHmac('sha1', process.env.SECRET_TOKEN);
             req.on("data", function(data) {
