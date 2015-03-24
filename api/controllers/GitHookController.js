@@ -8,7 +8,7 @@ var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
 module.exports = {
 	push: function(req, res) {
-		GitHookService.verify_signature(req.body, req.headers['HTTP_X_HUB_SIGNATURE'], function(err) {
+		GitHookService.verify_signature({blah: "hoop"}, req.headers['HTTP_X_HUB_SIGNATURE'], function(err) {
 			if (err != null) {
 				return res.badRequest(err);
 			} else {
@@ -47,7 +47,7 @@ module.exports = {
 		  								res.send(output);
 		  								//finally restart forever. Logs not included in response since
 		  								//this will stop this app. :/
-		  								var forever_restart = spawn('forever', ['-C', '/home/mmlc/mathml-cloud', 'restartall']);
+		  								var forever_restart = exec('SECRET_TOKEN=${SECRET_TOKEN} forever restartall', {cwd: '/home/mmlc/mathml-cloud'});
 									});
 							} else {
 								res.send(output);	
