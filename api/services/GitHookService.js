@@ -9,10 +9,7 @@ module.exports = {
             callback("Payload body not set.");
         } else {
             var hmac = crypto.createHmac('sha1', process.env.SECRET_TOKEN);
-            var signature = 'sha1=' + hmac.update(payload_body.toString()).digest('hex');
-            console.log(payload_body);
-            console.log(signature);
-            console.log(header_signature);
+            var signature = 'sha1=' + hmac.update(JSON.stringify(payload_body)).digest('hex');
             if (compare(signature, header_signature)) {
                 callback(null);
             } else {
