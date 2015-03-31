@@ -16,7 +16,7 @@ module.exports = {
 				});
 			},
 			function (numFeedback, callback) {
-				Equation.count(function(err, numEquations) {
+				Equation.count({html5: null}, function(err, numEquations) {
 					callback(err, numFeedback, numEquations);
 				});
 			},
@@ -68,12 +68,12 @@ module.exports = {
 		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
 		waterfall([
 			function (callback) {
-				Equation.count({submittedBy: {'!': null}}).exec(function (err, num) {
+				Equation.count({html5: null}).exec(function (err, num) {
 					callback(err, num);
 				});
 			},
 			function(num, callback) {
-				Equation.find({sort: 'createdAt DESC', submittedBy: {'!': null} }).paginate({page: page, limit: limit}).populate('submittedBy').populate('components').exec(function(err, equations) {
+				Equation.find({sort: 'createdAt DESC', html5: null}).paginate({page: page, limit: limit}).populate('submittedBy').populate('components').exec(function(err, equations) {
 					callback(err, num, equations);
 				});
 			}

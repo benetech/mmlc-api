@@ -74,7 +74,10 @@ module.exports = {
 						break;		
 				} 
 			});
-			Equation.update({id: equation.id}, {math: req.param("math")}).exec(function(err, equations) {
+			var params = {math: req.param("math")};
+			if (typeof req.user != "undefined") params.submittedBy = req.user.id;
+
+			Equation.update({id: equation.id}, params).exec(function(err, equations) {
 				ConversionService.convertEquation(options, equations[0], req.headers.host, function(err, newEquation) {
 			    	if (err) return res.serverError("Error converting equation.");
 			    	return res.json(newEquation);	
@@ -184,7 +187,13 @@ module.exports = {
 			if (err) return res.serverError(err);
 			return res.json({"equations": equations, "numEquations": numEquations});
 		});
+	},
+
+	setUser: function(req, res) {
+		Equation.update({id: req.param("id")}, {submittedBy: req.user.id}).exec(function(err, equations) {
+			if (err) return res.serverError("Error updating user.");
+	    	return res.json(equations[0]);	
+		});
 	}
-	
 };
 
