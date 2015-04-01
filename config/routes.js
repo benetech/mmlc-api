@@ -106,6 +106,11 @@ module.exports.routes = {
     action: "upload"
   },
 
+  'put /html5/:id': {
+    controller: "Html5Controller",
+    action: "update"
+  },
+
   'get /html5/:id': {
     controller: 'Html5Controller',
     action: 'find'
