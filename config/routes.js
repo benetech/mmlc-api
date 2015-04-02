@@ -51,6 +51,11 @@ module.exports.routes = {
     action: 'create'
   },
 
+  'put /user': {
+    controller: 'UserController',
+    action: 'update'
+  },
+
   'post /equation': {
     controller: 'EquationController',
     action: 'convert'

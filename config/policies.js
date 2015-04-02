@@ -30,6 +30,7 @@ module.exports.policies = {
   
   UserController: {
     "*"	: "isAdmin",
+    "update": ["authenticate", "isAdmin"],
     "signUp": true,
     "create": true,
     "sendForgotPassword": true,
