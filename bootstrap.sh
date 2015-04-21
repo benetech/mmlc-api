@@ -44,8 +44,4 @@ cd ..
 npm -g -y install sails@0.10.5 azure-cli forever
 npm -y install --no-bin-links
 
-# Install mathjax dependency.
-git clone -b develop https://github.com/dpvc/MathJax.git node_modules/MathJax-node/mathjax
-
-
 
