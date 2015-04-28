@@ -1,6 +1,5 @@
 var crypto = require('crypto');
 var compare = require('secure-compare');
-var Buffer = require('buffer').Buffer;
 module.exports = {
     verify_signature: function(payload_body, header_signature, callback) {
         if (typeof(process.env.SECRET_TOKEN) == "undefined") {
