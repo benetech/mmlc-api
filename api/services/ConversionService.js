@@ -1,6 +1,21 @@
 var waterfall = require('async-waterfall'), jsdom = require("jsdom").jsdom, serializeDocument = require("jsdom").serializeDocument; 
 module.exports = {
 
+    removeDelimiters: function(equation, mathType) {
+        var compare = new String(equation);
+        if (mathType === "AsciiMath" && compare.indexOf("`") == 0) {
+            return compare.substring(1, compare.length - 1);
+        } else if (mathType === "TeX" && compare.indexOf("$") == 0) {
+            if (compare.indexOf("$$") == 0) {
+                return compare.substring(2,compare.length - 2);    
+            } else {
+                return compare.substring(1,compare.length - 1);
+            }
+            
+        }
+        return equation;
+    },
+
     convertEquation: function(options, equation, host, done) {
         ConversionService.convert(options, function(data) {
             if (typeof(data.errors) == 'undefined') {

@@ -15,8 +15,8 @@ module.exports = {
 	convert: function(req, res) {
 		var equationController = this;
 		var options = {};
-		options.math = req.param('math');
 		options.format = req.param('mathType');
+		options.math = ConversionService.removeDelimiters(req.param('math'), options.format);
 		options.svg = req.param('svg');
 		options.png = req.param('png');
 		options.mml = req.param('mml');
@@ -53,8 +53,8 @@ module.exports = {
 				return res.notFound({ errorCode: "30", message: "Equation not found: " + equationId });
 			}
 			var options = {};
-			options.math = req.param('math');
 			options.format = equation.mathType;
+			options.math = ConversionService.removeDelimiters(req.param('math'), options.format);
 			equation.components.forEach(function(component, index) {
 				switch (component.format) {
 					case "description":
