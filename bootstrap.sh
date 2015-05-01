@@ -5,7 +5,7 @@ apt-get update -y
 apt-get upgrade -y
 
 # Install required packages.
-apt-get install nodejs npm mongodb openjdk-7-jre-headless git -y
+apt-get install nodejs npm mongodb openjdk-7-jre-headless zip unzip git -y
 ln -s /usr/bin/nodejs /usr/bin/node
 
 # Get the source if running in production.
@@ -36,6 +36,8 @@ fi
 sudo mkdir /var/redis/6379
 sudo update-rc.d redis_6379 defaults
 cd ..
+#clean up
+rm -rf redis-2.8.17*
 
 #start redis
 /etc/init.d/redis_6379 start
@@ -43,5 +45,11 @@ cd ..
 # Install Node.JS packages.
 npm -g -y install sails@0.10.5 azure-cli forever
 npm -y install --no-bin-links
+
+# Install batik for mathjax-node
+wget http://www.apache.org/dist/xmlgraphics/batik/binaries/batik-1.7.zip
+unzip batik-1.7.zip
+sudo cp -r batik-1.7/* node_modules/MathJax-node/batik/
+sudo rm -rf batik*
 
 
