@@ -52,7 +52,7 @@ module.exports = {
 			if (err != null) {
 				return res.badRequest(err);
 			} else {
-				var git = spawn('git', ['-C', '/home/mmlc/mathml-cloud/assets', 'pull']);
+				var git = spawn('git', ['-C', '/home/mmlc/mathml-cloud/assets', 'pull origin develop']);
 				var output = '';
 				git.stdout.on('data', function (data) {
 					output += data;
