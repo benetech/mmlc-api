@@ -23,7 +23,7 @@ module.exports = {
 		options.speakText = req.param('description');
 
 		//Do some basic checking on mathml input.
-		if (options.format == "MathML" && !options.math.indexOf("<math") == 0) 
+		if (options.format == "MathML" && !(options.math.indexOf("<math") == 0)) 
 			return res.badRequest({ errorCode: "23", message: "MathML must start with <math" });
 
 		//Create db record first so that we can make use of waterline's
@@ -50,7 +50,7 @@ module.exports = {
 		Equation.findOne({id: req.param("id")}).populate("components").exec(function(err, equation) {
 			if (err) return res.serverError("Equation Not Found");
 			if(typeof(equation) == "undefined") {
-				return res.notFound({ errorCode: "30", message: "Equation not found: " + equationId });
+				return res.notFound({ errorCode: "30", message: "Equation not found: " + req.param("id") });
 			}
 			var options = {};
 			options.format = equation.mathType;
