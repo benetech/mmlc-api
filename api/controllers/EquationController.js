@@ -15,15 +15,15 @@ module.exports = {
 	convert: function(req, res) {
 		var equationController = this;
 		var options = {};
-		options.math = req.param('math');
 		options.format = req.param('mathType');
+		options.math = ConversionService.removeDelimiters(req.param('math'), options.format);
 		options.svg = req.param('svg');
 		options.png = req.param('png');
 		options.mml = req.param('mml');
 		options.speakText = req.param('description');
 
 		//Do some basic checking on mathml input.
-		if (options.format == "MathML" && !options.math.indexOf("<math") == 0) 
+		if (options.format == "MathML" && !(options.math.indexOf("<math") == 0)) 
 			return res.badRequest({ errorCode: "23", message: "MathML must start with <math" });
 
 		//Create db record first so that we can make use of waterline's
@@ -50,11 +50,11 @@ module.exports = {
 		Equation.findOne({id: req.param("id")}).populate("components").exec(function(err, equation) {
 			if (err) return res.serverError("Equation Not Found");
 			if(typeof(equation) == "undefined") {
-				return res.notFound({ errorCode: "30", message: "Equation not found: " + equationId });
+				return res.notFound({ errorCode: "30", message: "Equation not found: " + req.param("id") });
 			}
 			var options = {};
-			options.math = req.param('math');
 			options.format = equation.mathType;
+			options.math = ConversionService.removeDelimiters(req.param('math'), options.format);
 			equation.components.forEach(function(component, index) {
 				switch (component.format) {
 					case "description":
@@ -74,7 +74,10 @@ module.exports = {
 						break;		
 				} 
 			});
-			Equation.update({id: equation.id}, {math: req.param("math")}).exec(function(err, equations) {
+			var params = {math: req.param("math")};
+			if (typeof req.user != "undefined") params.submittedBy = req.user.id;
+
+			Equation.update({id: equation.id}, params).exec(function(err, equations) {
 				ConversionService.convertEquation(options, equations[0], req.headers.host, function(err, newEquation) {
 			    	if (err) return res.serverError("Error converting equation.");
 			    	return res.json(newEquation);	
@@ -184,7 +187,13 @@ module.exports = {
 			if (err) return res.serverError(err);
 			return res.json({"equations": equations, "numEquations": numEquations});
 		});
+	},
+
+	setUser: function(req, res) {
+		Equation.update({id: req.param("id")}, {submittedBy: req.user.id}).exec(function(err, equations) {
+			if (err) return res.serverError("Error updating user.");
+	    	return res.json(equations[0]);	
+		});
 	}
-	
 };
 

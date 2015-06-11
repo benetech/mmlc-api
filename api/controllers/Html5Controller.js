@@ -66,6 +66,14 @@ module.exports = {
 	    });
   	},
 
+    //Right now, the only thing editable for html5 is the submittedBy attribute.
+    update: function(req, res) {
+        Html5.update({id: req.param("id")}, {submittedBy: req.user.id}).exec(function(err, uploads) {
+            if (err) return res.serverError("Error updating html5.");
+            return res.json(uploads[0]);  
+        });
+    },
+
   	find: function(req, res) {
 		var html5Id = req.param('id');
 		Html5.findOne({ id: html5Id }).exec(function (err, html5) {
@@ -112,7 +120,7 @@ module.exports = {
                 });
             },
             function (numHtml5s, callback) {
-                Html5.find({ submittedBy: req.user.id, sort: 'createdAt DESC' }).paginate({page: page, limit: limit}).populate("equations").exec(function(err, html5s) {
+                Html5.find({ submittedBy: req.user.id, sort: 'createdAt DESC' }, {fields: ["id", "createdAt", "equations", "outputFormat", "filename"]}).paginate({page: page, limit: limit}).populate("equations").exec(function(err, html5s) {
                     callback(err, numHtml5s, html5s);
                 });
             }

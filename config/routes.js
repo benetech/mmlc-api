@@ -51,6 +51,11 @@ module.exports.routes = {
     action: 'create'
   },
 
+  'put /user': {
+    controller: 'UserController',
+    action: 'update'
+  },
+
   'post /equation': {
     controller: 'EquationController',
     action: 'convert'
@@ -104,6 +109,11 @@ module.exports.routes = {
   'post /html5': {
     controller: "Html5Controller",
     action: "upload"
+  },
+
+  'put /html5/:id': {
+    controller: "Html5Controller",
+    action: "update"
   },
 
   'get /html5/:id': {

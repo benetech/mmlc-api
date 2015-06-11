@@ -33,6 +33,23 @@ module.exports = {
 		});
 	},
 
+	update: function(req, res) {
+		User.findOne({id: req.param("id")}).exec(function(err, user) {
+			if (err) return res.serverError("User Not Found");
+			User.update({id: req.param("id")}, {
+				username: req.param("username"), 
+				firstName: req.param("firstName"),
+				lastName: req.param("lastName"),
+				role: req.param("role"),
+				organization: req.param("organization"),
+				organizationTypes: req.param("organizationTypes")
+			}).exec(function(err, users) {
+				if (err) return res.serverError("Error updating user.");
+				return res.json(users[0]);
+			});
+		});	
+	},
+
 	sendForgotPassword: function(req, res) {
 	    User.findOne({username: req.param("username")}).exec(function (err, user) {
 	      if (err || !user) return res.badRequest(error_responses["invalid_username"]);
