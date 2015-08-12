@@ -14,8 +14,8 @@ if [ -d /vagrant ]
 then
   cd /vagrant
 else
-  git clone https://github.com/benetech/mmlc-experiments ~mmlc/mathml-cloud
-  chown -R ~mmlc/mathml-cloud mmlc
+  git clone https://github.com/benetech/mmlc-api ~mmlc/mathml-cloud
+  chown -R mmlc ~mmlc/mathml-cloud
   cd ~mmlc/mathml-cloud
 fi
 

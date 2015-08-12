@@ -17,8 +17,9 @@ module.exports = {
 	*/
 	upload: function  (req, res) {
 		//We need to know what kind of output you want.
+		// Check both body and query params for the value since it might show
+		// up in either. See MMLC-132 and MMLC-231.
         var outputFormat = req.body.outputFormat || req.query.outputFormat;
-		console.log("*** outputFormat = ", outputFormat);
 		if (typeof(outputFormat) == "undefined" || !outputFormat in ['svg', 'png', 'description', 'mml']) {
 			return res.badRequest(error_responses["missing_format"]);	
 		}
