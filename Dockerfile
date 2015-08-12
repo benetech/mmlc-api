@@ -26,12 +26,12 @@ COPY kue.js kue.js
 COPY package.json package.json
 
 # Install Node.js packages.
-RUN npm -g -y install sails@0.10.5 forever \
-	&& npm -y install --no-bin-links
+RUN npm -g -y install sails@0.10.5 && \
+	npm -y install --no-bin-links
 
 RUN groupadd -g 11500 -r mmlc-api && \
     useradd -g mmlc-api -u 11500 -m -s /bin/bash mmlc-api 
 
-USER mmlhc-api
+USER mmlc-api
 
 CMD ["sails", "lift"]
