@@ -14,6 +14,7 @@ RUN apt-get update -y && apt-get upgrade -y
 # Install required packages.
 RUN apt-get install -y \
 	nodejs \
+	nodejs-legacy \
 	npm \
 	openjdk-7-jre-headless
 
