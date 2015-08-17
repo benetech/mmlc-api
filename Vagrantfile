@@ -18,10 +18,10 @@ Vagrant.configure('2') do |config|
   
   config.vm.define "mmlc-redis" do |container|
     # Disable synced folders for the Docker container
-    # (prevents an NFS error on "vagrant up")
     container.vm.synced_folder ".", "/vagrant", disabled: true
   
     container.vm.provider "docker" do |docker|
+      # TODO: Why can't it find the tag redis:2.8.21?
       docker.image = "redis"
       docker.ports = ['6379:6379']
       docker.name = 'mmlc-redis'
@@ -30,7 +30,6 @@ Vagrant.configure('2') do |config|
   
   config.vm.define "mmlc-mongo" do |container|
     # Disable synced folders for the Docker container
-    # (prevents an NFS error on "vagrant up")
     container.vm.synced_folder ".", "/vagrant", disabled: true
   
     container.vm.provider "docker" do |docker|
@@ -41,9 +40,7 @@ Vagrant.configure('2') do |config|
   end
   
   config.vm.define "mmlc-api" do |container|
-    # Disable synced folders for the Docker container
-    # (prevents an NFS error on "vagrant up")
-    container.vm.synced_folder ".", "/vagrant", disabled: true
+    container.vm.synced_folder ".", "/vagrant"
   
     # The mmlc-api container
     container.vm.provider "docker" do |docker|
@@ -55,6 +52,8 @@ Vagrant.configure('2') do |config|
     
       # Specify a friendly name for the Docker container
       docker.name = 'mmlc-api'
+      docker.link('mmlc-redis:mmlc-redis')
+      docker.link('mmlc-mongo:mmlc-mongo')
       docker.host_vm_build_dir_options = { :type => "rsync", :rsync__exclude => "node_modules/" }
     end
   end
