@@ -15,7 +15,7 @@ Dependencies:
 ### Installation
 
 ```
-git clone https://github.com/benetech/mmlc-experiments.git yourProjectName
+git clone https://github.com/benetech/mmlc-api.git yourProjectName
 cd yourProjectName
 docker-compose up
 ```
