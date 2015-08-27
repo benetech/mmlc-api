@@ -37,7 +37,7 @@ module.exports = {
   								res.send(output);
   								//finally restart forever. Logs not included in response since
   								//this will stop this app. :/
-  								var forever_restart = exec('SECRET_TOKEN=${SECRET_TOKEN} forever restartall', {cwd: '/home/mmlc/mathml-cloud'});
+  								var forever_restart = exec('SECRET_TOKEN=${SECRET_TOKEN} pm2 restart all', {cwd: '/home/mmlc/mathml-cloud'});
 							});
 					} else {
 						res.send(output);	
