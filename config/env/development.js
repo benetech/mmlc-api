@@ -24,8 +24,8 @@ module.exports = {
   transport: {
     service: 'SendGrid',
     auth: {
-        user: "azure_5cc610f36835d94433a8b5d5c49179d9@azure.com",
-        pass: "RCJvxe5E8s1WUc0"
+        user: "TODO_username_property",
+        pass: "TODO_password_property"
     }
   }
 

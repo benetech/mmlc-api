@@ -43,7 +43,7 @@ rm -rf redis-2.8.17*
 /etc/init.d/redis_6379 start
 
 # Install Node.JS packages.
-npm -g -y install sails@0.10.5 azure-cli forever
+npm -g -y install sails@0.10.5 azure-cli pm2
 npm -y install --no-bin-links
 
 # Install batik for mathjax-node
