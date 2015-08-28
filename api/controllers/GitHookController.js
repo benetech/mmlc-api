@@ -35,7 +35,7 @@ module.exports = {
     							}
   								
   								res.send(output);
-  								//finally restart forever. Logs not included in response since
+  								//finally restart the app. Logs not included in response since
   								//this will stop this app. :/
   								var forever_restart = exec('SECRET_TOKEN=${SECRET_TOKEN} pm2 restart all', {cwd: '/home/mmlc/mathml-cloud'});
 							});
@@ -52,7 +52,7 @@ module.exports = {
 			if (err != null) {
 				return res.badRequest(err);
 			} else {
-				var git = spawn('git', ['-C', '/home/mmlc/mathml-cloud/assets', 'pull origin develop']);
+				var git = spawn('git', ['-C', '/home/mmlc/mathml-cloud/assets', 'pull', 'origin', 'develop']);
 				var output = '';
 				git.stdout.on('data', function (data) {
 					output += data;
