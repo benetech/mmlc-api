@@ -1,4 +1,4 @@
-var waterfall = require('async-waterfall'), jsdom = require("jsdom").jsdom, serializeDocument = require("jsdom").serializeDocument; 
+var waterfall = require('async-waterfall'), jsdom = require("jsdom").jsdom, serializeDocument = require("jsdom").serializeDocument;
 module.exports = {
 
     removeDelimiters: function(equation, mathType) {
@@ -7,11 +7,11 @@ module.exports = {
             return compare.substring(1, compare.length - 1);
         } else if (mathType === "TeX" && compare.indexOf("$") == 0) {
             if (compare.indexOf("$$") == 0) {
-                return compare.substring(2,compare.length - 2);    
+                return compare.substring(2,compare.length - 2);
             } else {
                 return compare.substring(1,compare.length - 1);
             }
-            
+
         }
         return equation;
     },
@@ -23,12 +23,12 @@ module.exports = {
                 Component.destroy({equation:equation.id}).exec(function(err, components) {
                     if (err) return done(err);
                     //Save all components.
-                    if (options.mml) EquationService.createComponent("mml", data.mml, equation.id);
-                    if (options.svg) EquationService.createComponent("svg", data.svg, equation.id);
-                    if (options.png) {
+                    if (options.mml === "true" || options.mml=== true) EquationService.createComponent("mml", data.mml, equation.id);
+                    if (options.svg === "true" || options.svg === true) EquationService.createComponent("svg", data.svg, equation.id);
+                    if (options.png === "true" || options.png === true ) {
                         var pngSource = "<img src=\"" + data.png + "\" alt=\"" + data.speakText + "\" />";
                         EquationService.createComponent("png", pngSource, equation.id);
-                    } 
+                    }
                     if (options.speakText) EquationService.createComponent("description", data.speakText, equation.id);
                     //Look up equation so that we have all created info.
                     Equation.findOne(equation.id).populate('components').exec(function(err, newEquation) {
@@ -36,7 +36,7 @@ module.exports = {
                         return done(null, newEquation);
                     });
                 });
-                
+
             } else {
                 console.log(data.errors);
                 return done(data.errors);
@@ -57,7 +57,7 @@ module.exports = {
     convertHTML5: function(options, done) {
         var conversionService = this;
         Html5.findOne({ id: options.html5Id }).exec(function(err, html5) {
-            if (err) { 
+            if (err) {
                 done(err);
             } else {
                 var mathjaxOptions = {};
@@ -73,7 +73,7 @@ module.exports = {
 
     getRenderer: function(outputFormat) {
         switch (outputFormat) {
-            case "svg": 
+            case "svg":
                 return "SVG";
             case "png":
                 return "PNG";

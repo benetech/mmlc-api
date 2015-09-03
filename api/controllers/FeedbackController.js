@@ -5,35 +5,45 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 var waterfall = require('async-waterfall');
+var ObjectID = require('sails-mongo/node_modules/mongodb').ObjectID;
 module.exports = {
-
 	create: function(req, res) {
-		Feedback.create({
-			equation: req.param('equation'),
-			comments: req.param('comments'),
-			submittedBy: req.user
-		}).exec(function(err, feedback) {
-			if (typeof req.param('components') != "undefined" && req.param('components').length > 0) {
-				var components = typeof req.param('components') == 'string' ? [req.param('components')] : req.param('components'); 
-				components.forEach(function(component,index) {
-					feedback.components.add(component);
-					feedback.save(function(err) {
-						if (err) console.log(err);
-						Feedback.findOne(feedback.id).populate('components').exec(function(err, newFeedback) {
-							res.json(newFeedback);
-						});
-					});
-				});
-			} else {
-				res.json(feedback);
-			}
-		});
+    if(ObjectID.isValid(req.param("equation")) === false){
+      return res.badRequest('Invalid equation id.');
+    } else {
+      var record = Equation.findOne({_id:req.param('equation')});
+      console.log('Record id here : ' + record._id);
+      if(typeof record._id === 'undefined'){
+      return res.badRequest('Equation does not exist.');
+      }
+    }
+    Feedback.create({
+      equation: req.param('equation'),
+      comments: req.param('comments'),
+      submittedBy: req.user
+    }).exec(function (err, feedback) {
+      if (typeof req.param('components') != "undefined" && req.param('components').length > 0) {
+        var components = typeof req.param('components') == 'string' ? [req.param('components')] : req.param('components');
+        components.forEach(function (component, index) {
+          feedback.components.add(component);
+          feedback.save(function (err) {
+            if (err) console.log(err);
+            Feedback.findOne(feedback.id).populate('components').exec(function (err, newFeedback) {
+              res.json(newFeedback);
+            });
+          });
+        });
+      } else {
+        res.json(feedback);
+      }
+    });
+
 	},
 
 	myFeedback: function(req, res) {
 		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
 		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
-		
+
 		waterfall([
 			function (callback) {
 				Feedback.count({submittedBy: req.user.id}).exec(function(err, numFeedback) {
