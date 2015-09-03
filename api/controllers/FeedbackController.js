@@ -16,16 +16,7 @@ module.exports = {
       if(typeof record._id === 'undefined'){
       return res.badRequest('Equation does not exist.');
       }
-
     }
-
-
-    //Equation.findOne({id: req.param("equation")}).exec(function(err,idVal){
-    //  if(err)
-     // return res.badRequest('test');
-     // if(idVal)
-     // console.log(idVal);
-    //});
     Feedback.create({
       equation: req.param('equation'),
       comments: req.param('comments'),
