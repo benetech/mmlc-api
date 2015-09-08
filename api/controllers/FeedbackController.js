@@ -5,47 +5,46 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 var waterfall = require('async-waterfall');
-var ObjectID = require('sails-mongo/node_modules/mongodb').ObjectID;
+var ObjectId = require('sails-mongo/node_modules/mongodb').ObjectID;
 module.exports = {
 	create: function(req, res) {
-    if(ObjectID.isValid(req.param("equation")) === false){
+    if(ObjectId.isValid(req.param("equation")) === false){
       return res.badRequest('Invalid equation id.');
     } else {
-      var record = Equation.findOne({_id:req.param('equation')});
-      console.log('Record id here : ' + record._id);
-      if(typeof record._id === 'undefined'){
-      return res.badRequest('Equation does not exist.');
-      }
+        Equation.findOne(req.param('equation')).exec(function(err, eqrecord) {
+          if (err) {
+            console.log(err);
+            res.badRequest(err);
+          } else if(typeof eqrecord === 'undefined'){
+            return res.badRequest('Equation does not exist');
+          }else {
+            Feedback.create({
+              equation: req.param('equation'),
+              comments: req.param('comments'),
+              submittedBy: req.user
+            }).exec(function (err, feedback) {
+              if (typeof req.param('components') != "undefined" && req.param('components').length > 0) {
 
-    }
+                var components = typeof req.param('components') == 'string' ? [req.param('components')] : req.param('components');
+                components.forEach(function (component, index) {
 
+                  feedback.components.add(component);
+                  feedback.save(function (err) {
+                    if (err) console.log(err);
+                    Feedback.findOne(feedback.id).populate('components').exec(function (err, newFeedback) {
+                      res.json(newFeedback);
+                    });
+                  });
 
-    //Equation.findOne({id: req.param("equation")}).exec(function(err,idVal){
-    //  if(err)
-     // return res.badRequest('test');
-     // if(idVal)
-     // console.log(idVal);
-    //});
-    Feedback.create({
-      equation: req.param('equation'),
-      comments: req.param('comments'),
-      submittedBy: req.user
-    }).exec(function (err, feedback) {
-      if (typeof req.param('components') != "undefined" && req.param('components').length > 0) {
-        var components = typeof req.param('components') == 'string' ? [req.param('components')] : req.param('components');
-        components.forEach(function (component, index) {
-          feedback.components.add(component);
-          feedback.save(function (err) {
-            if (err) console.log(err);
-            Feedback.findOne(feedback.id).populate('components').exec(function (err, newFeedback) {
-              res.json(newFeedback);
+                });
+
+              } else {
+                res.json(feedback);
+              }
             });
-          });
+          }
         });
-      } else {
-        res.json(feedback);
       }
-    });
 
 	},
 
