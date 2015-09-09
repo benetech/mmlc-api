@@ -8,9 +8,50 @@ var waterfall = require('async-waterfall');
 var ObjectId = require('sails-mongo/node_modules/mongodb').ObjectID;
 module.exports = {
 	create: function(req, res) {
-    if(ObjectId.isValid(req.param("equation")) === false){
+    if(typeof req.param('equation')=== 'undefined'){
+    console.log(req.param('equation_id'));
+    if(ObjectId.isValid(req.param("equation_id")) === false){
       return res.badRequest('Invalid equation id.');
     } else {
+        Equation.findOne(req.param('equation_id')).exec(function(err, eqrecord) {
+          if (err) {
+            console.log(err);
+            res.badRequest(err);
+          } else if(typeof eqrecord === 'undefined'){
+            return res.badRequest('Equation does not exist');
+          }else {
+            Feedback.create({
+              equation: req.param('equation_id'),
+              comments: req.param('comments'),
+              submittedBy: req.user
+            }).exec(function (err, feedback) {
+              if (typeof req.param('components') != "undefined" && req.param('components').length > 0) {
+
+                var components = typeof req.param('components') == 'string' ? [req.param('components')] : req.param('components');
+                components.forEach(function (component, index) {
+
+                  feedback.components.add(component);
+                  feedback.save(function (err) {
+                    if (err) console.log(err);
+                    Feedback.findOne(feedback.id).populate('components').exec(function (err, newFeedback) {
+                      res.json(newFeedback);
+                    });
+                  });
+
+                });
+
+              } else {
+                res.json(feedback);
+              }
+            });
+          }
+        });
+      }
+    } else {
+      console.log(req.param('equation'));
+      if(ObjectId.isValid(req.param("equation")) === false){
+        return res.badRequest('Invalid equation id.');
+      } else {
         Equation.findOne(req.param('equation')).exec(function(err, eqrecord) {
           if (err) {
             console.log(err);
@@ -46,6 +87,7 @@ module.exports = {
         });
       }
 
+    }
 	},
 
 	myFeedback: function(req, res) {
