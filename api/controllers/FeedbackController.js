@@ -8,8 +8,8 @@ var waterfall = require('async-waterfall');
 var ObjectId = require('sails-mongo/node_modules/mongodb').ObjectID;
 module.exports = {
 	create: function(req, res) {
-    if(typeof req.param('equation')=== 'undefined') {
-    if(ObjectId.isValid(req.param("equation_id")) === false) {
+    if (typeof req.param('equation') === 'undefined') {
+    if (ObjectId.isValid(req.param("equation_id")) === false) {
       return res.badRequest('Invalid equation id.');
     } else {
         Equation.findOne(req.param('equation_id')).exec(function(err, eqrecord) {
@@ -48,14 +48,14 @@ module.exports = {
       }
     } else {
       console.log(req.param('equation'));
-      if(ObjectId.isValid(req.param("equation")) === false) {
+      if (ObjectId.isValid(req.param("equation")) === false) {
         return res.badRequest('Invalid equation id.');
       } else {
         Equation.findOne(req.param('equation')).exec(function(err, eqrecord) {
           if (err) {
             console.log(err);
             res.badRequest(err);
-          } else if(typeof eqrecord === 'undefined') {
+          } else if (typeof eqrecord === 'undefined') {
             return res.badRequest('Equation does not exist');
           } else {
             Feedback.create({
