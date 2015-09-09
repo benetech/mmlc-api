@@ -72,7 +72,6 @@ describe("MathML Cloud API features", function() {
         	.afterJSON(function(user) {
 				frisby.create("Post feedback")
 					.post('/equation/' + equation.id + '/feedback', {
-						equation : equation.id,
 						comments : 'Testing API call',
 						access_token: user.access_token
 					})

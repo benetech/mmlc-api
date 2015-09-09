@@ -8,18 +8,17 @@ var waterfall = require('async-waterfall');
 var ObjectId = require('sails-mongo/node_modules/mongodb').ObjectID;
 module.exports = {
 	create: function(req, res) {
-    if(typeof req.param('equation')=== 'undefined'){
-    console.log(req.param('equation_id'));
-    if(ObjectId.isValid(req.param("equation_id")) === false){
+    if(typeof req.param('equation')=== 'undefined') {
+    if(ObjectId.isValid(req.param("equation_id")) === false) {
       return res.badRequest('Invalid equation id.');
     } else {
         Equation.findOne(req.param('equation_id')).exec(function(err, eqrecord) {
           if (err) {
             console.log(err);
             res.badRequest(err);
-          } else if(typeof eqrecord === 'undefined'){
+          } else if (typeof eqrecord === 'undefined') {
             return res.badRequest('Equation does not exist');
-          }else {
+          } else {
             Feedback.create({
               equation: req.param('equation_id'),
               comments: req.param('comments'),
@@ -49,16 +48,16 @@ module.exports = {
       }
     } else {
       console.log(req.param('equation'));
-      if(ObjectId.isValid(req.param("equation")) === false){
+      if(ObjectId.isValid(req.param("equation")) === false) {
         return res.badRequest('Invalid equation id.');
       } else {
         Equation.findOne(req.param('equation')).exec(function(err, eqrecord) {
           if (err) {
             console.log(err);
             res.badRequest(err);
-          } else if(typeof eqrecord === 'undefined'){
+          } else if(typeof eqrecord === 'undefined') {
             return res.badRequest('Equation does not exist');
-          }else {
+          } else {
             Feedback.create({
               equation: req.param('equation'),
               comments: req.param('comments'),
