@@ -47,7 +47,6 @@ module.exports = {
         });
       }
     } else {
-      console.log(req.param('equation'));
       if (ObjectId.isValid(req.param("equation")) === false) {
         return res.badRequest('Invalid equation id.');
       } else {
