@@ -20,7 +20,7 @@ var randomUsername = function() {
 }
 
 describe("MathML Cloud API features", function() {
-	
+
 	// Global setup for all tests
 	frisby.globalSetup({
 	  request: {
@@ -54,7 +54,7 @@ describe("MathML Cloud API features", function() {
 	// First create an equation that can be given feedback
 	frisby.create("Set up equation for feedback")
 		.post('/equation', {
-			mathType : 'AsciiMath', 
+			mathType : 'AsciiMath',
 			math : 'a^2+b^2=c^2',
 			description : 'true',
 			svg : 'true'
@@ -71,8 +71,7 @@ describe("MathML Cloud API features", function() {
         	})
         	.afterJSON(function(user) {
 				frisby.create("Post feedback")
-					.post('/feedback', {
-						equation : equation.id,
+					.post('/equation/' + equation.id + '/feedback', {
 						comments : 'Testing API call',
 						access_token: user.access_token
 					})

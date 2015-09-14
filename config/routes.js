@@ -45,7 +45,7 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  
+
   'post /user': {
     controller: 'UserController',
     action: 'create'
@@ -102,6 +102,11 @@ module.exports.routes = {
   },
 
   'post /feedback': {
+    controller: "FeedbackController",
+    action: "create"
+  },
+
+  'post /equation/:equation_id/feedback': {
     controller: "FeedbackController",
     action: "create"
   },
@@ -222,5 +227,5 @@ module.exports.routes = {
     controller: 'UserController',
     action: 'changePassword'
   }
-  
+
 };
