@@ -133,6 +133,32 @@ describe("MathML Cloud API features", function() {
 		})
 		.toss();
 
+  //---- POST /equation - test for alttext removal in mml - MMLC-378
+  frisby.create("Convert ASCII math")
+    .post('/equation', {
+      mathType : 'AsciiMath',
+      math : '(a+b+c+d)^8 = 10',
+      mml : 'true'
+    })
+    .expectStatus(200)
+    .expectHeaderContains("content-type", "application/json")
+    .expectJSON("components.?", {
+      format : "mml",
+      source : "<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n  <mstyle displaystyle=\"true\">\n    <msup>\n      <mrow>\n        <mo>(</mo>\n        <mi>a</mi>\n        <mo>+</mo>\n        <mi>b</mi>\n        <mo>+</mo>\n        <mi>c</mi>\n        <mo>+</mo>\n        <mi>d</mi>\n        <mo>)</mo>\n      </mrow>\n      <mn>8</mn>\n    </msup>\n    <mo>=</mo>\n    <mn>10</mn>\n  </mstyle>\n</math>"
+    })
+    .afterJSON(function(json) {
+      //---- GET /equation/{id}
+      frisby.create("Get equation")
+        .get('/equation/' + json.id)
+        .expectStatus(200)
+        .expectHeaderContains("content-type", "application/json")
+        .expectJSON("components.?", {
+          format : "mml",
+        })
+        .toss();
+    })
+    .toss();
+
 	// Set up the HTML5 file posting
 	var html5Path = path.resolve(__dirname, './data/sample-math.html');
 	var form = new FormData();
