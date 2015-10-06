@@ -33,6 +33,7 @@ module.exports = {
                     //Look up equation so that we have all created info.
                     Equation.findOne(equation.id).populate('components').exec(function(err, newEquation) {
                         newEquation.cloudUrl = "https://" + host + "/equation/" + equation.id;
+                        delete newEquation.ip_address;
                         return done(null, newEquation);
                     });
                 });
