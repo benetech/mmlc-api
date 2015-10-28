@@ -27,7 +27,7 @@ COPY kue.js kue.js
 COPY package.json package.json
 
 # Install Node.js packages.
-RUN npm -g -y install sails@0.10.5 pm2 && \
+RUN npm -g -y install sails@0.11.0 pm2 && \
 	npm -y install --no-bin-links
 
 RUN groupadd -g 11500 -r mmlc-api && \
