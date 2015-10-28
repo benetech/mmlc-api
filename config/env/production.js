@@ -27,6 +27,9 @@ module.exports = {
 
   port: 443,
 
+  /**
+  * Deprecated: SSL configuration will be handled by AWS ELB.
+  */
   ssl: {
     key: fs.readFileSync('ssl/mathmlcloud.org.key'),
     cert: fs.readFileSync('ssl/mathmlcloud.crt'),

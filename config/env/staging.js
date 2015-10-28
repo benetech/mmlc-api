@@ -24,6 +24,9 @@ module.exports = {
 
   port: 443,
   
+  /**
+  * Deprecated: SSL configuration will be handled by AWS 
+  */
   ssl: {
     key: fs.readFileSync('ssl/staging.mathmlcloud.org.key'),
     cert: fs.readFileSync('ssl/mathmlcloud.staging.crt'),
