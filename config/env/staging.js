@@ -9,30 +9,39 @@
  * any private information to this file!
  *
  */
-
+var fs = require('fs');
 module.exports = {
-
-  /***************************************************************************
-   * Set the default database connection for models in the development       *
-   * environment (see config/connections.js and config/models.js )           *
-   ***************************************************************************/
+  hookTimeout: 80000,
+  connections: {
+     'stagingMongodbServer': {
+        url: process.env.MONGO_URL
+     }
+  },
 
   models: {
      connection: 'stagingMongodbServer'
-  }
+  },
 
-  /***************************************************************************
-   * Set the port                        *
-   ***************************************************************************/
-
-  port: 80,
-
+  port: 443,
+  
+  ssl: {
+    key: fs.readFileSync('ssl/staging.mathmlcloud.org.key'),
+    cert: fs.readFileSync('ssl/mathmlcloud.staging.crt'),
+    ca: [fs.readFileSync('ssl/gd1.crt'), fs.readFileSync('ssl/gd2.crt'), fs.readFileSync('ssl/gd3.crt')]
+  },
   /***************************************************************************
    * Set the log level                 *
    ***************************************************************************/
 
   log: {
     level: "debug"
-  }
+  },
 
+  transport: {
+    service: 'SendGrid',
+    auth: {
+        user: process.env.SENDGRID_USER,
+        pass: process.env.SENDGRID_PASSWORD
+    }
+  }
 };

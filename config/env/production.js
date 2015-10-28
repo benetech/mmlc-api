@@ -9,13 +9,13 @@
  * any private information to this file!
  *
  */
-
+var fs = require('fs');
 module.exports = {
-
-  /***************************************************************************
-   * Set the default database connection for models in the production        *
-   * environment (see config/connections.js and config/models.js )           *
-   ***************************************************************************/
+  connections: {
+     'productionMongodbServer': {
+		 url: process.env.MONGO_URL
+     }
+  },
 
   models: {
      connection: 'productionMongodbServer'
@@ -25,7 +25,13 @@ module.exports = {
    * Set the port                        *
    ***************************************************************************/
 
-  port: 80,
+  port: 443,
+
+  ssl: {
+    key: fs.readFileSync('ssl/mathmlcloud.org.key'),
+    cert: fs.readFileSync('ssl/mathmlcloud.crt'),
+    ca: [fs.readFileSync('ssl/gd1.crt'), fs.readFileSync('ssl/gd2.crt'), fs.readFileSync('ssl/gd3.crt')]
+  },
 
   /***************************************************************************
    * Set the log level                 *
@@ -34,5 +40,4 @@ module.exports = {
   log: {
     level: "warn"
   }
-
 };
