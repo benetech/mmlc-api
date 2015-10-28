@@ -42,5 +42,13 @@ module.exports = {
 
   log: {
     level: "warn"
+  },
+
+  transport: {
+    service: 'SendGrid',
+    auth: {
+        user: process.env.SENDGRID_USER,
+        pass: process.env.SENDGRID_PASSWORD
+    }
   }
 };
