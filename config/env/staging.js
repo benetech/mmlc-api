@@ -43,8 +43,8 @@ module.exports = {
   transport: {
     service: 'SendGrid',
     auth: {
-        user: process.env.SENDGRID_USER,
-        pass: process.env.SENDGRID_PASSWORD
+        user: process.env.SMTP_SASL_USER,
+        pass: process.env.SMTP_SASL_PASSWORD
     }
   }
 };
