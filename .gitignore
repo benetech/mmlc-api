@@ -6,3 +6,5 @@ keys/
 config/local.js
 config/env/
 assets/
+doc/asciidoc/generated
+doc/asciidoc/index.html
