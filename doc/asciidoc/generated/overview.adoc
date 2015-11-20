@@ -16,7 +16,9 @@ Terms of service: http://mathmlcloud.org/
 
 === URI scheme
 Host: api.mathmlcloud.org
+
 BasePath: /
+
 Schemes: HTTPS
 
 === Consumes
