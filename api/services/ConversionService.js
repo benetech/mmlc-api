@@ -86,6 +86,7 @@ module.exports = {
 
     typesetPage: function(mathjaxOptions, html5, done) {
         var mathjaxNode = require("../../node_modules/MathJax-node/lib/mj-page.js");
+		console.log("Starting MathJax file conversion to " + html5.outputFormat);
         try {
             mathjaxNode.typeset(mathjaxOptions, function (data) {
                 if (typeof(data.errors) != "undefined") {
@@ -99,17 +100,21 @@ module.exports = {
                             if (typeof(data.equations) != "undefined") {
                                 data.equations.forEach(function(equation, index) {
                                     if (equation.originalText != '') {
+										console.log("Creating equation record with html5.id " + html5.id);
                                         Equation.create({
                                         math: equation.originalText,
                                         mathType: equation.inputJax,
                                         html5: html5.id}).exec(function(err, dbEquation) {
                                             if (err) done(err);
+											console.log("Creating component record for " + html5.outputFormat + ", equation id " + dbEquation.id);
                                             //Create output component.
                                             EquationService.createComponent(html5.outputFormat, equation.outputJax, dbEquation.id);
                                             if (typeof(equation.speakText) != "undefined") {
+												console.log("Creating description record with equation.id " + dbEquation.id);
                                                 EquationService.createComponent("description", equation.speakText, dbEquation.id);
                                             }
                                             if (window.document.getElementById(equation.inputID) != null) {
+												console.log("Updating equation in the DOM for element " + equation.inputID);
                                                 var domEquation = window.document.getElementById(equation.inputID);
                                                 domEquation.setAttribute("id", dbEquation.id);
                                                 var comment = window.document.createComment("https://mathmlcloud.org/equation/" + dbEquation.id);
@@ -123,6 +128,7 @@ module.exports = {
                             callback();
                         },
                         function(callback){
+							console.log("Updating html5 record for id " + html5.id);
                             //update html5.
                             Html5.update({id: html5.id}, {output: serializeDocument(doc)}).exec(function(err, html5s) {
                                 if (err) callback(err);
