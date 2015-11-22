@@ -9,6 +9,8 @@ The documentation for the MathML CLoud API is a combination of handwritten expla
 . http://asciidoctor.org/[AsciiDoctor] is run to turn AsciiDoc into HTML
 . HTML is pushed to https://help.github.com/categories/github-pages-basics/[Github Pages] for public viewing
 
+API Document: http://benetech.github.io/mmlc-api/
+
 == File Layout
 
 Within the `mmlc-api` repository, the documentation source and generated files are under `doc`.
