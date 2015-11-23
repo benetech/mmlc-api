@@ -12,7 +12,7 @@
       "name": "MIT"
     }
   },
-  "host": "api.mathmlcloud.org",
+  "host": "mathmlcloud.org",
   "basePath": "/",
   "schemes": [
     "https"
