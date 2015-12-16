@@ -9,14 +9,18 @@ RUN mkdir /usr/local/mmlc-api
 WORKDIR /usr/local/mmlc-api
 
 # Make sure we're up to date.
-RUN apt-get update -y && apt-get upgrade -y
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update -y && apt-get upgrade -y && \
+	apt-get install -y curl && \
+	apt-get install -y build-essential
+
+RUN curl -sL https://deb.nodesource.com/setup_0.10 | sudo -E bash -
 
 # Install required packages.
 RUN apt-get install -y \
 	nodejs \
-	nodejs-legacy \
-	npm \
-	openjdk-7-jre-headless
+	openjdk-7-jre-headless \
+	python
 
 COPY api api
 COPY config config 
@@ -27,12 +31,15 @@ COPY kue.js kue.js
 COPY package.json package.json
 
 # Install Node.js packages.
-RUN npm -g -y install sails@0.11.0 pm2 && \
+RUN npm -g -y install npm@latest-2
+RUN npm -g -y install sails@0.11.0 && \
 	npm -y install --no-bin-links
+RUN npm install webkit-devtools-agent
 
 RUN groupadd -g 11500 -r mmlc-api && \
     useradd -g mmlc-api -u 11500 -m -s /bin/bash mmlc-api 
+RUN chmod -R ugo+rw /usr/local/mmlc-api
 
 USER mmlc-api
 
-CMD ["pm2", "start", "app.js", "--no-daemon"]
+CMD ["node", "app.js"]
