@@ -53,6 +53,9 @@ process.chdir(__dirname);
     }
   }
 
+  var agent = require('webkit-devtools-agent');
+  agent.start({port: 9999, bind_to: '0.0.0.0', verbose: true});
+  console.log("*** Started webkit-devtools-agent ***");
 
   // Start server
   sails.lift(rc('sails'));

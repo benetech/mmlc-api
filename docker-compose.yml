@@ -2,6 +2,7 @@ mmlc-api:
   build: .
   ports: 
     - "1337:1337"
+    - "9999:9999"
   net: "host"
 mmlc-redis:
   image: redis:2.8.21
