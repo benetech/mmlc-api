@@ -33,7 +33,6 @@ module.exports = {
                     //Look up equation so that we have all created info.
                     Equation.findOne(equation.id).populate('components').exec(function(err, newEquation) {
                         newEquation.cloudUrl = "https://" + host + "/equation/" + equation.id;
-                        delete newEquation.ip_address;
                         return done(null, newEquation);
                     });
                 });
@@ -115,7 +114,6 @@ module.exports = {
                                                 EquationService.createComponent("description", equation.speakText, dbEquation.id);
                                             }
                                             if (window.document.getElementById(equation.inputID) != null) {
-												console.log("Updating equation in the DOM for element " + equation.inputID);
                                                 var domEquation = window.document.getElementById(equation.inputID);
                                                 domEquation.setAttribute("id", dbEquation.id);
                                                 var comment = window.document.createComment("https://mathmlcloud.org/equation/" + dbEquation.id);
