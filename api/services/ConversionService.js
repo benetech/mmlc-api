@@ -45,7 +45,7 @@ module.exports = {
     },
 
     convert: function(options, done) {
-        var mathjaxNode = require("../../node_modules/MathJax-node/lib/mj-single.js"),
+        var mathjaxNode = require("../../node_modules/mathjax-node/lib/mj-single.js"),
             extend = require("extend"),
             mathJaxNodeOptions = extend(options, {timeout: 100 * 1000});
 
@@ -85,7 +85,7 @@ module.exports = {
     },
 
     typesetPage: function(mathjaxOptions, html5, done) {
-        var mathjaxNode = require("../../node_modules/MathJax-node/lib/mj-page.js");
+        var mathjaxNode = require("../../node_modules/mathjax-node/lib/mj-page.js");
 		console.log("Starting MathJax file conversion to " + html5.outputFormat);
         try {
             mathjaxNode.typeset(mathjaxOptions, function (data) {
