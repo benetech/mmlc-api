@@ -4,8 +4,6 @@ mmlc-api:
     - "1337:1337"
     - "9999:9999"
   net: "host"
-  volumes:
-    - .:/usr/local/mmlc-api
 mmlc-redis:
   image: redis:2.8.21
   ports: 
