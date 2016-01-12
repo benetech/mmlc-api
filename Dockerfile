@@ -11,10 +11,10 @@ WORKDIR /usr/local/mmlc-api
 # Make sure we're up to date.
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update -y && apt-get upgrade -y && \
-	apt-get install -y curl && \
+	apt-get install -y curl unzip && \
 	apt-get install -y build-essential
 
-RUN curl -sL https://deb.nodesource.com/setup_0.10 | sudo -E bash -
+RUN curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 
 # Install required packages.
 RUN apt-get install -y \
@@ -34,7 +34,12 @@ COPY package.json package.json
 RUN npm -g -y install npm@latest-2
 RUN npm -g -y install sails@0.11.0 && \
 	npm -y install --no-bin-links
-RUN npm install webkit-devtools-agent
+	
+# Install batik for mathjax-node
+RUN curl -O http://www.apache.org/dist/xmlgraphics/batik/binaries/batik-1.7.zip
+RUN unzip batik-1.7.zip && \
+	sudo cp -r batik-1.7/* node_modules/mathjax-node/batik/ && \
+	sudo rm -rf batik*
 
 RUN groupadd -g 11500 -r mmlc-api && \
     useradd -g mmlc-api -u 11500 -m -s /bin/bash mmlc-api 
