@@ -500,14 +500,14 @@
         "parameters": [
           {
             "name": "username",
-            "in": "form",
+            "in": "body",
             "description": "An existing user account name",
             "required": true,
             "type": "string"
           },
           {
             "name": "password",
-            "in": "form",
+            "in": "body",
             "description": "An existing user account password",
             "required": true,
             "type": "string"
