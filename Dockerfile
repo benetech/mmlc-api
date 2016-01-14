@@ -32,7 +32,7 @@ COPY package.json package.json
 
 # Install Node.js packages.
 RUN npm -g -y install npm@latest-2
-RUN npm -g -y install sails@0.11.0 && \
+RUN npm -g -y install sails@0.11.0 cucumber && \
 	npm -y install --no-bin-links
 	
 # Install batik for mathjax-node
