@@ -1,10 +1,13 @@
 .tmp/
 .vagrant/
+.pm2/
+.project
+.settings/
 node_modules/
 secrets.yaml
 keys/
 config/local.js
 config/env/
 assets/
-doc/asciidoc/generated
+doc/asciidoc/generated/
 doc/asciidoc/index.html
