@@ -2,7 +2,7 @@
 
 MathMLCloud is an open-source tool to help content developers and technology developers deliver accessible math. It converts math expressions from AsciiMath or LaTex to accessible MathML, text descriptions, SVGs and PNGs.
 
-For more background on the project, [visit the Benetech site](http://benetech.org/our-programs/literacy/born-accessible/mathml-cloud/).
+For more background on the project, [visit the Beneficent Technology site](http://benetech.org/our-programs/literacy/born-accessible/mathml-cloud/).
 
 ### Getting Started
 
@@ -53,7 +53,7 @@ Registered users who have been given the admin role are able to perform some oth
 
 ### Hosting
 
-An instance of the application is hosted by Benetech in Microsoft Azure:
+An instance of the application is hosted by Beneficent Technology in Microsoft Azure:
 * Online form: https://mathmlcloud.org
 * API use: https://api.mathmlcloud.org
 
