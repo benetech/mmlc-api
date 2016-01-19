@@ -15,7 +15,9 @@ module.exports = function() {
 	});
 
 	this.Given(/^a user registered with a random username$/, function(callback) {
-		callback.pending();
+		this.username = 'foo@bar.com';
+		this.password = '123456';
+		callback();
 	});
 	
 	this.Given(/^an organization name of '(.*)'$/, function(orgName, callback) {
@@ -28,20 +30,21 @@ module.exports = function() {
 	
 	// When steps
 	this.When(/^I register as a new user$/, function(callback) {
-		var userRequest = [];
-		userRequest.push({parameter: 'username', value: this.username});
-		userRequest.push({parameter: 'password', value: this.password});
-		userRequest.push({parameter: 'firstName', value: this.firstname});
-		userRequest.push({parameter: 'lastName', value: this.lastname});
-		userRequest.push({parameter: 'termsOfService', value: true});
+		var userRequest = {
+			username: this.username,
+			password: this.password,
+			firstName: this.firstname,
+			lastName: this.lastname,
+			termsOfService: true
+		};
 		
-		this.apickli.setQueryParameters(userRequest);
-		this.apickli.post('/user', function(error, response) {
+		this.post('/user', userRequest, function(error) {
 			if (error) {
-				callback(new Error(error));
+				callback(error);
+			} else {
+				callback();
 			}
 		});
-		callback();
 	});
 	
 	this.When(/^I register with the same username$/, function(callback) {
@@ -50,12 +53,9 @@ module.exports = function() {
 	
 	// Then steps
 	this.Then(/^I should get a successful response$/, function(callback) {
-	    if (this.apickli.assertResponseCode(200)) {
-            callback();
-        } else {
-            callback(new Error('response code expected: 200' + ', actual: ' 
-				+ this.apickli.getResponseObject().statusCode));
-        }
+		assert.equal(this.lastResponse.statusCode, 200, 
+			"Expected response 200, actual " + this.lastResponse.statusCode);
+		callback();
 	});
 	
 	this.Then(/^the response should contain the organization name$/, function(callback) {
