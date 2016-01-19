@@ -59,6 +59,7 @@
     "jasmine": "~2.0.1",
     "jasmine-node": "~1.14.5",
     "form-data": "~0.2.0",
-	"apickli": "latest"
+	"JSONPath": "~0.9.1",
+	"request": "~2.67.0"
   }
 }
