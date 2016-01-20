@@ -1,0 +1,118 @@
+== Definitions
+=== Component
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|id||false|integer (int64)|
+|format||false|string|
+|source||false|string|
+|createdAt||false|string|
+|updatedAt||false|string|
+|===
+
+=== Equation
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|id||true|integer (int64)|
+|math||true|string|
+|mathType||true|string|
+|components||true|<<Component>> array|
+|createdAt||false|string|
+|updatedAt||false|string|
+|===
+
+=== EquationInput
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|math||false|string|
+|mathType||false|string|
+|svg||false|boolean|
+|png||false|boolean|
+|mml||false|boolean|
+|description||false|boolean|
+|access_token||false|string|
+|===
+
+=== ErrorModel
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|code||true|integer (int32)|
+|message||true|string|
+|===
+
+=== Feedback
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|id||true|integer (int64)|
+|comments||false|string|
+|equation||false|integer (int64)|
+|components||false|<<Component>> array|
+|createdAt||false|string|
+|updatedAt||false|string|
+|===
+
+=== FeedbackInput
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|comments||false|string|
+|access_token||false|string|
+|===
+
+=== Html5
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|id||true|integer (int64)|
+|status||true|string|
+|outputFormat||true|string|
+|source||false|string|
+|output||false|string|
+|equations||true|<<Equation>> array|
+|createdAt||false|string|
+|updatedAt||false|string|
+|===
+
+=== Html5Input
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|outputFormat||false|string|
+|html5||false|file|
+|access_token||false|string|
+|===
+
+=== User
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|id||false|integer (int64)|
+|firstName||false|string|
+|lastName||false|string|
+|username||false|string|
+|organization||false|string|
+|organizationTypes||false|string|
+|termsOfService||false|boolean|
+|role||false|string|
+|access_token||false|string|
+|createdAt||false|string|
+|updatedAt||false|string|
+|===
+
+=== UserInput
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|firstName||true|string|
+|lastName||true|string|
+|username||true|string|
+|organization||false|string|
+|organizationTypes||false|string|
+|termsOfService||true|boolean|
+|role||false|string|
+|===
+

@@ -6,29 +6,23 @@ For more background on the project, [visit the Benetech site](http://benetech.or
 
 ### Getting Started
 
-MathMLCloud is a [Sails](http://sailsjs.org) app that runs in a Vagrant-defined virtual machine.
+MathMLCloud API is a [Sails](http://sailsjs.org) app that runs in a Docker-defined environment.
 
 Dependencies:
 
-  - Vagrant and VirtualBox. See http://docs.vagrantup.com/v2/getting-started/index.html for installation instructions.
+  - Docker and VirtualBox. See https://docs.docker.com/ for installation instructions.
 
 ### Installation
 
 ```
-git clone https://github.com/benetech/mmlc-experiments.git yourProjectName
+git clone https://github.com/benetech/mmlc-api.git yourProjectName
 cd yourProjectName
-vagrant up
+docker-compose up
 ```
 
-### Start App
+This will start the containers that make up the app. The application container runs "sails lift" as its command.
 
-```
-vagrant ssh
-cd /vagrant
-sails lift
-```
-
-The app should be running at http://localhost:1337.
+The API should be running at http://localhost:1337.
 
 ### Users
 
@@ -36,7 +30,7 @@ The app can be used to convert equations from anonymous users, but also supports
 
 #### Anonymous Users
 
-Anyone can use the app form or the API to convert individual equations or upload HTML files of equations, but the results are only available at the time of the conversion. To be able to retrieve past conversions, you must be a registered user.
+Anyone can use the API to convert individual equations or upload HTML files of equations, but the results are only available at the time of the conversion. To be able to retrieve past conversions, you must be a registered user.
 
 #### Registered Users
 

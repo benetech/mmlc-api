@@ -1,0 +1,837 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "MathML Cloud API",
+    "description": "An API to perform conversions of math equations to accessible versions.",
+    "termsOfService": "http://mathmlcloud.org/",
+    "contact": {
+      "name": "admin@mathmlcloud.org"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "host": "mathmlcloud.org",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "tags": [
+    "equation",
+    "html5",
+    "feedback",
+    "report",
+    "user"
+  ],
+  "paths": {
+    "/equation": {
+      "post": {
+        "summary": "Create new equation",
+        "description": "Creates a new equation, with components in the formats requested.",
+        "tags": [
+          "equation"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "equation",
+            "in": "body",
+            "description": "Equation to store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EquationInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "equation response",
+            "schema": {
+              "$ref": "#/definitions/Equation"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/equation/{id}": {
+      "get": {
+        "summary": "Get equation",
+        "description": "Return an equation and its different representations",
+        "tags": [
+          "equation"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "equation identifier",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "equation response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Equation"
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/equation/{id}/feedback": {
+      "post": {
+        "summary": "Create feedback",
+        "description": "Creates a feedback record for a given equation.",
+        "tags": [
+          "equation"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "equation identifier",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "feedback",
+            "in": "body",
+            "description": "feedback text",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FeedbackInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "feedback response",
+            "schema": {
+              "$ref": "#/definitions/Feedback"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/component/{id}": {
+      "get": {
+        "summary": "Get component",
+        "description": "Returns a single version of an equation by its ID",
+        "tags": [
+          "equation"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of component to fetch",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "component response",
+            "schema": {
+              "$ref": "#/definitions/Component"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/html5": {
+      "post": {
+        "summary": "Create new HTML5",
+        "description": "Upload an HTML5 file and all MathML, LaTeX, and Ascii Math equations embedded in the file will be replaced by the chosen format. Because conversion can take a while, the process is asynchronous. After uploading, poll HTML5 as JSON until status is 'completed.' The converted HTML5 will be available for download at that point.",
+        "tags": [
+          "html5"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "html5",
+            "in": "body",
+            "description": "File to store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Html5Input"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "HTML5 accepted",
+            "schema": {
+              "$ref": "#/definitions/Html5"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/html5/{id}": {
+      "get": {
+        "summary": "Get HTML5",
+        "description": "Retrieve an HTML5 resource, including status and results of conversions.",
+        "tags": [
+          "html5"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "equation identifier",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "equation response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Equation"
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/html5/{id}/source": {
+      "get": {
+        "summary": "Get HTML5 source",
+        "description": "Retrieve the HTML5 source file.",
+        "tags": [
+          "html5"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "equation identifier",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "HTML5 file response",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/html5/{id}/output": {
+      "get": {
+        "summary": "Get HTML5 output",
+        "description": "Retrieve the HTML5 output file, containing equation conversions.",
+        "tags": [
+          "html5"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "equation identifier",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "HTML5 file response",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/myEquations": {
+      "get": {
+        "summary": "Get my equations",
+        "description": "Retrieve all of the equations associated with the current user",
+        "tags": [
+          "report"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "access_token",
+            "in": "query",
+            "description": "user authentication identifier",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "equation response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Equation"
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/myFeedback": {
+      "get": {
+        "summary": "Get my feeback",
+        "description": "Retrieve all of the feedback records associated with the current user",
+        "tags": [
+          "report"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "access_token",
+            "in": "query",
+            "description": "user authentication identifier",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "feedback response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Feedback"
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/myUploads": {
+      "get": {
+        "summary": "Get my HTML5",
+        "description": "Retrieve all of the HTML5 upload records associated with the current user",
+        "tags": [
+          "report"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "access_token",
+            "in": "query",
+            "description": "user authentication identifier",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "html5 upload response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Upload"
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "summary": "Create user account",
+        "description": "Creates a new user account.",
+        "tags": [
+          "user"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User account information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user response",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Create user token",
+        "description": "Creates a new access token for a given user.",
+        "tags": [
+          "user"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "body",
+            "description": "An existing user account name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "An existing user account password",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user response",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "summary": "Invalidate token",
+        "description": "Invalidate the given access token",
+        "tags": [
+          "user"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "access_token",
+            "in": "query",
+            "description": "user authentication identifier",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "html5 upload response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Upload"
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "EquationInput": {
+      "type": "object",
+      "properties": {
+        "math": {
+          "type": "string"
+        },
+        "mathType": {
+          "type": "string"
+        },
+        "svg": {
+          "type": "boolean"
+        },
+        "png": {
+          "type": "boolean"
+        },
+        "mml": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "boolean"
+        },
+        "access_token": {
+          "type": "string"
+        }
+      }
+    },
+    "Html5Input": {
+      "type": "object",
+      "properties": {
+        "outputFormat": {
+          "type": "string"
+        },
+        "html5": {
+          "type": "file"
+        },
+        "access_token": {
+          "type": "string"
+        }
+      }
+    },
+    "FeedbackInput": {
+      "type": "object",
+      "properties": {
+        "comments": {
+          "type": "string"
+        },
+        "access_token": {
+          "type": "string"
+        }
+      }
+    },
+    "UserInput": {
+      "type": "object",
+      "required": [
+        "firstName",
+        "lastName",
+        "username",
+        "termsOfService"
+      ],
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "organizationTypes": {
+          "type": "string"
+        },
+        "termsOfService": {
+          "type": "boolean"
+        },
+        "role": {
+          "type": "string"
+        }
+      }
+    },
+    "Equation": {
+      "type": "object",
+      "required": [
+        "id",
+        "math",
+        "mathType",
+        "components"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "math": {
+          "type": "string"
+        },
+        "mathType": {
+          "type": "string"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Component"
+          }
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "Html5": {
+      "type": "object",
+      "required": [
+        "id",
+        "status",
+        "outputFormat",
+        "equations"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "status": {
+          "type": "string"
+        },
+        "outputFormat": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "output": {
+          "type": "string"
+        },
+        "equations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Equation"
+          }
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "Feedback": {
+      "type": "object",
+      "required": [
+        "id",
+        "math",
+        "mathType"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "comments": {
+          "type": "string"
+        },
+        "equation": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Component"
+          }
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "Component": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "format": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "organizationTypes": {
+          "type": "string"
+        },
+        "termsOfService": {
+          "type": "boolean"
+        },
+        "role": {
+          "type": "string"
+        },
+        "access_token": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "ErrorModel": {
+      "type": "object",
+      "required": [
+        "code",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

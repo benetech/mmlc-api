@@ -1,0 +1,33 @@
+= MathML Cloud API
+
+== Overview
+An API to perform conversions of math equations to accessible versions.
+
+=== Version information
+Version: 1.0.0
+
+=== Contact information
+Contact: admin@mathmlcloud.org
+
+=== License information
+License: MIT
+
+Terms of service: http://mathmlcloud.org/
+
+=== URI scheme
+Host: api.mathmlcloud.org
+
+BasePath: /
+
+Schemes: HTTPS
+
+=== Consumes
+
+* application/json
+
+
+=== Produces
+
+* application/json
+
+

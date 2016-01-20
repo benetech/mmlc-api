@@ -1,0 +1,8 @@
+== Authentication
+
+To associate equations, uploads, and feedback with a user:
+
+. Register
+. Request an access token
+. Send the access token with any POSTS to <<_post_equation,equation>>, <<_post_html5,HTML5>>, or <<_post_equation_id_feedback,feedback>>
+

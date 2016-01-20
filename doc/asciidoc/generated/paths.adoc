@@ -1,0 +1,474 @@
+== Resources
+=== Equation
+==== Create new equation
+----
+POST /equation
+----
+
+===== Description
+:hardbreaks:
+Creates a new equation, with components in the formats requested.
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|BodyParameter|equation|Equation to store|true|<<EquationInput>>|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|equation response|<<Equation>>
+|default|unexpected error|<<ErrorModel>>
+|===
+
+===== Produces
+
+* application/json
+
+===== Example CURL request
+:hardbreaks:
+....
+curl -X POST -d "math=a*b" -d "mathType=AsciiMath" -d "png=true" -d "description=true" https://mathmlcloud.org/equation
+....
+
+===== Example HTTP request
+:hardbreaks:
+....
+POST /equation HTTP 1.1
+Content-Type: application/json
+Content-Length: 98
+
+{ "math": "a + b = c"}
+....
+
+===== Example HTTP response
+:hardbreaks:
+....
+{ "cloudUrl" : "https://mathmlcloud.org/equation/5488dbf432d2e2e1286d580b",
+"components" : [ { "createdAt" : "2014-12-10T23:49:16.246Z",
+    "equation" : "5488dbf432d2e2e1286d580b",
+    "format" : "png",
+    "id" : "5488dbfc32d2e2e1286d580c",
+    "source" : "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAPCAYAAACInr1QAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAEZ0FNQQAAsY58+1GTAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAWJQAAFiUBSVIk8AAAAchJREFUeNrF1U8oBFEcB/DdQQ4OJAc2ilZW60/sgZWD/DtQoqQoiYtSDpycSEpSkouDi4twkOTfRUKhcFC2SImSf0Wtgy1sS76vvlOv1zBbpubVpzc782bf7735zW+cDnvaELghCT7gFMblAbE2BZYPxZANF7CmDoixKbAlWIc+uOQOhuUBmsO+1sj+GULqRTsDa2B/Z3TR6FGKhByBXiiBB+iCQ4sDm4Q3uIYeqIItiBgF5oU98POGWujktsfBrkVBpcIgj11wC6XQDTPwrSk7tQkJUA0tXEUivDJJrWpt7K+ggHMFIBcm1HKxCJkMLsBzddxVkQerJpN5+doHuaDQH2NbpXqmj/tknycnfxHz6QvmpD/wQTy8mEwk2hSLpqhPoyZjc/g2bkjnXOzDcmDNkAxPys5ksD+I4vH0wxFsw5hJmRBpcyOdS4c0Hs8bVf5HfiL0Jh7tO8zCCpzB8C8TnkNZFAuokeqX3tohixuzoNaxiFJ9fQzsHlKgAo4tSPwQF68pNc0JTWodE8ldzsTzQIf0mRA3FHLnBiwITJSGSs7lZgr4+WbuqIEF+ag8zCsR0DRXpge3L9/4jybmWuZivfxdDyfyoB/Vm2BjyGQdPgAAAABJRU5ErkJggg==\" alt=\"a dot b\" />",
+    "updatedAt" : "2014-12-10T23:49:16.246Z"
+  },
+  { "createdAt" : "2014-12-10T23:49:16.247Z",
+    "equation" : "5488dbf432d2e2e1286d580b",
+    "format" : "description",
+    "id" : "5488dbfc32d2e2e1286d580d",
+    "source" : "a dot b",
+    "updatedAt" : "2014-12-10T23:49:16.247Z"
+  }
+],
+"createdAt" : "2014-12-10T23:49:08.648Z",
+"id" : "5488dbf432d2e2e1286d580b",
+"math" : "a*b",
+"mathType" : "AsciiMath",
+"updatedAt" : "2014-12-10T23:49:08.649Z"
+}
+....
+
+==== Create feedback
+----
+POST /equation/{id}/feedback
+----
+
+===== Description
+:hardbreaks:
+Creates a feedback record for a given equation.
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|id|equation identifier|true|integer (int64)|
+|BodyParameter|feedback|feedback text|true|<<FeedbackInput>>|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|feedback response|<<Feedback>>
+|default|unexpected error|<<ErrorModel>>
+|===
+
+===== Produces
+
+* application/json
+
+==== Get equation
+----
+GET /equation/{id}
+----
+
+===== Description
+:hardbreaks:
+Return an equation and its different representations
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|id|equation identifier|true|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|equation response|<<Equation>> array
+|default|unexpected error|<<ErrorModel>>
+|===
+
+===== Produces
+
+* application/json
+
+===== Example CURL request
+:hardbreaks:
+....
+curl https://mathmlcloud.org/equation/5488dbf432d2e2e1286d580b
+....
+
+===== Example HTTP request
+:hardbreaks:
+....
+GET /equation HTTP 1.1
+Content-Type: application/json
+Content-Length: 54
+....
+
+===== Example HTTP response
+:hardbreaks:
+....
+{ "components" : [ { "createdAt" : "2014-12-10T23:49:16.246Z",
+    "equation" : "5488dbf432d2e2e1286d580b",
+    "format" : "png",
+    "id" : "5488dbfc32d2e2e1286d580c",
+    "source" : "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAPCAYAAACInr1QAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAEZ0FNQQAAsY58+1GTAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAWJQAAFiUBSVIk8AAAAchJREFUeNrF1U8oBFEcB/DdQQ4OJAc2ilZW60/sgZWD/DtQoqQoiYtSDpycSEpSkouDi4twkOTfRUKhcFC2SImSf0Wtgy1sS76vvlOv1zBbpubVpzc782bf7735zW+cDnvaELghCT7gFMblAbE2BZYPxZANF7CmDoixKbAlWIc+uOQOhuUBmsO+1sj+GULqRTsDa2B/Z3TR6FGKhByBXiiBB+iCQ4sDm4Q3uIYeqIItiBgF5oU98POGWujktsfBrkVBpcIgj11wC6XQDTPwrSk7tQkJUA0tXEUivDJJrWpt7K+ggHMFIBcm1HKxCJkMLsBzddxVkQerJpN5+doHuaDQH2NbpXqmj/tknycnfxHz6QvmpD/wQTy8mEwk2hSLpqhPoyZjc/g2bkjnXOzDcmDNkAxPys5ksD+I4vH0wxFsw5hJmRBpcyOdS4c0Hs8bVf5HfiL0Jh7tO8zCCpzB8C8TnkNZFAuokeqX3tohixuzoNaxiFJ9fQzsHlKgAo4tSPwQF68pNc0JTWodE8ldzsTzQIf0mRA3FHLnBiwITJSGSs7lZgr4+WbuqIEF+ag8zCsR0DRXpge3L9/4jybmWuZivfxdDyfyoB/Vm2BjyGQdPgAAAABJRU5ErkJggg==\" alt=\"a dot b\" />",
+    "updatedAt" : "2014-12-10T23:49:16.246Z"
+  },
+  { "createdAt" : "2014-12-10T23:49:16.247Z",
+    "equation" : "5488dbf432d2e2e1286d580b",
+    "format" : "description",
+    "id" : "5488dbfc32d2e2e1286d580d",
+    "source" : "a dot b",
+    "updatedAt" : "2014-12-10T23:49:16.247Z"
+  }
+],
+"createdAt" : "2014-12-10T23:49:08.648Z",
+"id" : "5488dbf432d2e2e1286d580b",
+"math" : "a*b",
+"mathType" : "AsciiMath",
+"updatedAt" : "2014-12-10T23:49:08.649Z"
+}
+....
+
+==== Get component
+----
+GET /component/{id}
+----
+
+===== Description
+:hardbreaks:
+Returns a single version of an equation by its ID
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|PathParameter|id|ID of component to fetch|true|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|component response|<<Component>>
+|default|unexpected error|<<ErrorModel>>
+|===
+
+===== Produces
+
+* application/json
+
+=== Html5
+==== Get HTML5 output
+----
+GET /html5/{id}/output
+----
+
+===== Description
+:hardbreaks:
+Retrieve the HTML5 output file, containing equation conversions.
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|id|equation identifier|true|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|HTML5 file response|file
+|default|unexpected error|<<ErrorModel>>
+|===
+
+===== Produces
+
+* application/json
+
+==== Get HTML5 source
+----
+GET /html5/{id}/source
+----
+
+===== Description
+:hardbreaks:
+Retrieve the HTML5 source file.
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|id|equation identifier|true|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|HTML5 file response|file
+|default|unexpected error|<<ErrorModel>>
+|===
+
+===== Produces
+
+* application/json
+
+==== Get HTML5
+----
+GET /html5/{id}
+----
+
+===== Description
+:hardbreaks:
+Retrieve an HTML5 resource, including status and results of conversions.
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|id|equation identifier|true|integer (int64)|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|equation response|<<Equation>> array
+|default|unexpected error|<<ErrorModel>>
+|===
+
+===== Produces
+
+* application/json
+
+==== Create new HTML5
+----
+POST /html5
+----
+
+===== Description
+:hardbreaks:
+Upload an HTML5 file and all MathML, LaTeX, and Ascii Math equations embedded in the file will be replaced by the chosen format. Because conversion can take a while, the process is asynchronous. After uploading, poll HTML5 as JSON until status is 'completed.' The converted HTML5 will be available for download at that point.
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|BodyParameter|html5|File to store|true|<<Html5Input>>|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|202|HTML5 accepted|<<Html5>>
+|default|unexpected error|<<ErrorModel>>
+|===
+
+===== Produces
+
+* application/json
+
+=== Report
+==== Get my equations
+----
+GET /myEquations
+----
+
+===== Description
+:hardbreaks:
+Retrieve all of the equations associated with the current user
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|access_token|user authentication identifier|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|equation response|<<Equation>> array
+|default|unexpected error|<<ErrorModel>>
+|===
+
+===== Produces
+
+* application/json
+
+==== Get my HTML5
+----
+GET /myUploads
+----
+
+===== Description
+:hardbreaks:
+Retrieve all of the HTML5 upload records associated with the current user
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|access_token|user authentication identifier|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|html5 upload response|<<Upload>> array
+|default|unexpected error|<<ErrorModel>>
+|===
+
+===== Produces
+
+* application/json
+
+==== Get my feeback
+----
+GET /myFeedback
+----
+
+===== Description
+:hardbreaks:
+Retrieve all of the feedback records associated with the current user
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|access_token|user authentication identifier|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|feedback response|<<Feedback>> array
+|default|unexpected error|<<ErrorModel>>
+|===
+
+===== Produces
+
+* application/json
+
+=== User
+==== Create user account
+----
+POST /register
+----
+
+===== Description
+:hardbreaks:
+Creates a new user account.
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|BodyParameter|user|User account information|true|<<UserInput>>|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|user response|<<User>>
+|default|unexpected error|<<ErrorModel>>
+|===
+
+===== Produces
+
+* application/json
+
+==== Create user token
+----
+POST /login
+----
+
+===== Description
+:hardbreaks:
+Creates a new access token for a given user.
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|user response|<<User>>
+|default|unexpected error|<<ErrorModel>>
+|===
+
+===== Produces
+
+* application/json
+
+==== Invalidate token
+----
+GET /logout
+----
+
+===== Description
+:hardbreaks:
+Invalidate the given access token
+
+===== Parameters
+[options="header"]
+|===
+|Type|Name|Description|Required|Schema|Default
+|QueryParameter|access_token|user authentication identifier|true|string|
+|===
+
+===== Responses
+[options="header"]
+|===
+|HTTP Code|Description|Schema
+|200|html5 upload response|<<Upload>> array
+|default|unexpected error|<<ErrorModel>>
+|===
+
+===== Produces
+
+* application/json
+

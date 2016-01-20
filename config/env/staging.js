@@ -24,6 +24,9 @@ module.exports = {
 
   port: 443,
   
+  /**
+  * Deprecated: SSL configuration will be handled by AWS 
+  */
   ssl: {
     key: fs.readFileSync('ssl/staging.mathmlcloud.org.key'),
     cert: fs.readFileSync('ssl/mathmlcloud.staging.crt'),
@@ -40,8 +43,8 @@ module.exports = {
   transport: {
     service: 'SendGrid',
     auth: {
-        user: process.env.SENDGRID_USER,
-        pass: process.env.SENDGRID_PASSWORD
+        user: process.env.SMTP_SASL_USER,
+        pass: process.env.SMTP_SASL_PASSWORD
     }
   }
 };
