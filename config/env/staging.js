@@ -22,16 +22,6 @@ module.exports = {
      connection: 'stagingMongodbServer'
   },
 
-  port: 443,
-  
-  /**
-  * Deprecated: SSL configuration will be handled by AWS 
-  */
-  ssl: {
-    key: fs.readFileSync('ssl/staging.mathmlcloud.org.key'),
-    cert: fs.readFileSync('ssl/mathmlcloud.staging.crt'),
-    ca: [fs.readFileSync('ssl/gd1.crt'), fs.readFileSync('ssl/gd2.crt'), fs.readFileSync('ssl/gd3.crt')]
-  },
   /***************************************************************************
    * Set the log level                 *
    ***************************************************************************/
