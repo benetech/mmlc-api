@@ -9,6 +9,9 @@
  * http://sailsjs.org/#/documentation/reference/sails.config/sails.config.bootstrap.html
  */
 
+console.log('SAILS CONFIG ENV = ' + sails.config.environment)
+console.log('NODE_ENV = ' + process.env.NODE_ENV)
+
 module.exports.bootstrap = function(cb) {
 
   sails.kue = require('kue'), sails.jobs = sails.kue.createQueue();
