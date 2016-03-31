@@ -16,20 +16,20 @@ API Document: http://benetech.github.io/mmlc-api/
 Within the `mmlc-api` repository, the documentation source and generated files are under `doc`.
 ....
 doc
-	generated
-		overview.adoc
-		paths.adoc
-		definitions.adoc
-	json
-		mmlc-api.json
-	index.adoc
-	custom_narrative_a.adoc
-	custom_narrative_b.adoc
-	sample
+	asciidoc
+		generated
+			overview.adoc
+			paths.adoc
+			definitions.adoc
+		index.adoc
+		custom_narrative_a.adoc
+		custom_narrative_b.adoc
 		path_description_folder
 			curl-request.adoc
 			http-request.adoc
 			http-response.adoc
+	json
+		mmlc-api.json
 ....
 
 == Generated Documentation
