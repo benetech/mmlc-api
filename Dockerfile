@@ -47,4 +47,4 @@ RUN chmod -R ugo+rw /usr/local/mmlc-api
 
 USER mmlc-api
 
-CMD ["node", "--debug", "app.js"]
+CMD NODE_ENV=$NODE_ENV node app.js
