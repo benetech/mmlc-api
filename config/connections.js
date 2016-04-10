@@ -43,6 +43,7 @@ module.exports.connections = {
 
   stagingMongodbServer: {
     adapter: 'sails-mongo',
+    host: 'foo',
     url: process.env.MONGO_URL
   }
 
