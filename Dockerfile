@@ -47,4 +47,4 @@ RUN chmod -R ugo+rw /usr/local/mmlc-api
 
 USER mmlc-api
 
-CMD ["node", "app.js"]
+CMD ["node", "--debug", "app.js"]
