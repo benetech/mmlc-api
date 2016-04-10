@@ -12,13 +12,11 @@ RUN mkdir $APP_DIR
 
 WORKDIR $APP_DIR 
 
-RUN apt-get update && \
-    apt-get install -y $BUILD_PACKAGES $RUNTIME_PACKAGES 
-
 COPY . $APP_DIR
 
-# Install Node.js packages.
-RUN npm -y install && \
+RUN apt-get update && \
+    apt-get install -y $BUILD_PACKAGES $RUNTIME_PACKAGES && \ 
+    npm -y install && \
     curl -O http://www.apache.org/dist/xmlgraphics/batik/binaries/batik-1.7.zip && \
     unzip batik-1.7.zip && \
     cp -r batik-1.7/* node_modules/mathjax-node/batik/ && \
