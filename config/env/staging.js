@@ -12,12 +12,6 @@
 var fs = require('fs');
 module.exports = {
   hookTimeout: 80000,
-  connections: {
-     'stagingMongodbServer': {
-        adapter   : 'sails-mongo',
-        url       : process.env.MONGO_URL
-     }
-  },
 
   models: {
      connection: 'stagingMongodbServer'
