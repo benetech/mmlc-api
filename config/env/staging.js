@@ -14,7 +14,8 @@ module.exports = {
   hookTimeout: 80000,
   connections: {
      'stagingMongodbServer': {
-        url: process.env.MONGO_URL
+        adapter   : 'sails-mongo',
+        url       : process.env.MONGO_URL
      }
   },
 
