@@ -1,50 +1,30 @@
-FROM ubuntu:14.04
+FROM node:4 
 
 MAINTAINER John Brugge <johnbrugge@benetech.org>
 
 EXPOSE 1337
 
-RUN mkdir /usr/local/mmlc-api
+ENV APP_DIR /usr/src/mmlc-api
+ENV BUILD_PACKAGES curl unzip
+ENV RUNTIME_PACKAGES openjdk-7-jre-headless python
 
-WORKDIR /usr/local/mmlc-api
+RUN mkdir $APP_DIR
 
-# Make sure we're up to date.
-ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update -y && apt-get upgrade -y && \
-	apt-get install -y curl unzip && \
-	apt-get install -y build-essential
+WORKDIR $APP_DIR 
 
-RUN curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+RUN apt-get update && \
+    apt-get install -y $BUILD_PACKAGES $RUNTIME_PACKAGES 
 
-# Install required packages.
-RUN apt-get install -y \
-	nodejs \
-	openjdk-7-jre-headless \
-	python
-
-COPY api api
-COPY config config 
-COPY tasks tasks 
-COPY 6379.conf 6379.conf
-COPY app.js app.js
-COPY kue.js kue.js 
-COPY package.json package.json
+COPY . $APP_DIR
 
 # Install Node.js packages.
-RUN npm -g -y install npm@latest-2
-RUN npm -g -y install sails@0.11.0 cucumber && \
-	npm -y install --no-bin-links
-	
-# Install batik for mathjax-node
-RUN curl -O http://www.apache.org/dist/xmlgraphics/batik/binaries/batik-1.7.zip
-RUN unzip batik-1.7.zip && \
-	sudo cp -r batik-1.7/* node_modules/mathjax-node/batik/ && \
-	sudo rm -rf batik*
-
-RUN groupadd -g 11500 -r mmlc-api && \
-    useradd -g mmlc-api -u 11500 -m -s /bin/bash mmlc-api 
-RUN chmod -R ugo+rw /usr/local/mmlc-api
-
-USER mmlc-api
+RUN npm -y install && \
+    curl -O http://www.apache.org/dist/xmlgraphics/batik/binaries/batik-1.7.zip && \
+    unzip batik-1.7.zip && \
+    cp -r batik-1.7/* node_modules/mathjax-node/batik/ && \
+    rm -rf batik* && \
+    chmod -R ugo+rw $APP_DIR && \
+    apt-get purge --yes --auto-remove $BUILD_PACKAGES && \
+    apt-get clean
 
 CMD NODE_ENV=$NODE_ENV node app.js
