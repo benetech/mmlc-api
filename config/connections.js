@@ -43,7 +43,7 @@ module.exports.connections = {
 
   stagingMongodbServer: {
     adapter: 'sails-mongo',
-    url: process.env.MONGO_URL
+    url: 'mongodb://mongodb-primary-replica-node0.mathmlcloud.org:27017,mongodb-secondary-replica-node0.mathmlcloud.org:27017,mongodb-secondary-replica-node1.mathmlcloud.org:27017/mmlc_staging?replicaSet=s-1&maxPoolSize=20&readPreference=secondaryPreferred' 
   }
 
 };
