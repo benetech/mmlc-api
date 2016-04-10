@@ -25,4 +25,4 @@ RUN apt-get update && \
     apt-get purge --yes --auto-remove $BUILD_PACKAGES && \
     apt-get clean
 
-CMD NODE_ENV=$NODE_ENV node app.js
+CMD node app.js
