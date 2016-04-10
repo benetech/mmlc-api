@@ -25,4 +25,4 @@ RUN apt-get update && \
     apt-get purge --yes --auto-remove $BUILD_PACKAGES && \
     apt-get clean
 
-CMD ["node", "app.js"]
+CMD ["npm", "start"]
