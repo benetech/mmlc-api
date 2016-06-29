@@ -68,3 +68,6 @@ module.exports = {
   environment: process.env.NODE_ENV || 'dev'
 
 };
+console.log('NODE_ENV_CONFIG: ', process.env.NODE_ENV);
+console.log('MONGO_URL_CONFIG: ', process.env.MONGO_URL);
+console.log('MOD_EXPORT: ', module.exports.environment);
