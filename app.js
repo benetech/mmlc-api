@@ -53,6 +53,8 @@ process.chdir(__dirname);
     }
   }
 
+  console.log('NODE_ENV: ', process.env.NODE_ENV);
+  console.log('MONGO_URL: ', process.env.MONGO_URL);
   // Start server
   sails.lift(rc('sails'));
 })();
