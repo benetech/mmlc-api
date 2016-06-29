@@ -47,3 +47,7 @@ module.exports.connections = {
   }
 
 };
+
+console.log('NODE_ENV_CONNECT: ', process.env.NODE_ENV);
+console.log('MONGO_URL_CONNECT: ', process.env.MONGO_URL);
+console.log('MOD_EXPORT: ', module.exports.connections.stagingMongodbServer.url);
