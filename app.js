@@ -53,6 +53,7 @@ process.chdir(__dirname);
     }
   }
 
+  console.log('SAILS CONFIG ENV = ' + sails.config.environment)
   console.log('NODE_ENV: ', process.env.NODE_ENV);
   console.log('MONGO_URL: ', process.env.MONGO_URL);
   // Start server
