@@ -28,27 +28,22 @@ module.exports.connections = {
   * Run: npm install sails-mongo                                             *
   *                                                                          *
   ***************************************************************************/
-  localMongodbServer: {
-    adapter: 'sails-mongo',
-    host: 'bar',
-    port: 27017,
+  //localMongodbServer: {
+  //  adapter: 'sails-mongo',
+  //  host: 'bar',
+  //  port: 27017,
     // user: 'username',
     // password: 'password',
     // database: 'your_mongo_db_name_here'
-  },
+  //},
 
-  productionMongodbServer: {
-    adapter: 'sails-mongo',
-  },
+  //productionMongodbServer: {
+  //  adapter: 'sails-mongo',
+  //},
 
   stagingMongodbServer: {
     adapter: 'sails-mongo',
-    url: 'mongodb://mongodb-primary-replica-node0.mathmlcloud.org:27017,mongodb-secondary-replica-node0.mathmlcloud.org:27017,mongodb-secondary-replica-node1.mathmlcloud.org:27017/mmlc_staging?replicaSet=s-1&maxPoolSize=20&readPreference=secondaryPreferred' 
+    url: process.env.MONGO_URL
   }
 
 };
-
-console.log('NODE_ENV_CONNECT: ', process.env.NODE_ENV);
-console.log('MONGO_URL_CONNECT: ', process.env.MONGO_URL);
-console.log('MOD_EXPORT: ', module.exports.connections.stagingMongodbServer.url);
-console.log('SAILS CONFIG ENV = ' + sails.config.environment)

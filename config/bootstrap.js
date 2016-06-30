@@ -11,30 +11,14 @@
 
 module.exports.bootstrap = function(cb) {
 
-  console.log('SAILS CONFIG ENV = ' + sails.config.environment)
-  console.log('NODE_ENV = ' + process.env.NODE_ENV)
-
-  sails.kue = require('kue'), sails.jobs = sails.kue.createQueue();
-  sails.kue.app.listen(3000);
-  QueueService.processJobs();
-
-  if (sails.config.environment === 'staging') {
-    sails.kue = require('kue'), sails.jobs = kue.createQueue({
-      redis: {
-        options: {
-          // see https://github.com/mranney/node_redis#rediscreateclient
-          host: process.env.REDIS_HOST,
-          port: process.env.REDIS_PORT
-        }
+  sails.kue = require('kue'), sails.jobs = sails.kue.createQueue({
+    redis: {
+        host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT
       }
     });
-    sails.kue.app.listen(3000);
-    QueueService.processJobs();
-  } else {
-    sails.kue = require('kue'), sails.jobs = sails.kue.createQueue();
-    sails.kue.app.listen(3000);
-    QueueService.processJobs();
-  }
+  sails.kue.app.listen(3000);
+  QueueService.processJobs();
 
   if (sails.config.environment != 'development') {
     var express = require("express"),

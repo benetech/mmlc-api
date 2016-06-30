@@ -26,13 +26,10 @@ module.exports = {
   },
 
   transport: {
-    service: process.env.SMTP_PROVIDER, 
+    service: process.env.SMTP_PROVIDER,
     auth: {
         user: process.env.SMTP_SASL_USER,
         pass: process.env.SMTP_SASL_PASSWORD
     }
   }
 };
-console.log('NODE_ENV_CONNECT: ', process.env.NODE_ENV);
-console.log('MONGO_URL_CONNECT: ', process.env.MONGO_URL);
-console.log('MOD_CONNNN: ', module.exports.models.connection);
