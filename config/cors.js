@@ -47,8 +47,8 @@ module.exports.cors = {
   *                                                                          *
   ***************************************************************************/
 
-  origin: 'https://app-staging.mathmlcloud.org,https://staging.mathmlcloud.org,https://mathmlcloud.org,http://localhost:1337,http://localhost:4567',
-  //origin: '*',
+  //origin: 'https://app-staging.mathmlcloud.org,https://staging.mathmlcloud.org,https://mathmlcloud.org,http://localhost:1337,http://localhost:4567',
+  origin: '*',
 
   /***************************************************************************
   *                                                                          *
