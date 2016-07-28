@@ -37,9 +37,10 @@ module.exports.connections = {
     // database: 'your_mongo_db_name_here'
   //},
 
-  //productionMongodbServer: {
-  //  adapter: 'sails-mongo',
-  //},
+  productionMongodbServer: {
+    adapter: 'sails-mongo',
+    url: process.env.MONGO_URL
+  },
 
   stagingMongodbServer: {
     adapter: 'sails-mongo',
