@@ -22,21 +22,6 @@ module.exports = {
   },
 
   /***************************************************************************
-   * Set the port                        *
-   ***************************************************************************/
-
-  port: 443,
-
-  /**
-  * Deprecated: SSL configuration will be handled by AWS ELB.
-  */
-  ssl: {
-    key: fs.readFileSync('ssl/mathmlcloud.org.key'),
-    cert: fs.readFileSync('ssl/mathmlcloud.crt'),
-    ca: [fs.readFileSync('ssl/gd1.crt'), fs.readFileSync('ssl/gd2.crt'), fs.readFileSync('ssl/gd3.crt')]
-  },
-
-  /***************************************************************************
    * Set the log level                 *
    ***************************************************************************/
 
@@ -45,7 +30,7 @@ module.exports = {
   },
 
   transport: {
-    service: 'SendGrid',
+    service: process.env.SMTP_PROVIDER,
     auth: {
         user: process.env.SMTP_SASL_USER,
         pass: process.env.SMTP_SASL_PASSWORD
