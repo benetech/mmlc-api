@@ -12,3 +12,6 @@ docker run --env-file ./vars.env --name mmlc --link mongo:mongo --link redis:red
 
 
 docker stop mmlc && docker rm mmlc
+
+
+curl -X POST -d "math=a*b" -d "mathType=AsciiMath" -d "png=true" -d "description=true" http://localhost:1337/equation
