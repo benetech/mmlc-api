@@ -15,9 +15,15 @@ Dependencies:
 ### Installation
 
 ```
-git clone https://github.com/benetech/mmlc-api.git yourProjectName
+git clone https://github.com/openstax/mathmlcloud.git yourProjectName
 cd yourProjectName
 docker-compose up
+
+# You may need to CTRL+C because mongo did not initialize quickly enough
+docker-compose up
+
+# Test to make sure it works:
+curl -X POST -d "math=a*b" -d "mathType=AsciiMath" -d "png=true" -d "description=true" http://localhost:1337/equation
 ```
 
 This will start the containers that make up the app. The application container runs "sails lift" as its command.
