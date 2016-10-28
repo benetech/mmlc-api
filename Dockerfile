@@ -5,7 +5,7 @@ MAINTAINER John Brugge <johnbrugge@benetech.org>
 EXPOSE 1337
 
 ENV NODE_ENV production
-ENV MONGO_URL mongodb://mongo/admin
+ENV MONGO_URL mongodb://mongo/mathmlcloud
 ENV REDIS_HOST redis
 ENV REDIS_PORT 6379
 
