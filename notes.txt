@@ -1,0 +1,14 @@
+docker run -d --name redis redis:2.8.21
+docker run -d --name mongo mongo:2.6.11
+
+docker exec -it mongo mongo admin
+> db.createUser({ user: 'phil', pwd: '123', roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] });
+
+docker build -t $USER/mmlc-api:prod-build .
+
+
+docker run --env-file ./vars.env --name mmlc --link mongo:mongo --link redis:redis --detach -p 1337:1337 $USER/mmlc-api:prod-build
+
+
+
+docker stop mmlc && docker rm mmlc
