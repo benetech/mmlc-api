@@ -6,8 +6,8 @@
  */
 var waterfall = require('async-waterfall');
 module.exports = {
-	
-	/** 
+
+	/**
 	* Convert to svg and get text description.
 	* @param req expected param: mathml/tex
 	* @param res returns json
@@ -23,12 +23,13 @@ module.exports = {
 		options.speakText = req.param('description');
 
 		//Do some basic checking on mathml input.
-		if (options.format == "MathML" && !(options.math.indexOf("<math") == 0)) 
+		if (options.format == "MathML" && !(options.math.indexOf("<math") == 0))
 			return res.badRequest({ errorCode: "23", message: "MathML must start with <math" });
 
 		//Create db record first so that we can make use of waterline's
 		//validation rules.
 		var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    console.log("CONVERT : Before Equation.create...");
 		Equation.create({
 		  math: options.math,
 		  mathType: options.format,
@@ -38,15 +39,17 @@ module.exports = {
 		  	if (err) {
 		  		console.log(err);
 			  	return res.badRequest(err);
-		    } 
+		    }
+        console.log("CONVERT : Before ConversionService.convertEquation...");
 		    ConversionService.convertEquation(options, equation, req.headers.host, function(err, newEquation) {
 		    	if (err) return res.serverError("Error converting equation.");
-		    	return res.json(newEquation);	
+		    	return res.json(newEquation);
 		    });
 		});
 	},
 
 	update: function(req, res) {
+    console.log("UPDATE : Before Equation.findOne...");
 		Equation.findOne({id: req.param("id")}).populate("components").exec(function(err, equation) {
 			if (err) return res.serverError("Equation Not Found");
 			if(typeof(equation) == "undefined") {
@@ -69,18 +72,18 @@ module.exports = {
 					case "png":
 						options.png = true;
 						break;
-					default: 
+					default:
 						//do nothing.
-						break;		
-				} 
+						break;
+				}
 			});
 			var params = {math: req.param("math")};
 			if (typeof req.user != "undefined") params.submittedBy = req.user.id;
-
+      console.log("UPDATE : Before Equation.update...");
 			Equation.update({id: equation.id}, params).exec(function(err, equations) {
 				ConversionService.convertEquation(options, equations[0], req.headers.host, function(err, newEquation) {
 			    	if (err) return res.serverError("Error converting equation.");
-			    	return res.json(newEquation);	
+			    	return res.json(newEquation);
 			    });
 			});
 		});
@@ -92,6 +95,7 @@ module.exports = {
 		options.format = req.param('mathType');
 		options.svg = true;
 		options.speakText = true;
+    console.log("SVG: Before ConversionService.convert...");
 		ConversionService.convert(options, function(data) {
 			if (data.errors !== "undefined") {
 				//Create record for callback.
@@ -110,11 +114,12 @@ module.exports = {
               		res.end(data.svg, 'UTF-8');
 				  }
 				});
+        console.log("SVG: After ConversionService.convert...");
 			} else {
 				console.log(data.errors);
 				return res.badRequest(data.errors);
 			}
-			
+
 		});
 	},
 
@@ -124,6 +129,7 @@ module.exports = {
 		options.format = req.param('mathType');
 		options.png = true;
 		options.speakText = true;
+    console.log("PNG: Before ConversionService.convert...");
 		ConversionService.convert(options, function(data) {
 			if (typeof(data.errors) == "undefined") {
 				//Create record for callback.
@@ -141,11 +147,12 @@ module.exports = {
 					res.send('<img src="' + data.png + '" alt="' + data.speakText + '" />');
 				  }
 				});
+        console.log("PNG: After ConversionService.convert...");
 			} else {
 				console.log(data.errors);
 				return res.badRequest(data.errors);
 			}
-			
+
 		});
 	},
 
@@ -160,7 +167,7 @@ module.exports = {
 				res.notFound({ errorCode: "30", message: "Equation not found: " + equationId });
 			} else {
 				if (req.wantsJSON) {
-					return res.json(equation); 
+					return res.json(equation);
 				} else {
 					return res.redirect("#/equation/" + equation.id);
 				}
@@ -171,7 +178,7 @@ module.exports = {
 	myEquations: function(req, res) {
 		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
 		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
-		
+
 		waterfall([
 			function (callback) {
 				Equation.count({submittedBy: req.user.id}).exec(function(err, numEquations) {
@@ -192,7 +199,7 @@ module.exports = {
 	setUser: function(req, res) {
 		Equation.update({id: req.param("id")}, {submittedBy: req.user.id}).exec(function(err, equations) {
 			if (err) return res.serverError("Error updating user.");
-	    	return res.json(equations[0]);	
+	    	return res.json(equations[0]);
 		});
 	}
 };

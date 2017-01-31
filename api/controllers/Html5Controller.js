@@ -11,7 +11,7 @@ var error_responses = {
 	"invalid_format" : { errorCode: "24", message: "Only HTML5 files are supported."}
 };
 module.exports = {
-	
+
 	/**
 	* Upload HTML5 and convert all equations to mathml.
 	*/
@@ -19,33 +19,34 @@ module.exports = {
 		//We need to know what kind of output you want.
 		// Check both body and query params for the value since it might show
 		// up in either. See MMLC-132 and MMLC-231.
+    console.log("UPLOAD: Before outputFormat... ");
         var outputFormat = req.body.outputFormat || req.query.outputFormat;
 		if (typeof(outputFormat) == "undefined" || !outputFormat in ['svg', 'png', 'description', 'mml']) {
-			return res.badRequest(error_responses["missing_format"]);	
+			return res.badRequest(error_responses["missing_format"]);
 		}
 		var options = {};
 		req.file('html5').upload(function (err, files) {
-			
+
             if (err) {
 	        	console.log(err);
 			  	return res.serverError(err);
 		    }
 			if (typeof(files[0]) == "undefined") {
 				return res.badRequest(error_responses["missing_file"]);
-			} 
+			}
             var html5 = files[0];
             var fs = require("fs");
             var path = require("path");
             if (path.extname(html5.filename) != ".html") {
                 return res.badRequest(error_responses["invalid_format"]);
             }
-	        
 
-	        //Save HTML5. 
+
+	        //Save HTML5.
             var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
             Html5.create({
-            			source: fs.readFileSync(html5.fd, {encoding: "utf8"}), 
-            			filename: html5.filename, 
+            			source: fs.readFileSync(html5.fd, {encoding: "utf8"}),
+            			filename: html5.filename,
             			outputFormat: outputFormat,
             			status: 'accepted',
                         submittedBy: req.user,
@@ -55,12 +56,13 @@ module.exports = {
                     return res.badRequest(err);
                 }
                 //Submit job request.
-                QueueService.submitHTML5ConversionJob(dbHtml5, function(err) {
+              console.log("UPLOAD: Before QueueService... ");
+              QueueService.submitHTML5ConversionJob(dbHtml5, function(err) {
                 	if (typeof(err) != "undefined") {
                 		console.log(err);
                 		return res.serverError(err);
                 	}
-                	res.accepted(dbHtml5);	
+                	res.accepted(dbHtml5);
                 });
             });
 	    });
@@ -70,7 +72,7 @@ module.exports = {
     update: function(req, res) {
         Html5.update({id: req.param("id")}, {submittedBy: req.user.id}).exec(function(err, uploads) {
             if (err) return res.serverError("Error updating html5.");
-            return res.json(uploads[0]);  
+            return res.json(uploads[0]);
         });
     },
 
@@ -80,7 +82,7 @@ module.exports = {
 			if (err) {
 				console.log(err);
 				return res.serverError(err);
-			} 
+			}
 			if (typeof(html5) != "undefined") {
                 if (req.wantsJSON) {
                     res.json(html5);
@@ -95,14 +97,14 @@ module.exports = {
 
 	equations: function(req, res) {
 		var html5Id = req.param('id');
-		Equation.find({ html5: html5Id }).populate('components').exec(function(err, equations) {	
+		Equation.find({ html5: html5Id }).populate('components').exec(function(err, equations) {
 			if (err) return res.serverError(err);
 			res.json(equations);
 		});
 	},
 
 	downloadSource: function(req, res) {
-		Html5Service.download(req, res, true);	
+		Html5Service.download(req, res, true);
 	},
 
 	downloadOutput: function(req, res) {
@@ -112,7 +114,7 @@ module.exports = {
     myUploads: function(req, res) {
         var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
         var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
-        
+
         waterfall([
             function (callback) {
                 Html5.count({submittedBy: req.user.id}).exec(function(err, numHtml5s) {
@@ -129,6 +131,6 @@ module.exports = {
             return res.json({"html5s": html5s, "numHtml5s": numHtml5s});
         });
     }
-	
+
 };
 
