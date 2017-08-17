@@ -12,7 +12,7 @@ ENV REDIS_PORT 6379
 
 ENV APP_DIR /usr/src/mmlc-api
 ENV BUILD_PACKAGES curl unzip
-ENV RUNTIME_PACKAGES openjdk-7-jre-headless python
+ENV RUNTIME_PACKAGES openjdk-7-jre-headless python netcat-openbsd
 
 RUN mkdir $APP_DIR
 
@@ -31,4 +31,4 @@ RUN apt-get update && \
     apt-get purge --yes --auto-remove $BUILD_PACKAGES && \
     apt-get clean
 
-CMD ["node", "app.js"]
+CMD ./wait_for.sh mongo 27017 && node app.js
