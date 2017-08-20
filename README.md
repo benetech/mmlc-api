@@ -14,12 +14,19 @@ Dependencies:
 
 ### Installation
 
-```
+```bash
 git clone https://github.com/openstax/mathmlcloud.git yourProjectName
 cd yourProjectName
-docker-compose up
 
-# You may need to CTRL+C because mongo did not initialize quickly enough
+# Download the latest image on our github releases page, e.g. v6.0.0
+curl -L -o mathmlcloud_api.tar.gz https://github.com/openstax/mathmlcloud/releases/download/v6.0.0/mathmlcloud_api.tar.gz
+
+docker load --input mathmlcloud_api.tar.gz
+
+# If your directory is not called mathmlcloud, you need to add a tag for the
+# image
+docker tag mathmlcloud_api yourProjectName_api
+
 docker-compose up
 
 # Test to make sure it works:
