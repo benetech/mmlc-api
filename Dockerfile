@@ -23,9 +23,9 @@ COPY . $APP_DIR
 RUN apt-get update && \
     apt-get install -y $BUILD_PACKAGES $RUNTIME_PACKAGES && \
     npm -y install && \
-    curl -O http://www.apache.org/dist/xmlgraphics/batik/binaries/batik-1.7.zip && \
-    unzip batik-1.7.zip && \
-    cp -r batik-1.7/* node_modules/mathjax-node/batik/ && \
+    curl -O http://www.apache.org/dist/xmlgraphics/batik/binaries/batik-bin-1.10.zip && \
+    unzip batik-bin-1.10.zip && \
+    mv batik-1.10 node_modules/mathjax-node/batik/ && \
     rm -rf batik* && \
     chmod -R ugo+rw $APP_DIR && \
     apt-get purge --yes --auto-remove $BUILD_PACKAGES && \
