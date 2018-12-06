@@ -5,7 +5,7 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 var waterfall = require('async-waterfall');
-var ObjectId = require('sails-mongo/node_modules/mongodb').ObjectID;
+var ObjectId = require('mongodb').ObjectID || require('mongodb').ObjectId;
 module.exports = {
 	create: function(req, res) {
     if (typeof req.param('equation') === 'undefined') {
