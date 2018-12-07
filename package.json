@@ -5,6 +5,8 @@
   "description": "A Sails application to generate math in multiple formats.",
   "keywords": [],
   "dependencies": {
+    "@sailshq/upgrade": "^1.0.9",
+    "async": "2.1.4",
     "async-waterfall": "~0.1.5",
     "bcrypt": "~3.0.2",
     "buffer": "~5.2.1",
@@ -43,6 +45,9 @@
     "sails": "~1.1.0",
     "sails-disk": "~1.0.1",
     "sails-generate-auth": "~0.2.0",
+    "sails-hook-grunt": "^1.0.8",
+    "sails-hook-orm": "^2.1.1",
+    "sails-hook-sockets": "^1.5.5",
     "sails-mongo": "~1.0.1",
     "secure-compare": "~3.0.1",
     "speech-rule-engine": "2.2.2"
@@ -59,11 +64,13 @@
   "author": "Benetech",
   "license": "",
   "devDependencies": {
-    "frisby": "~2.1.0",
-    "jasmine": "~3.3.1",
-    "jasmine-node": "~1.16.2",
-    "form-data": "~2.3.3",
     "JSONPath": "~0.11.2",
+    "encoding": "0.1.12",
+    "form-data": "~2.3.3",
+    "frisby": "~2.1.0",
+    "jasmine": "^3.3.1",
+    "joi": "^14.3.0",
+    "node-fetch": "^2.3.0",
     "request": "~2.88.0"
   }
 }

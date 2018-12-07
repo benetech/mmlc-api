@@ -45,7 +45,7 @@ module.exports = {
     },
 
     convert: function(options, done) {
-        var mathjaxNode = require("../../node_modules/mathjax-node/lib/mj-single.js"),
+        var mathjaxNode = require("mathjax-node"),
             extend = require("extend"),
             mathJaxNodeOptions = extend(options, {timeout: 100 * 1000});
 

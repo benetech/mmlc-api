@@ -14,7 +14,7 @@ module.exports = {
   hookTimeout: 80000,
 
   models: {
-     connection: 'stagingMongodbServer'
+     datastores: 'stagingMongodbServer'
   },
 
   /***************************************************************************

@@ -28,15 +28,7 @@ module.exports = {
 
                 var components = typeof req.param('components') == 'string' ? [req.param('components')] : req.param('components');
                 components.forEach(function (component, index) {
-
-                  feedback.components.add(component);
-                  feedback.save(function (err) {
-                    if (err) console.log(err);
-                    Feedback.findOne(feedback.id).populate('components').exec(function (err, newFeedback) {
-                      res.json(newFeedback);
-                    });
-                  });
-
+                  Feedback.addToCollection(feedback.id, 'components').members([component]);
                 });
 
               } else {
@@ -66,15 +58,7 @@ module.exports = {
 
                 var components = typeof req.param('components') == 'string' ? [req.param('components')] : req.param('components');
                 components.forEach(function (component, index) {
-
-                  feedback.components.add(component);
-                  feedback.save(function (err) {
-                    if (err) console.log(err);
-                    Feedback.findOne(feedback.id).populate('components').exec(function (err, newFeedback) {
-                      res.json(newFeedback);
-                    });
-                  });
-
+                  Feedback.addToCollection(feedback.id, 'components', component);
                 });
 
               } else {
