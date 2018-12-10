@@ -11,7 +11,7 @@ module.exports = {
   	format: {
     	type: 'string',
     	required: true,
-    	enum: ['svg', 'png', 'description', 'mml']
+    	enum: ['svg', 'png', 'description', 'mml', 'html', 'css']
     },
     source: {
     	type: 'string', 

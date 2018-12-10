@@ -29,6 +29,12 @@ module.exports = {
                         var pngSource = "<img src=\"" + data.png + "\" alt=\"" + data.speakText + "\" />";
                         EquationService.createComponent("png", pngSource, equation.id);
                     }
+                    if (options.html) {
+                        EquationService.createComponent("html", data.html, equation.id);
+                    }
+                    if (options.css) {
+                        EquationService.createComponent("css", data.css, equation.id);
+                    }
                     if (options.speakText) EquationService.createComponent("description", data.speakText, equation.id);
                     //Look up equation so that we have all created info.
                     Equation.findOne(equation.id).populate('components').exec(function(err, newEquation) {

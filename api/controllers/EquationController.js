@@ -20,6 +20,8 @@ module.exports = {
 		options.svg = req.param('svg');
 		options.png = req.param('png');
 		options.mml = req.param('mml');
+		options.html = req.param('html') === "true";
+		options.css = req.param('html') === "true";
 		options.speakText = req.param('description');
 
 		//Do some basic checking on mathml input.
