@@ -83,7 +83,7 @@ module.exports = {
 				});
 			},
 			function (numFeedback, callback) {
-				Feedback.find({submittedBy: req.user.id, sort: 'createdAt DESC' }).paginate({page: page, limit: limit}).populate('equation').populate('components').exec(function(err, feedback) {
+                Feedback.find({submittedBy: req.user.id, sort: 'createdAt DESC' }).paginate(page, limit).populate('equation').populate('components').exec(function(err, feedback) {
 					callback(err, numFeedback, feedback);
 				});
 			}

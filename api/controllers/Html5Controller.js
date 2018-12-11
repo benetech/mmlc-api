@@ -120,7 +120,7 @@ module.exports = {
                 });
             },
             function (numHtml5s, callback) {
-                Html5.find({ submittedBy: req.user.id, sort: 'createdAt DESC' }, {fields: ["id", "createdAt", "equations", "outputFormat", "filename"]}).paginate({page: page, limit: limit}).populate("equations").exec(function(err, html5s) {
+                Html5.find({ submittedBy: req.user.id, sort: 'createdAt DESC' }, {fields: ["id", "createdAt", "equations", "outputFormat", "filename"]}).paginate(page, limit).populate("equations").exec(function(err, html5s) {
                     callback(err, numHtml5s, html5s);
                 });
             }

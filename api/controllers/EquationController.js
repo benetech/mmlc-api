@@ -181,7 +181,7 @@ module.exports = {
 				});
 			},
 			function (numEquations, callback) {
-				Equation.find({submittedBy: req.user.id, sort: 'createdAt DESC' }).paginate({page: page, limit: limit}).populate('components').exec(function(err, equations) {
+				Equation.find({submittedBy: req.user.id, sort: 'createdAt DESC' }).paginate(page, limit).populate('components').exec(function(err, equations) {
 					callback(err, numEquations, equations);
 				});
 			}
