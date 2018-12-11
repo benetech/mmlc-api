@@ -58,9 +58,7 @@ module.exports = {
   },
 
   customToJSON: function() {
-    var obj = this.toObject();
-    delete obj.password;
-    return obj;
+    return _.omit(this, ['password']);
   },
  
   beforeCreate: function(user, cb) {
