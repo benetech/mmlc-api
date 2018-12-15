@@ -23,7 +23,9 @@ module.exports = {
                 Component.destroy({equation:equation.id}).exec(function(err, components) {
                     if (err) return done(err);
                     //Save all components.
-                    if (options.mml === "true" || options.mml=== true) EquationService.createComponent("mml", data.mml, equation.id);
+                    if ((options.mml === "true" || options.mml=== true) && data.mml) {
+                        EquationService.createComponent("mml", data.mml, equation.id);
+                    }
                     if (options.svg === "true" || options.svg === true) EquationService.createComponent("svg", data.svg, equation.id);
                     if (options.png === "true" || options.png === true ) {
                         var pngSource = "<img src=\"" + data.png + "\" alt=\"" + data.speakText + "\" />";
@@ -51,7 +53,7 @@ module.exports = {
     },
 
     convert: function(options, done) {
-        var mathjaxNode = require("mathjax-node"),
+        var mathjaxNode = require("mathjax-node-sre"),
             extend = require("extend"),
             mathJaxNodeOptions = extend(options, {timeout: 100 * 1000});
 
@@ -91,7 +93,7 @@ module.exports = {
     },
 
     typesetPage: function(mathjaxOptions, html5, done) {
-        var mathjaxNode = require("../../node_modules/mathjax-node/lib/mj-page.js");
+        var mathjaxNode = require("mathjax-node-sre");
 		console.log("Starting MathJax file conversion to " + html5.outputFormat);
         try {
             mathjaxNode.typeset(mathjaxOptions, function (data) {
