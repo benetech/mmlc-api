@@ -65,9 +65,11 @@
   "license": "",
   "devDependencies": {
     "JSONPath": "~0.11.2",
+    "cucumber": "^5.0.3",
     "encoding": "0.1.12",
     "form-data": "~2.3.3",
     "frisby": "~2.1.0",
+    "gherkin": "^6.0.15",
     "jasmine": "^3.3.1",
     "joi": "^14.3.0",
     "node-fetch": "^2.3.0",
