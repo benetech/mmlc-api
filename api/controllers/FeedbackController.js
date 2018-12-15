@@ -22,7 +22,7 @@ module.exports = {
             Feedback.create({
               equation: req.param('equation_id'),
               comments: req.param('comments'),
-              submittedBy: req.user
+              submittedBy: req.user.id
             }).exec(function (err, feedback) {
               if (typeof req.param('components') != "undefined" && req.param('components').length > 0) {
 
