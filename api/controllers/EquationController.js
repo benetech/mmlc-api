@@ -172,7 +172,7 @@ module.exports = {
 
 	myEquations: function(req, res) {
 		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
-		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 0;
 		
 		waterfall([
 			function (callback) {

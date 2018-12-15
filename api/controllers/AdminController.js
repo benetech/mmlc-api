@@ -65,7 +65,7 @@ module.exports = {
 
 	equations: function(req, res) {
 		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
-		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 0;
 		waterfall([
 			function (callback) {
 				Equation.count({html5: null}).exec(function (err, num) {
@@ -85,7 +85,7 @@ module.exports = {
 
 	feedback: function (req, res) {
 		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
-		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 0;
 		waterfall([
 			function(callback) {
 				Feedback.count(function (err, num) {
@@ -105,7 +105,7 @@ module.exports = {
 
 	html5uploads: function (req, res) {
 		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
-		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 0;
 		waterfall([
 			function(callback) {
 				Html5.count(function (err, num) {
@@ -144,7 +144,7 @@ module.exports = {
 
 	users: function (req, res) {
 		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
-		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 0;
 		waterfall([
 			function(callback) {
 				User.count(function (err, num) {
