@@ -11,79 +11,89 @@ var randomUsername = function() {
 //var base_url = 'https://staging.mathmlcloud.org';
 
 describe("Register", function() {
-    frisby.create("Valid User")
-        .post(base_url + '/user', {
+    it("Valid User", function(doneFn) {
+        frisby.post(base_url + '/user', {
             username : randomUsername() + "@benetech.org",
             password : '123456',
             firstName: 'Spec',
             lastName: 'Valid',
+            role: 'user',
             termsOfService: true
         })
-        .expectStatus(200)
-        .toss();
-    frisby.create("Valid User with organization")
-        .post(base_url + '/user', {
+        .expect('status', 200)
+        .done(doneFn);
+    });
+    it("Valid User with organization", function(doneFn) {
+        frisby.post(base_url + '/user', {
             username : randomUsername() + "@benetech.org",
             password : '123456',
             firstName: 'Spec',
             lastName: "W'Organization",
+            role: 'user',
             termsOfService: true,
             organization: "Benetech"
         })
-        .expectStatus(200)
-        .expectJSON( {
+        .expect('status', 200)
+        .expect('json', {
             organization: "Benetech"
         })
-        .toss();
-    frisby.create("Valid User with organization types")
-        .post(base_url + '/user', {
+        .done(doneFn);
+    });
+    it("Valid User with organization types", function(doneFn) {
+        frisby.post(base_url + '/user', {
             username : randomUsername() + "@benetech.org",
             password : '123456',
             firstName: 'Spec',
             lastName: "W'Organization",
+            role: 'user',
             termsOfService: true,
             organization: "Benetech",
             organizationTypes: ["K-12 Education", "Post-Secondary Education"]
         })
-        .expectStatus(200)
-        .expectJSON( {
+        .expect('status', 200)
+        .expect('json', {
             organizationTypes: ["K-12 Education", "Post-Secondary Education"]
         })
-        .toss();
+        .done(doneFn);
+    });
 
-    frisby.create("Invalid User")
-        .post(base_url + '/user', {
+    it("Invalid User", function(doneFn) {
+        frisby.post(base_url + '/user', {
             username : randomUsername() + "@benetech.org",
             password : '123456',
+            role: 'user',
             termsOfService: false,
             organization: "Benetech",
             organizationTypes: ["K-12 Education", "Post-Secondary Education"]
         })
-        .expectStatus(500)
-        .toss();
+        .expect('status', 500)
+        .done(doneFn);
+    });
     
     //Test dupe user.
     var dupeUsername = randomUsername() + "@benetech.org";
-    frisby.create("User with " + dupeUsername + " -- Valid")
-        .post(base_url + '/user', {
+    it("Duplicate user User", function(doneFn) {
+        frisby.post(base_url + '/user', {
             username : dupeUsername,
             password : '123456',
             firstName: 'Spec',
             lastName: 'Valid',
+            role: 'user',
             termsOfService: true
         })
-        .expectStatus(200)
-        .toss();
-    frisby.create("Duplicate user User")
-        .post(base_url + '/user', {
-            username : dupeUsername,
-            password : '123456',
-            firstName: 'Spec',
-            lastName: 'Valid',
-            termsOfService: true
-        })
-        .expectStatus(400)
-        .toss();
-
+        .expect('status', 200)
+        .then(function() {
+            frisby.post(base_url + '/user', {
+                username : dupeUsername,
+                password : '123456',
+                firstName: 'Spec',
+                lastName: 'Valid',
+                role: 'user',
+                termsOfService: true
+            })
+            .expect('status', 400)
+            .done(doneFn);
+        });
+    });
 
 });

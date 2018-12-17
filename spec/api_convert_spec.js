@@ -6,11 +6,11 @@
  */
 var frisby = require('frisby');
 var fs = require('fs');
+var Joi = require('joi');
 var path = require('path');
-var FormData = require('form-data');
 
 // Local testing
-var base_url = 'http://localhost:1337';
+var baseUrl = 'http://localhost:1337';
 
 //User for records.
 var user = {};
@@ -25,168 +25,164 @@ describe("MathML Cloud API features", function() {
 	frisby.globalSetup({
 	  request: {
 	    headers:{'Accept': 'application/json'},
-	    inspectOnFailure: true,
-        baseUri: base_url
+	    inspectOnFailure: true
 	  }
 	});
 
 	//---- POST /user
-	frisby.create("Valid User")
-        .post('/user', {
+	it("Valid User", function(doneFn) {
+        frisby.post(baseUrl + '/user', {
             username : randomUsername() + "@benetech.org",
             password : '123456',
             firstName: 'Spec',
             lastName: 'Valid',
-            termsOfService: true
+            termsOfService: true,
+            role: 'user'
         }).
-        afterJSON(function(json) {
-        	//---- GET /myFeedback
-		    //Verify that the newly created user has no feedback.
-		    frisby.create("Get My feedback for user with no feedback")
-		    	.get("/myFeedback?access_token=" + json.access_token)
-		    	.expectStatus(200)
-		    	.expectJSON({})
-		    	.toss();
-		})
-        .toss();
+        then(function(res) {
+            let json = res.json;
+            //---- GET /myFeedback
+            //Verify that the newly created user has no feedback.
+            frisby.get(baseUrl + "/myFeedback?access_token=" + json.access_token)
+                .expect('status', 200)
+                .expect('json', {})
+                .done(doneFn);
+        });
+    });
 
 	//---- POST /feedback
 	// First create an equation that can be given feedback
-	frisby.create("Set up equation for feedback")
-		.post('/equation', {
+    it("Set up equation for feedback", function(doneFn) {
+        frisby.post(baseUrl + '/equation', {
 			mathType : 'AsciiMath',
 			math : 'a^2+b^2=c^2',
 			description : 'true',
 			svg : 'true'
 		})
 		//Then, create a user feedback is from.
-		.afterJSON(function(equation) {
-			frisby.create("Valid User for feedback")
-			.post('/user', {
+            .then(function(res) {
+            let equation = res.json;
+            // valid user for feedback
+                frisby.post(baseUrl + '/user', {
             	username : randomUsername() + "@benetech.org",
             	password : '123456',
             	firstName: 'Spec',
             	lastName: 'Valid',
-            	termsOfService: true
+                    termsOfService: true,
+                    role: 'user'
         	})
-        	.afterJSON(function(user) {
-				frisby.create("Post feedback")
-					.post('/equation/' + equation.id + '/feedback', {
-						comments : 'Testing API call',
-						access_token: user.access_token
-					})
-					.expectStatus(200)
-					.expectHeaderContains("content-type", "application/json")
-					.expectJSON({
-						comments : 'Testing API call',
-						equation : equation.id,
-					})
-					.afterJSON(function(json) {
-						//Verify we have some feedback for the user.
-						frisby.create("Feedback for user")
-						.get('/myFeedback?access_token=' + user.access_token)
-						.expectStatus(200)
-						.expectJSONTypes('feedback.?', {
-							components: Array,
-							equation: Object,
-							submittedBy: String
-						})
-						.toss()
-					})
-				.toss();
-			}).toss()
-		})
-		.toss();
+                .then(function(res) {
+                let user = res.json;
+                // post feedback
+                frisby.post(baseUrl + '/equation/' + equation.id + '/feedback', {
+                    comments : 'Testing API call',
+                    access_token: user.access_token
+                })
+                    .expect('status', 200)
+                    .expect('header', "content-type", "application/json; charset=utf-8")
+                    .expect('json', {
+                        comments : 'Testing API call',
+                        equation : equation.id,
+                    })
+                    .then(function(res) {
+                        let json = res.json;
+                        //Verify we have some feedback for the user.
+                        frisby.get(baseUrl + '/myFeedback?access_token=' + user.access_token)
+                            .expect('status', 200)
+                            .expect('jsonTypes', 'feedback.?', {
+                                components: Joi.array().required(),
+                                equation: Joi.object().required(),
+                                submittedBy: Joi.string().required()
+                            })
+                            .done(doneFn);
+                    });
+            })
+        })
+	});
 
 	//---- POST /equation
-	frisby.create("Convert ASCII math")
-		.post('/equation', {
+    it("Convert ASCII math", function(doneFn) {
+        frisby.post(baseUrl + '/equation', {
 			mathType : 'AsciiMath',
 			math : 'a^2+b^2=c^2',
 			description : 'true'
 		})
-		.expectStatus(200)
-		.expectHeaderContains("content-type", "application/json")
-		.expectJSON("components.?", {
-			format : "description",
-			source : 'a squared plus b squared equals c squared'
-		})
-		.afterJSON(function(json) {
-			//---- GET /equation/{id}
-			frisby.create("Get equation")
-				.get('/equation/' + json.id)
-				.expectStatus(200)
-				.expectHeaderContains("content-type", "application/json")
-				.expectJSON("components.?", {
-					format : "description",
-				})
-				.toss();
-		})
-		.afterJSON(function(json) {
-			//---- GET /component/{id}
-			frisby.create("Get component")
-				.get('/component/' + json.components[0].id)
-				.expectStatus(200)
-				.expectHeaderContains("content-type", "text/html")
-				.expectBodyContains('a squared plus b squared equals c squared')
-				.toss();
-		})
-		.toss();
+            .expect('status', 200)
+            .expect('header', "content-type", "application/json; charset=utf-8")
+            .then(function(res) {
+                let json = res.json;
+                expect(json.components[0]['format']).toEqual('description');
+                expect(json.components[0]['source']).toEqual(
+                    'a squared plus b squared equals c squared');
+            })
+            .then(function(res) {
+                let json = res.json;
+                //---- GET /equation/{id}
+                frisby.get(baseUrl + '/equation/' + json.id)
+                    .expect('status', 200)
+                    .expect('header', "content-type", "application/json; charset=utf-8")
+                    .expect('json', "components.?", {
+                        format : "description"
+                    });
+            })
+            .then(function(res) {
+                let json = res.json;
+                //---- GET /component/{id}
+                frisby.get(baseUrl + '/component/' + json.components[0].id)
+                    .expect('status', 200)
+                    .expect('header', "content-type", "text/html; charset=utf-8")
+                    .expect('bodyContains', 'a squared plus b squared equals c squared')
+            })
+    .done(doneFn);
+    });
 
 	// Set up the HTML5 file posting
 	var html5Path = path.resolve(__dirname, './data/sample-math.html');
-	var form = new FormData();
+    var form = frisby.formData();
 	form.append('outputFormat', 'svg');
-	form.append('html5', fs.createReadStream(html5Path), {
-		// we need to set the knownLength so we can call  form.getLengthSync()
-		knownLength: fs.statSync(html5Path).size
-	});
+    form.append('html5', fs.createReadStream(html5Path));
+    var contentType = form.getHeaders()['content-type'];
 
 	//---- POST /html5
-	frisby.create("Post HTML5")
-		.post('/html5',
-			form,
-			{
-			    json: false,
-			    headers: {
-			      'content-type': 'multipart/form-data; boundary=' + form.getBoundary(),
-			      'content-length': form.getLengthSync()
-			    },
-			}
-		)
-		.expectStatus(202)
-		.expectHeaderContains("content-type", "application/json")
-		.expectJSON({
+    it("Post HTML5", function(doneFn) {
+        frisby.post(baseUrl + '/html5', {
+            body: form,
+            headers: {
+                'Content-Type': contentType
+            }
+
+        })
+        .expect('status', 202)
+        .expect('header', "content-type", "application/json; charset=utf-8")
+        .expect('json', {
 			outputFormat : 'svg',
 			"status" : 'accepted'
 		})
-		.afterJSON(function(json) {
+        .then(function(res) {
+            let json = res.json;
 			//---- GET /html5/{id}
-			frisby.create("Get HTML5 resource")
-				.get('/html5/' + json.id)
-				.expectStatus(200)
-				.expectHeaderContains("content-type", "application/json")
-				.expectJSON( {
+            frisby.get(baseUrl + '/html5/' + json.id)
+                .expect('status', 200)
+                .expect('header', "content-type", "application/json; charset=utf-8")
+                .expect('json', {
 					filename : "sample-math.html",
 					outputFormat : "svg",
-				})
-				.toss();
+                });
 		})
-		.afterJSON(function(json) {
+        .then(function(res) {
+            let json = res.json;
 			//---- GET /html5/{id}/output
-			frisby.create("Get HTML5 output")
-				.get('/html5/' + json.id + '/output')
-				.expectStatus(200)
-				.expectHeaderContains("content-type", "text/html")
-				.toss();
+            frisby.get(baseUrl + '/html5/' + json.id + '/output')
+                .expect('status', 200)
+                .expect('header', "content-type", "text/html; charset=utf-8");
 		})
-		.afterJSON(function(json) {
+        .then(function(res) {
+            let json = res.json;
 			//---- GET /html5/{id}/source
-			frisby.create("Get HTML5 source")
-				.get('/html5/' + json.id + '/source')
-				.expectStatus(200)
-				.expectHeaderContains("content-type", "text/html")
-				.toss();
-		})
-		.toss();
+            frisby.get(baseUrl + '/html5/' + json.id + '/source')
+                .expect('status', 200)
+                .expect('header', "content-type", "text/html; charset=utf-8")
+                .done(doneFn);
+        });
+    });
 });
