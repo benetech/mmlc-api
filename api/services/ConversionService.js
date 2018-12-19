@@ -1,4 +1,4 @@
-var waterfall = require('async-waterfall'), jsdom = require("jsdom").jsdom, serializeDocument = require("jsdom").serializeDocument;
+var waterfall = require('async-waterfall'), JSDOM = require("jsdom").JSDOM;
 module.exports = {
 
     removeDelimiters: function(equation, mathType) {
@@ -100,7 +100,7 @@ module.exports = {
                 if (typeof(data.errors) != "undefined") {
                     done(data.errors);
                 } else {
-                    var doc = jsdom(data.html);
+                    var doc = new JSDOM(data.html);
                     var window = doc.parentWindow;
                     waterfall([
                         function (callback) {
@@ -137,7 +137,7 @@ module.exports = {
                         function(callback){
 							console.log("Updating html5 record for id " + html5.id);
                             //update html5.
-                            Html5.update({id: html5.id}, {output: serializeDocument(doc)}).exec(function(err, html5s) {
+                            Html5.update({id: html5.id}, {output: doc.serialize()}).exec(function(err, html5s) {
                                 if (err) callback(err);
                             });
                             callback();
