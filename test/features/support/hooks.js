@@ -1,4 +1,4 @@
-const { BeforeAll, AfterAll } = require('cucumber');
+const { BeforeAll, AfterAll, After } = require('cucumber');
 var sails = require('sails');
 
 BeforeAll(function(done) {
@@ -17,4 +17,10 @@ BeforeAll(function(done) {
 
 AfterAll(function(done) {
     sails.lower(done);
+});
+
+After(function(done) {
+    if (this.username) {
+        User.destroy({username: this.username}, done);
+    }
 });

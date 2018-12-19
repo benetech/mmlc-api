@@ -12,14 +12,18 @@ var path = require('path');
 // Local testing
 var baseUrl = 'http://localhost:1337';
 
-//User for records.
-var user = {};
-
 var randomUsername = function() {
     return Math.random() * (100 - 0);
 }
 
 describe("MathML Cloud API features", function() {
+    beforeEach(function() {
+        this.users = [];
+    });
+
+    afterEach(function(done) {
+        User.destroy({username: this.users}, done);
+    });
 
 	// Global setup for all tests
 	frisby.globalSetup({
@@ -31,9 +35,11 @@ describe("MathML Cloud API features", function() {
 
 	//---- POST /user
 	it("Valid User", function(doneFn) {
+        var username = randomUsername() + '@benetech.org';
+        this.users.push(username);
         frisby.post(baseUrl + '/user', {
-            username : randomUsername() + "@benetech.org",
-            password : '123456',
+            username: username,
+            password: '123456',
             firstName: 'Spec',
             lastName: 'Valid',
             termsOfService: true,
@@ -53,6 +59,8 @@ describe("MathML Cloud API features", function() {
 	//---- POST /feedback
 	// First create an equation that can be given feedback
     it("Set up equation for feedback", function(doneFn) {
+        var username = randomUsername() + '@benetech.org';
+        this.users.push(username);
         frisby.post(baseUrl + '/equation', {
 			mathType : 'AsciiMath',
 			math : 'a^2+b^2=c^2',
@@ -64,8 +72,8 @@ describe("MathML Cloud API features", function() {
             let equation = res.json;
             // valid user for feedback
                 frisby.post(baseUrl + '/user', {
-            	username : randomUsername() + "@benetech.org",
-            	password : '123456',
+                    username: username,
+                    password: '123456',
             	firstName: 'Spec',
             	lastName: 'Valid',
                     termsOfService: true,

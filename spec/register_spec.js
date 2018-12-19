@@ -11,10 +11,20 @@ var randomUsername = function() {
 //var base_url = 'https://staging.mathmlcloud.org';
 
 describe("Register", function() {
+    beforeEach(function() {
+        this.users = [];
+    });
+
+    afterEach(function(done) {
+        User.destroy({username: this.users}, done);
+    });
+
     it("Valid User", function(doneFn) {
+        var username = randomUsername() + '@benetech.org';
+        this.users.push(username);
         frisby.post(base_url + '/user', {
-            username : randomUsername() + "@benetech.org",
-            password : '123456',
+            username: username,
+            password: '123456',
             firstName: 'Spec',
             lastName: 'Valid',
             role: 'user',
@@ -24,9 +34,11 @@ describe("Register", function() {
         .done(doneFn);
     });
     it("Valid User with organization", function(doneFn) {
+        var username = randomUsername() + '@benetech.org';
+        this.users.push(username);
         frisby.post(base_url + '/user', {
-            username : randomUsername() + "@benetech.org",
-            password : '123456',
+            username: username,
+            password: '123456',
             firstName: 'Spec',
             lastName: "W'Organization",
             role: 'user',
@@ -40,9 +52,11 @@ describe("Register", function() {
         .done(doneFn);
     });
     it("Valid User with organization types", function(doneFn) {
+        var username = randomUsername() + '@benetech.org';
+        this.users.push(username);
         frisby.post(base_url + '/user', {
-            username : randomUsername() + "@benetech.org",
-            password : '123456',
+            username: username,
+            password: '123456',
             firstName: 'Spec',
             lastName: "W'Organization",
             role: 'user',
@@ -58,9 +72,11 @@ describe("Register", function() {
     });
 
     it("Invalid User", function(doneFn) {
+        var username = randomUsername() + '@benetech.org';
+        this.users.push(username);
         frisby.post(base_url + '/user', {
-            username : randomUsername() + "@benetech.org",
-            password : '123456',
+            username: username,
+            password: '123456',
             role: 'user',
             termsOfService: false,
             organization: "Benetech",
@@ -73,6 +89,7 @@ describe("Register", function() {
     //Test dupe user.
     var dupeUsername = randomUsername() + "@benetech.org";
     it("Duplicate user User", function(doneFn) {
+        this.users.push(dupeUsername);
         frisby.post(base_url + '/user', {
             username : dupeUsername,
             password : '123456',
