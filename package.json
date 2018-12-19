@@ -54,7 +54,8 @@
   },
   "scripts": {
     "start": "node app.js",
-    "debug": "node debug app.js"
+    "debug": "node debug app.js",
+    "test": "jasmine && cucumber-js test/"
   },
   "main": "app.js",
   "repository": {
