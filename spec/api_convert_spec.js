@@ -144,6 +144,22 @@ describe("MathML Cloud API features", function() {
     .done(doneFn);
     });
 
+    it("converts MathML to PNG", function(doneFn) {
+        frisby.post(baseUrl + '/equation', {
+            mathType: 'MathML',
+            math: '<math><mi>&pi;</mi><mo>&InvisibleTimes;</mo><msup><mi>r</mi><mn>2</mn></msup></math>',
+            png: 'true'
+        })
+        .expect('status', 200)
+        .expect('header', 'content-type', 'application/json; charset=utf-8')
+        .then(function(res) {
+            let equation = res.json;
+            expect(equation.components[0].format).toEqual('png');
+            expect(equation.components[0].source).toMatch(/^<img src="data:image\/png;[^"]+" alt="pi times r squared"/);
+        })
+        .done(doneFn);
+    });
+
 	// Set up the HTML5 file posting
 	var html5Path = path.resolve(__dirname, './data/sample-math.html');
     var form = frisby.formData();

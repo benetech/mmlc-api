@@ -58,7 +58,15 @@ module.exports = {
             mathJaxNodeOptions = extend(options, {timeout: 100 * 1000});
 
         mathjaxNode.typeset(options, function (data) {
-            done(data);
+            if (options.png) {
+                var mathjaxNode2 = require('mathjax-node-svg2png');
+                mathjaxNode2.typeset(options, function(data2) {
+                    data.png = data2.png;
+                    done(data);
+                });
+            } else {
+                done(data);
+            }
         });
     },
 
