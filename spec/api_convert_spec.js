@@ -156,8 +156,58 @@ describe("MathML Cloud API features", function() {
             let equation = res.json;
             expect(equation.components[0].format).toEqual('png');
             expect(equation.components[0].source).toMatch(/^<img src="data:image\/png;[^"]+" alt="pi times r squared"/);
+
+            let cloudUrl = equation.cloudUrl;
+            expect(cloudUrl).toEqual(baseUrl + '/equation/' + equation.id);
+
+            // Ensure cloudUrl returns the same json minus "cloudUrl"
+            frisby.get(cloudUrl)
+            .expect('status', 200)
+            .then(function(res2) {
+                delete equation.cloudUrl;
+                expect(res2.json).toEqual(equation);
+
+                // Ensure cloudUrl returns image if we accept text/html
+                frisby.fetch(cloudUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'text/html',
+                    }
+                })
+                .expect('status', 200)
+                .expect('header', 'content-type', 'text/html; charset=utf-8')
+                .then(function(res3) {
+                    expect(res3.body).toMatch(/^<img src="data:image\/png;[^"]+" alt="pi times r squared"/);
+                })
+                .done(doneFn);
+            });
+        });
+    });
+
+    it('creates equation with no target output format', function(doneFn) {
+        frisby.post(baseUrl + '/equation', {
+            mathType: 'AsciiMath',
+            math: 'a + b'
         })
-        .done(doneFn);
+        .expect('status', 200)
+        .expect('header', 'content-type', 'application/json; charset=utf-8')
+        .then(function(res) {
+            let equation = res.json;
+            expect(equation.components).toEqual([]);
+
+            // Make sure cloudUrl doesn't break if there is no output format
+            frisby.fetch(equation.cloudUrl, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'text/html',
+                }
+            })
+            .expect('status', 200)
+            .then(function(res2) {
+                expect(res2.body).toEqual('a + b');
+            })
+            .done(doneFn);
+        });
     });
 
 	// Set up the HTML5 file posting

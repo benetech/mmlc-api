@@ -41,7 +41,7 @@ module.exports = {
 		  		console.log(err);
 			  	return res.badRequest(err);
 		    } 
-		    ConversionService.convertEquation(options, equation, req.headers.host, function(err, newEquation) {
+		    ConversionService.convertEquation(options, equation, req.protocol + '://' + req.headers.host, function(err, newEquation) {
 		    	if (err) return res.serverError("Error converting equation.");
 		    	return res.json(newEquation);	
 		    });
@@ -164,7 +164,11 @@ module.exports = {
 				if (req.wantsJSON) {
 					return res.json(equation); 
 				} else {
-					return res.redirect("#/equation/" + equation.id);
+                    if (equation.components.length > 0) {
+                        return res.redirect("/component/" + equation.components[0].id);
+                    } else {
+                        res.send(equation.math);
+                    }
 				}
 			}
 		});
