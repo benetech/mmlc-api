@@ -29,8 +29,7 @@ module.exports = {
     role: {
       type: 'string',
       required: true,
-      enum: ['admin', 'user'],
-      defaultsTo: 'user'
+      enum: ['admin', 'user']
     },
     equations: {
       collection: 'equation',
@@ -45,7 +44,8 @@ module.exports = {
       required: false
     },
     organizationTypes: {
-      type: 'array'
+      type: 'json',
+      columnType: 'array'
     },
     access_token: {
       type: 'string',
@@ -54,12 +54,11 @@ module.exports = {
     termsOfService: {
       type: 'boolean',
       required: true
-    },
-    toJSON: function() {
-      var obj = this.toObject();
-      delete obj.password;
-      return obj;
     }
+  },
+
+  customToJSON: function() {
+    return _.omit(this, ['password']);
   },
  
   beforeCreate: function(user, cb) {

@@ -5,7 +5,7 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 var waterfall = require('async-waterfall');
-var ObjectId = require('sails-mongo/node_modules/mongodb').ObjectID;
+var ObjectId = require('mongodb').ObjectID || require('mongodb').ObjectId;
 module.exports = {
 	create: function(req, res) {
     if (typeof req.param('equation') === 'undefined') {
@@ -22,21 +22,13 @@ module.exports = {
             Feedback.create({
               equation: req.param('equation_id'),
               comments: req.param('comments'),
-              submittedBy: req.user
+              submittedBy: req.user.id
             }).exec(function (err, feedback) {
               if (typeof req.param('components') != "undefined" && req.param('components').length > 0) {
 
                 var components = typeof req.param('components') == 'string' ? [req.param('components')] : req.param('components');
                 components.forEach(function (component, index) {
-
-                  feedback.components.add(component);
-                  feedback.save(function (err) {
-                    if (err) console.log(err);
-                    Feedback.findOne(feedback.id).populate('components').exec(function (err, newFeedback) {
-                      res.json(newFeedback);
-                    });
-                  });
-
+                  Feedback.addToCollection(feedback.id, 'components').members([component]);
                 });
 
               } else {
@@ -66,15 +58,7 @@ module.exports = {
 
                 var components = typeof req.param('components') == 'string' ? [req.param('components')] : req.param('components');
                 components.forEach(function (component, index) {
-
-                  feedback.components.add(component);
-                  feedback.save(function (err) {
-                    if (err) console.log(err);
-                    Feedback.findOne(feedback.id).populate('components').exec(function (err, newFeedback) {
-                      res.json(newFeedback);
-                    });
-                  });
-
+                  Feedback.addToCollection(feedback.id, 'components', component);
                 });
 
               } else {
@@ -90,7 +74,7 @@ module.exports = {
 
 	myFeedback: function(req, res) {
 		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
-		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 0;
 
 		waterfall([
 			function (callback) {
@@ -99,7 +83,7 @@ module.exports = {
 				});
 			},
 			function (numFeedback, callback) {
-				Feedback.find({submittedBy: req.user.id, sort: 'createdAt DESC' }).paginate({page: page, limit: limit}).populate('equation').populate('components').exec(function(err, feedback) {
+                Feedback.find({ where: { submittedBy: req.user.id }, sort: 'createdAt DESC' }).paginate(page, limit).populate('equation').populate('components').exec(function(err, feedback) {
 					callback(err, numFeedback, feedback);
 				});
 			}

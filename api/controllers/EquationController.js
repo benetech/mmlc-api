@@ -20,6 +20,8 @@ module.exports = {
 		options.svg = req.param('svg');
 		options.png = req.param('png');
 		options.mml = req.param('mml');
+		options.html = req.param('html') === "true";
+		options.css = req.param('html') === "true";
 		options.speakText = req.param('description');
 
 		//Do some basic checking on mathml input.
@@ -39,7 +41,7 @@ module.exports = {
 		  		console.log(err);
 			  	return res.badRequest(err);
 		    } 
-		    ConversionService.convertEquation(options, equation, req.headers.host, function(err, newEquation) {
+		    ConversionService.convertEquation(options, equation, req.protocol + '://' + req.headers.host, function(err, newEquation) {
 		    	if (err) return res.serverError("Error converting equation.");
 		    	return res.json(newEquation);	
 		    });
@@ -162,7 +164,11 @@ module.exports = {
 				if (req.wantsJSON) {
 					return res.json(equation); 
 				} else {
-					return res.redirect("#/equation/" + equation.id);
+                    if (equation.components.length > 0) {
+                        return res.redirect("/component/" + equation.components[0].id);
+                    } else {
+                        res.send(equation.math);
+                    }
 				}
 			}
 		});
@@ -170,7 +176,7 @@ module.exports = {
 
 	myEquations: function(req, res) {
 		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
-		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 0;
 		
 		waterfall([
 			function (callback) {
@@ -179,7 +185,7 @@ module.exports = {
 				});
 			},
 			function (numEquations, callback) {
-				Equation.find({submittedBy: req.user.id, sort: 'createdAt DESC' }).paginate({page: page, limit: limit}).populate('components').exec(function(err, equations) {
+				Equation.find({submittedBy: req.user.id, sort: 'createdAt DESC' }).paginate(page, limit).populate('components').exec(function(err, equations) {
 					callback(err, numEquations, equations);
 				});
 			}

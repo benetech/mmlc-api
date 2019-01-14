@@ -2,7 +2,7 @@ Feature: User registration
 	In order to allow people to keep track of their own MathML conversions
 	As an API user
 	I want to be able to register for an account
-	
+
 Scenario: Register as an individual user
 	Given a random username and password
 	And a standard firstname and lastname
@@ -29,12 +29,11 @@ Scenario: Register as a user at a specific type of organization
 Scenario: Register without required information
 	Given a standard firstname and lastname
 	When I register as a new user
-	Then I should get an error response
+	Then I should get a status code of 500
 	And the response should indicate missing fields
 
 Scenario: Register with an existing username
 	Given a user registered with a random username
 	When I register with the same username
-	Then I should get an error response
+	Then I should get a status code of 400
 	And the response should indicate that username is taken
-	

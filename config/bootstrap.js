@@ -17,8 +17,17 @@ module.exports.bootstrap = function(cb) {
         port: process.env.REDIS_PORT
       }
     });
-  sails.kue.app.listen(3000);
+  sails.kueServer = sails.kue.app.listen(3000);
   QueueService.processJobs();
+
+  sails.on('lower', function(callback) {
+    sails.jobs.shutdown(0, '', function(callback2) {
+        sails.kueServer.close(function() {
+            callback2();
+            callback();
+        });
+    });
+  });
 
   if (sails.config.environment != 'development') {
     var express = require("express"),
