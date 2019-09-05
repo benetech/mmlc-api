@@ -1,4 +1,4 @@
-FROM node:4 
+FROM node:6
 
 MAINTAINER John Brugge <johnbrugge@benetech.org>
 
@@ -6,7 +6,7 @@ EXPOSE 1337
 
 ENV APP_DIR /usr/src/mmlc-api
 ENV BUILD_PACKAGES curl unzip
-ENV RUNTIME_PACKAGES openjdk-7-jre-headless python
+ENV RUNTIME_PACKAGES openjdk-8-jre-headless python
 
 RUN mkdir $APP_DIR
 
