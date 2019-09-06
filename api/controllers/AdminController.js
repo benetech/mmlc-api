@@ -65,7 +65,7 @@ module.exports = {
 
 	equations: function(req, res) {
 		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
-		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 0;
 		waterfall([
 			function (callback) {
 				Equation.count({html5: null}).exec(function (err, num) {
@@ -73,7 +73,7 @@ module.exports = {
 				});
 			},
 			function(num, callback) {
-				Equation.find({sort: 'createdAt DESC', html5: null}).paginate({page: page, limit: limit}).populate('submittedBy').populate('components').exec(function(err, equations) {
+				Equation.find({sort: 'createdAt DESC', html5: null}).paginate(page, limit).populate('submittedBy').populate('components').exec(function(err, equations) {
 					callback(err, num, equations);
 				});
 			}
@@ -85,7 +85,7 @@ module.exports = {
 
 	feedback: function (req, res) {
 		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
-		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 0;
 		waterfall([
 			function(callback) {
 				Feedback.count(function (err, num) {
@@ -93,7 +93,7 @@ module.exports = {
 				});
 			},
 			function (num, callback) {
-    			Feedback.find({sort: 'createdAt DESC' }).paginate({page: page, limit: limit}).populate('submittedBy').populate('components').populate('equation').exec(function(err, feedback) {	
+                Feedback.find({sort: 'createdAt DESC' }).paginate(page, limit).populate('submittedBy').populate('components').populate('equation').exec(function(err, feedback) {
     				callback(err, num, feedback);
     			});
 			}
@@ -105,7 +105,7 @@ module.exports = {
 
 	html5uploads: function (req, res) {
 		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
-		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 0;
 		waterfall([
 			function(callback) {
 				Html5.count(function (err, num) {
@@ -113,7 +113,7 @@ module.exports = {
 				});
 			},
 			function (num, callback) {
-    			Html5.find({sort: 'createdAt DESC' }, {fields: ["id", "createdAt", "equations", "outputFormat", "filename", "submittedBy"]}).paginate({page: page, limit: limit}).populate('submittedBy').populate('equations').exec(function(err, html5s) {	
+                Html5.find({sort: 'createdAt DESC' }, {fields: ["id", "createdAt", "equations", "outputFormat", "filename", "submittedBy"]}).paginate(page, limit).populate('submittedBy').populate('equations').exec(function(err, html5s) {
     				callback(err, num, html5s);
     			});
 			}
@@ -144,7 +144,7 @@ module.exports = {
 
 	users: function (req, res) {
 		var limit = typeof req.param('per_page') != 'undefined' ? req.param('per_page') : 50;
-		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 1;
+		var page = typeof req.param('page') != 'undefined' ? req.param('page') : 0;
 		waterfall([
 			function(callback) {
 				User.count(function (err, num) {
@@ -152,7 +152,7 @@ module.exports = {
 				});
 			},
 			function (num, callback) {
-    			User.find({sort: 'createdAt DESC' }).paginate({page: page, limit: limit}).exec(function(err, users) {	
+                User.find({sort: 'createdAt DESC' }).paginate(page, limit).exec(function(err, users) {
     				callback(err, num, users);
     			});
 			}

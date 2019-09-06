@@ -1,4 +1,4 @@
-var waterfall = require('async-waterfall'), jsdom = require("jsdom").jsdom, serializeDocument = require("jsdom").serializeDocument;
+var waterfall = require('async-waterfall'), JSDOM = require("jsdom").JSDOM;
 module.exports = {
 
     removeDelimiters: function(equation, mathType) {
@@ -23,16 +23,24 @@ module.exports = {
                 Component.destroy({equation:equation.id}).exec(function(err, components) {
                     if (err) return done(err);
                     //Save all components.
-                    if (options.mml === "true" || options.mml=== true) EquationService.createComponent("mml", data.mml, equation.id);
+                    if ((options.mml === "true" || options.mml=== true) && data.mml) {
+                        EquationService.createComponent("mml", data.mml, equation.id);
+                    }
                     if (options.svg === "true" || options.svg === true) EquationService.createComponent("svg", data.svg, equation.id);
                     if (options.png === "true" || options.png === true ) {
                         var pngSource = "<img src=\"" + data.png + "\" alt=\"" + data.speakText + "\" />";
                         EquationService.createComponent("png", pngSource, equation.id);
                     }
+                    if (options.html) {
+                        EquationService.createComponent("html", data.html, equation.id);
+                    }
+                    if (options.css) {
+                        EquationService.createComponent("css", data.css, equation.id);
+                    }
                     if (options.speakText) EquationService.createComponent("description", data.speakText, equation.id);
                     //Look up equation so that we have all created info.
                     Equation.findOne(equation.id).populate('components').exec(function(err, newEquation) {
-                        newEquation.cloudUrl = "https://" + host + "/equation/" + equation.id;
+                        newEquation.cloudUrl = host + "/equation/" + equation.id;
                         return done(null, newEquation);
                     });
                 });
@@ -45,12 +53,20 @@ module.exports = {
     },
 
     convert: function(options, done) {
-        var mathjaxNode = require("../../node_modules/mathjax-node/lib/mj-single.js"),
+        var mathjaxNode = require("mathjax-node-sre"),
             extend = require("extend"),
             mathJaxNodeOptions = extend(options, {timeout: 100 * 1000});
 
         mathjaxNode.typeset(options, function (data) {
-            done(data);
+            if (options.png) {
+                var mathjaxNode2 = require('mathjax-node-svg2png');
+                mathjaxNode2.typeset(options, function(data2) {
+                    data.png = data2.png;
+                    done(data);
+                });
+            } else {
+                done(data);
+            }
         });
     },
 
@@ -85,14 +101,14 @@ module.exports = {
     },
 
     typesetPage: function(mathjaxOptions, html5, done) {
-        var mathjaxNode = require("../../node_modules/mathjax-node/lib/mj-page.js");
+        var mathjaxNode = require("mathjax-node-sre");
 		console.log("Starting MathJax file conversion to " + html5.outputFormat);
         try {
             mathjaxNode.typeset(mathjaxOptions, function (data) {
                 if (typeof(data.errors) != "undefined") {
                     done(data.errors);
                 } else {
-                    var doc = jsdom(data.html);
+                    var doc = new JSDOM(data.html);
                     var window = doc.parentWindow;
                     waterfall([
                         function (callback) {
@@ -129,7 +145,7 @@ module.exports = {
                         function(callback){
 							console.log("Updating html5 record for id " + html5.id);
                             //update html5.
-                            Html5.update({id: html5.id}, {output: serializeDocument(doc)}).exec(function(err, html5s) {
+                            Html5.update({id: html5.id}, {output: doc.serialize()}).exec(function(err, html5s) {
                                 if (err) callback(err);
                             });
                             callback();

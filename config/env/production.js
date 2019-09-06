@@ -11,14 +11,14 @@
  */
 var fs = require('fs');
 module.exports = {
-  connections: {
+  datastores: {
      'productionMongodbServer': {
 		 url: process.env.MONGO_URL
      }
   },
 
   models: {
-     connection: 'productionMongodbServer'
+     datastore: 'productionMongodbServer'
   },
 
   /***************************************************************************
@@ -35,5 +35,9 @@ module.exports = {
         user: process.env.SMTP_SASL_USER,
         pass: process.env.SMTP_SASL_PASSWORD
     }
+  },
+
+  sockets: {
+    onlyAllowOrigins: ["http://app.mathmlcloud.org"]
   }
 };

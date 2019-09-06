@@ -20,7 +20,7 @@ Scenario: Retrieve a converted equation
 Scenario: Retrieve one component of a converted equation
 	Given a converted equation
 	When I ask for the first component by ID
-	Then I should get back a full component description
+	Then I should get the component as a downloadable file
 
 Scenario: Provide feedback on a converted equation
 	Given a converted equation
@@ -31,4 +31,3 @@ Scenario: Convert an HTML file to SVG equations
 	Given an HTML file containing equations
 	When I ask for an SVG conversion
 	Then I should get back a confirmation of SVG output
-	

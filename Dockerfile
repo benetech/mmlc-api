@@ -1,28 +1,34 @@
-FROM node:4 
+FROM node:11
 
 MAINTAINER John Brugge <johnbrugge@benetech.org>
 
 EXPOSE 1337
 
+ENV NODE_ENV production
+ENV MONGO_URL mongodb://mongo/mathmlcloud
+ENV REDIS_HOST redis
+ENV REDIS_PORT 6379
+
+
 ENV APP_DIR /usr/src/mmlc-api
 ENV BUILD_PACKAGES curl unzip
-ENV RUNTIME_PACKAGES openjdk-7-jre-headless python
+ENV RUNTIME_PACKAGES openjdk-8-jre-headless python netcat-openbsd
 
 RUN mkdir $APP_DIR
 
-WORKDIR $APP_DIR 
+WORKDIR $APP_DIR
 
 COPY . $APP_DIR
 
 RUN apt-get update && \
-    apt-get install -y $BUILD_PACKAGES $RUNTIME_PACKAGES && \ 
+    apt-get install -y $BUILD_PACKAGES $RUNTIME_PACKAGES && \
     npm -y install && \
-    curl -O http://www.apache.org/dist/xmlgraphics/batik/binaries/batik-1.7.zip && \
-    unzip batik-1.7.zip && \
-    cp -r batik-1.7/* node_modules/mathjax-node/batik/ && \
+    curl -O http://www.apache.org/dist/xmlgraphics/batik/binaries/batik-bin-1.10.zip && \
+    unzip batik-bin-1.10.zip && \
+    mv batik-1.10 node_modules/mathjax-node/batik/ && \
     rm -rf batik* && \
     chmod -R ugo+rw $APP_DIR && \
     apt-get purge --yes --auto-remove $BUILD_PACKAGES && \
     apt-get clean
 
-CMD ["node", "app.js"]
+CMD ./wait_for.sh mongo 27017 && node app.js

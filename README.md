@@ -14,10 +14,23 @@ Dependencies:
 
 ### Installation
 
-```
-git clone https://github.com/benetech/mmlc-api.git yourProjectName
+```bash
+git clone https://github.com/openstax/mathmlcloud.git yourProjectName
 cd yourProjectName
+
+# Download the latest image on our github releases page, e.g. v6.0.0
+curl -L -o mathmlcloud_api.tar.gz https://github.com/openstax/mathmlcloud/releases/download/v6.0.0/mathmlcloud_api.tar.gz
+
+docker load --input mathmlcloud_api.tar.gz
+
+# If your directory is not called mathmlcloud, you need to add a tag for the
+# image
+docker tag mathmlcloud_api yourProjectName_api
+
 docker-compose up
+
+# Test to make sure it works:
+curl -X POST -d "math=a*b" -d "mathType=AsciiMath" -d "png=true" -d "description=true" http://localhost:1337/equation
 ```
 
 This will start the containers that make up the app. The application container runs "sails lift" as its command.

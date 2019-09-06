@@ -11,79 +11,106 @@ var randomUsername = function() {
 //var base_url = 'https://staging.mathmlcloud.org';
 
 describe("Register", function() {
-    frisby.create("Valid User")
-        .post(base_url + '/user', {
-            username : randomUsername() + "@benetech.org",
-            password : '123456',
+    beforeEach(function() {
+        this.users = [];
+    });
+
+    afterEach(function(done) {
+        User.destroy({username: this.users}, done);
+    });
+
+    it("Valid User", function(doneFn) {
+        var username = randomUsername() + '@benetech.org';
+        this.users.push(username);
+        frisby.post(base_url + '/user', {
+            username: username,
+            password: '123456',
             firstName: 'Spec',
             lastName: 'Valid',
+            role: 'user',
             termsOfService: true
         })
-        .expectStatus(200)
-        .toss();
-    frisby.create("Valid User with organization")
-        .post(base_url + '/user', {
-            username : randomUsername() + "@benetech.org",
-            password : '123456',
+        .expect('status', 200)
+        .done(doneFn);
+    });
+    it("Valid User with organization", function(doneFn) {
+        var username = randomUsername() + '@benetech.org';
+        this.users.push(username);
+        frisby.post(base_url + '/user', {
+            username: username,
+            password: '123456',
             firstName: 'Spec',
             lastName: "W'Organization",
+            role: 'user',
             termsOfService: true,
             organization: "Benetech"
         })
-        .expectStatus(200)
-        .expectJSON( {
+        .expect('status', 200)
+        .expect('json', {
             organization: "Benetech"
         })
-        .toss();
-    frisby.create("Valid User with organization types")
-        .post(base_url + '/user', {
-            username : randomUsername() + "@benetech.org",
-            password : '123456',
+        .done(doneFn);
+    });
+    it("Valid User with organization types", function(doneFn) {
+        var username = randomUsername() + '@benetech.org';
+        this.users.push(username);
+        frisby.post(base_url + '/user', {
+            username: username,
+            password: '123456',
             firstName: 'Spec',
             lastName: "W'Organization",
+            role: 'user',
             termsOfService: true,
             organization: "Benetech",
             organizationTypes: ["K-12 Education", "Post-Secondary Education"]
         })
-        .expectStatus(200)
-        .expectJSON( {
+        .expect('status', 200)
+        .expect('json', {
             organizationTypes: ["K-12 Education", "Post-Secondary Education"]
         })
-        .toss();
+        .done(doneFn);
+    });
 
-    frisby.create("Invalid User")
-        .post(base_url + '/user', {
-            username : randomUsername() + "@benetech.org",
-            password : '123456',
+    it("Invalid User", function(doneFn) {
+        var username = randomUsername() + '@benetech.org';
+        this.users.push(username);
+        frisby.post(base_url + '/user', {
+            username: username,
+            password: '123456',
+            role: 'user',
             termsOfService: false,
             organization: "Benetech",
             organizationTypes: ["K-12 Education", "Post-Secondary Education"]
         })
-        .expectStatus(500)
-        .toss();
+        .expect('status', 500)
+        .done(doneFn);
+    });
     
     //Test dupe user.
     var dupeUsername = randomUsername() + "@benetech.org";
-    frisby.create("User with " + dupeUsername + " -- Valid")
-        .post(base_url + '/user', {
+    it("Duplicate user User", function(doneFn) {
+        this.users.push(dupeUsername);
+        frisby.post(base_url + '/user', {
             username : dupeUsername,
             password : '123456',
             firstName: 'Spec',
             lastName: 'Valid',
+            role: 'user',
             termsOfService: true
         })
-        .expectStatus(200)
-        .toss();
-    frisby.create("Duplicate user User")
-        .post(base_url + '/user', {
-            username : dupeUsername,
-            password : '123456',
-            firstName: 'Spec',
-            lastName: 'Valid',
-            termsOfService: true
-        })
-        .expectStatus(400)
-        .toss();
-
+        .expect('status', 200)
+        .then(function() {
+            frisby.post(base_url + '/user', {
+                username : dupeUsername,
+                password : '123456',
+                firstName: 'Spec',
+                lastName: 'Valid',
+                role: 'user',
+                termsOfService: true
+            })
+            .expect('status', 400)
+            .done(doneFn);
+        });
+    });
 
 });

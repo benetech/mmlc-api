@@ -2,7 +2,7 @@ Feature: Error responses
 	In order to know when I have made an incorrect call
 	As an API user
 	I want to be notified of errors with meaningful status codes and messages
-	
+
 Scenario: Invalid file upload type
 	Given a ZIP file
 	When I ask for an SVG conversion
@@ -28,7 +28,7 @@ Scenario: Unsupported math input type
 	And I should get an error message
 
 Scenario: Unsupported output format
-	Given an AsciiMath equation
-	When I ask for a PNG conversion
+	Given an HTML file containing equations
+	When I ask for a JPG conversion
 	Then I should get a status code of 400
 	And I should get an error message
