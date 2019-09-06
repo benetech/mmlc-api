@@ -38,6 +38,6 @@ module.exports = {
   },
 
   sockets: {
-    onlyAllowOrigins: ["http://app.mathmlcloud.org"]
+    onlyAllowOrigins: ["http://app.mathmlcloud.org","http://mathmlcloud.org","http://www.mathmlcloud.org","https://app.mathmlcloud.org","https://mathmlcloud.org","https://www.mathmlcloud.org"]
   }
 };
