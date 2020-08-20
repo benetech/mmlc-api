@@ -8,7 +8,7 @@
     "@sailshq/upgrade": "^1.0.9",
     "async": "2.1.4",
     "async-waterfall": "~0.1.5",
-    "bcrypt": "~3.0.2",
+    "bcrypt": "~5.0.0",
     "buffer": "~5.2.1",
     "crypto": "~1.0.1",
     "ejs": "~2.6.1",
