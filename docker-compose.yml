@@ -17,3 +17,6 @@ services:
     links:
       - mmlc-redis
       - mmlc-mongo
+    depends_on:
+      - mmlc-redis
+      - mmlc-mongo
